@@ -3,6 +3,10 @@
   overflow: hidden;
 }
 
+.item.dragging {
+  opacity: 0.3;
+}
+
 .item.small {
   width: 75px;
 }

@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import { shuffle } from 'lodash';
@@ -101,10 +101,12 @@ const Items: FC = () => {
 
   const [collectedProps, drop] = useDrop({
     accept: 'chart',
+
     hover: (item, monitor) => {
       // const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const clientOffset = monitor.getClientOffset();
       // console.log('hover', childRefs, item, clientOffset, monitor, monitor.getItem(), ref.current?.children);
+      
 
       let mRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
 
@@ -147,12 +149,10 @@ const Items: FC = () => {
   return (
     <Flipper flipKey={JSON.stringify(items)}>
       <button onClick={handleShuffle}>Shuffle</button>
-      {/* <div className='items'> */}
       <div className='items' ref={ref}>
         {items.map((item, idx) => (
-          <Flipped key={item.id} flipId={item.id}>
+          <Flipped key={item.id} flipId={item.id} opacity={false}>
             <Item ref={childRefs[idx]} key={item.id} id={item.id} idx={idx} />
-            {/* <Item key={item.id} id={item.id} idx={idx} /> */}
           </Flipped>
         ))}
       </div>
