@@ -1,0 +1,28 @@
+.items {
+  align-items: stretch;
+  border: 1px solid gray;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+
+.option {
+  outline: none;
+  position: relative;
+}
+
+.drop-indicator {
+  position: absolute;
+  background-color: blue;
+  width: 3px;
+  height: 100%;
+  top: 0;
+  left: -6.5px;
+  z-index: 1;
+}
+
+.drop-indicator.after {
+  left: unset;
+  right: -6.5px;
+}

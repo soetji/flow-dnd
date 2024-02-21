@@ -1,0 +1,24 @@
+.item {
+  border: 1px solid black;
+  overflow: hidden;
+}
+
+.item.small {
+  width: 75px;
+}
+
+.item.large {
+  width: 400px;
+  height: 150px;
+}
+
+.bar {
+  background-color: gray;
+  height: 25px;
+  cursor: grab;
+}
+
+.chart {
+  height: calc(100% - 25px);
+  width: 100%;
+}
