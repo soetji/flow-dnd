@@ -99,7 +99,7 @@ const Items: FC = () => {
     setItems(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
   };
 
-  const [collectedProps, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: 'chart',
 
     hover: (item, monitor) => {
