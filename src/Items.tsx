@@ -1,6 +1,5 @@
 import { FC } from 'react';
-// import { shuffle } from 'lodash';
-import Droppable from './Droppable';
+import DroppableBox from './DroppableBox';
 
 import './items.css';
 import Item from './Item';
@@ -43,9 +42,10 @@ const defaultItems = [
 ];
 
 const Items: FC = () => {
-
+  const handleDragEnd = (items) => console.log(items);
+  
   return (
-    <Droppable items={defaultItems}>
+    <DroppableBox items={defaultItems} onDragEnd={handleDragEnd}>
       {({ childRefs, drop, items }) => (
         <div className='items' ref={drop}>
           {items.map((item, idx) => (
@@ -53,7 +53,7 @@ const Items: FC = () => {
           ))}
         </div>
       )}
-    </Droppable>
+    </DroppableBox>
   );
 };
 

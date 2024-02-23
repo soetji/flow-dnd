@@ -1,13 +1,15 @@
 import { useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
+
 import { getMouseLocInfo } from '../utils/utils';
 import { DropItem, MouseInfo, ItemWithId } from '../utils/types';
 
-// Use 'extends' to contrain the type to Item
-export default function _useDrop({
+export default function useDropBox({
   items,
+  onDragEnd,
 }: {
   items: ItemWithId[];
+  onDragEnd?: (items: ItemWithId[]) => void,
 }
 ) {
 
@@ -27,36 +29,35 @@ export default function _useDrop({
   const [, drop] = useDrop({
     accept: 'chart',
 
-    hover: (item: DropItem, monitor) => {
-      // const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const clientOffset = monitor.getClientOffset();
-      // console.log('hover', childRefs, item, clientOffset, monitor, monitor.getItem(), ref.current?.children);
+    drop: () => onDragEnd && onDragEnd(_items),
 
-      let mRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
+    hover: (item: DropItem, monitor) => {
+      const clientOffset = monitor.getClientOffset();
+      let msRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
 
       if (childRefs.length) {
         for (let i = 0; i < childRefs.length; i++) {
           const obj = childRefs[i].current;
-          const mInfo = getMouseLocInfo(
+          const msInfo = getMouseLocInfo(
             obj?.getEl()?.getBoundingClientRect(),
             clientOffset
           );
 
-          if (mInfo.isInside) {
-            mRes = { ...mInfo, hoverIdx: i };
+          if (msInfo.isInside) {
+            msRes = { ...msInfo, hoverIdx: i };
             break;
           }
 
-          if (mInfo.dist && mRes.dist && mInfo.dist < mRes.dist) {
-            mRes = { ...mInfo, hoverIdx: i };
+          if (msInfo.dist && msRes.dist && msInfo.dist < msRes.dist) {
+            msRes = { ...msInfo, hoverIdx: i };
           }
         }
       }
 
-      if (mRes.hoverIdx !== undefined && item.index !== mRes.hoverIdx) {
-        const toIdx = item.index < mRes.hoverIdx ?
-          (mRes.side === 'right' ? mRes.hoverIdx : mRes.hoverIdx - 1) :
-          (mRes.side === 'right' ? mRes.hoverIdx + 1 : mRes.hoverIdx);
+      if (msRes.hoverIdx !== undefined && item.index !== msRes.hoverIdx) {
+        const toIdx = item.index < msRes.hoverIdx ?
+          (msRes.side === 'right' ? msRes.hoverIdx : msRes.hoverIdx - 1) :
+          (msRes.side === 'right' ? msRes.hoverIdx + 1 : msRes.hoverIdx);
 
         if (item.index !== toIdx) {
           moveItem(item.index, toIdx);
@@ -67,5 +68,4 @@ export default function _useDrop({
   });
 
   return { childRefs, drop, items: _items };
-
 }

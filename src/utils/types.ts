@@ -7,7 +7,7 @@ export interface DraggableRenderProps {
   isDragging: boolean,
 }
 
-export interface DroppableRenderProps {
+export interface DroppableBoxRenderProps {
   childRefs: Ref<HTMLElement>[],
   drop: ConnectDropTarget,
   items: ItemWithId[],
@@ -19,12 +19,8 @@ export interface DropItem {
   index: number,
 }
 
-export interface Item {
-  id: number | string
-}
-
-// Generic ItemWithId that is constrained to Item
-export interface ItemWithId extends Item {
+export interface ItemWithId {
+  id: number | string,
   [key: string]: unknown,
 }
 
