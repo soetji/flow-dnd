@@ -1,13 +1,18 @@
 import { useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { getMouseLocInfo, MouseInfo } from './utils';
+import { getMouseLocInfo } from '../utils/utils';
+import { DropItem, MouseInfo, ItemWithId } from '../utils/types';
 
+// Use 'extends' to contrain the type to Item
 export default function _useDrop({
-  defaultItems,
-}) {
+  items,
+}: {
+  items: ItemWithId[];
+}
+) {
 
-  const [items, setItems] = useState(defaultItems);
-  const childRefs = new Array(defaultItems.length);
+  const [_items, setItems] = useState(items);
+  const childRefs = new Array(items.length);
 
   for (let i = 0; i < childRefs.length; i++) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -15,18 +20,17 @@ export default function _useDrop({
   }
 
   const moveItem = (from: number, to: number) => {
-    const itemFrom = items[from];
-    setItems(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
+    const itemFrom = _items[from];
+    setItems(_items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
   };
 
   const [, drop] = useDrop({
     accept: 'chart',
 
-    hover: (item, monitor) => {
+    hover: (item: DropItem, monitor) => {
       // const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const clientOffset = monitor.getClientOffset();
       // console.log('hover', childRefs, item, clientOffset, monitor, monitor.getItem(), ref.current?.children);
-
 
       let mRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
 
@@ -43,7 +47,7 @@ export default function _useDrop({
             break;
           }
 
-          if (mInfo.dist && mInfo.dist < mRes.dist) {
+          if (mInfo.dist && mRes.dist && mInfo.dist < mRes.dist) {
             mRes = { ...mInfo, hoverIdx: i };
           }
         }
@@ -62,6 +66,6 @@ export default function _useDrop({
     },
   });
 
-  return { childRefs, drop, items }
+  return { childRefs, drop, items: _items };
 
 }

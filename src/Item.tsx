@@ -5,7 +5,7 @@ import Draggable from './Draggable';
 import './item.css';
 
 interface Props {
-  id: string;
+  id: string | number;
   idx: number;
 }
 

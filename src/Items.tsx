@@ -38,13 +38,14 @@ const defaultItems = [
   },
   {
     id: '11',
+    type: 'sss'
   },
 ];
 
 const Items: FC = () => {
 
   return (
-    <Droppable defaultItems={defaultItems}>
+    <Droppable items={defaultItems}>
       {({ childRefs, drop, items }) => (
         <div className='items' ref={drop}>
           {items.map((item, idx) => (
