@@ -1,6 +1,6 @@
 import { useRef, forwardRef, useImperativeHandle } from 'react';
-import { useDrag } from 'react-dnd';
 import Chart from './Chart';
+import Draggable from './Draggable';
 
 import './item.css';
 
@@ -14,7 +14,6 @@ type Ref = object;
 export default forwardRef<Ref, Props>(function Item({
   id,
   idx,
-  ...rest
 }, objRef) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -24,26 +23,21 @@ export default forwardRef<Ref, Props>(function Item({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);
 
-  const [{ isDragging }, drag] = useDrag({
-    type: 'chart',
-    item: () => {
-      return { id, index: idx };
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
-
-  drag(ref);
-
   return (
-    <div
-      className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''}`}
-      ref={ref}
-      {...rest}
-    >
-      <div className='bar'>{id}</div>
-      <Chart />
-    </div>
+    <Draggable id={id} index={idx}>
+      {({drag, isDragging, flippedProps}) => {
+        drag(ref);
+        return (
+          <div
+            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''}`}
+            ref={ref}
+            {...flippedProps}
+          >
+            <div className='bar'>{id}</div>
+            <Chart />
+          </div>
+        )
+      }}
+    </Draggable>
   );
 });
