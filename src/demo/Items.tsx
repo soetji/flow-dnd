@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import DroppableBox from './DroppableBox';
+import DroppableBox from '../DroppableBox';
 
 import './items.css';
 import Item from './Item';

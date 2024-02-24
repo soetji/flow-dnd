@@ -1,6 +1,6 @@
 import { useRef, forwardRef, useImperativeHandle } from 'react';
 import Chart from './Chart';
-import Draggable from './Draggable';
+import Draggable from '../Draggable';
 
 import './item.css';
 
@@ -33,8 +33,9 @@ export default forwardRef<Ref, Props>(function Item({
             ref={ref}
             {...flippedProps}
           >
-            <div className='bar'>{id}</div>
-            <Chart />
+            <div className='bar'></div>
+            <div className='content'>{id}</div>
+            {/* <Chart /> */}
           </div>
         )
       }}

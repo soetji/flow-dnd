@@ -1,5 +1,7 @@
 .item {
   border: 1px solid black;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -16,10 +18,19 @@
   height: 150px;
 }
 
-.bar {
+.item .bar {
   background-color: gray;
   height: 25px;
   cursor: grab;
+}
+
+.item .content {
+  align-items: center;
+  display: flex;
+  flex: 1 0 auto;
+  font-size: 30px;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .chart {
