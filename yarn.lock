@@ -1707,6 +1707,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"flow-dnd@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "flow-dnd@workspace:."
+  dependencies:
+    "@types/lodash": "npm:^4"
+    "@types/react": "npm:^18.2.55"
+    "@types/react-dom": "npm:^18.2.19"
+    "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
+    "@typescript-eslint/parser": "npm:^6.21.0"
+    "@vitejs/plugin-react": "npm:^4.2.1"
+    eslint: "npm:^8.56.0"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
+    eslint-plugin-react-refresh: "npm:^0.4.5"
+    lodash: "npm:^4.17.21"
+    react: "npm:^18.2.0"
+    react-dnd: "npm:^16.0.1"
+    react-dnd-html5-backend: "npm:^16.0.1"
+    react-dom: "npm:^18.2.0"
+    react-flip-toolkit: "npm:^7.1.0"
+    typescript: "npm:^5.2.2"
+    vite: "npm:^5.1.0"
+  languageName: unknown
+  linkType: soft
+
 "foreground-child@npm:^3.1.0":
   version: 3.1.1
   resolution: "foreground-child@npm:3.1.1"
@@ -1873,13 +1897,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"highcharts@npm:^11.3.0":
-  version: 11.3.0
-  resolution: "highcharts@npm:11.3.0"
-  checksum: 10c0/53e20f9a68698121c0ba7cad0979dfba69b6d76982e98c904c81a6fd477de126c2151966054276fea0084bdbc9ca71aefb166a16794ddefe82eef548f417719d
-  languageName: node
-  linkType: hard
-
 "hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
@@ -1929,13 +1946,6 @@ __metadata:
   version: 5.3.1
   resolution: "ignore@npm:5.3.1"
   checksum: 10c0/703f7f45ffb2a27fb2c5a8db0c32e7dee66b33a225d28e8db4e1be6474795f606686a6e3bcc50e1aa12f2042db4c9d4a7d60af3250511de74620fbed052ea4cd
-  languageName: node
-  linkType: hard
-
-"immer@npm:^10.0.3":
-  version: 10.0.3
-  resolution: "immer@npm:10.0.3"
-  checksum: 10c0/282a4f8479a40f7d12b2b3243c095e3e892bf99058e2ffcdd6b8e9fd143e6a90f2717ab9b6c8b97c927ffb8054465c8f647056f41660dbfd672e240cf1063503
   languageName: node
   linkType: hard
 
@@ -2629,32 +2639,6 @@ __metadata:
   checksum: 10c0/d069435750f0d6653cfa2b951cac8abb3583fb144ff134a20176608877d9c5964c63384ebbacaa0fdeef819b592a103de0d8e06f3b742311d64a029ffed0baa3
   languageName: node
   linkType: hard
-
-"react-dnd@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "react-dnd@workspace:."
-  dependencies:
-    "@types/lodash": "npm:^4"
-    "@types/react": "npm:^18.2.55"
-    "@types/react-dom": "npm:^18.2.19"
-    "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
-    "@typescript-eslint/parser": "npm:^6.21.0"
-    "@vitejs/plugin-react": "npm:^4.2.1"
-    eslint: "npm:^8.56.0"
-    eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-react-refresh: "npm:^0.4.5"
-    highcharts: "npm:^11.3.0"
-    immer: "npm:^10.0.3"
-    lodash: "npm:^4.17.21"
-    react: "npm:^18.2.0"
-    react-dnd: "npm:^16.0.1"
-    react-dnd-html5-backend: "npm:^16.0.1"
-    react-dom: "npm:^18.2.0"
-    react-flip-toolkit: "npm:^7.1.0"
-    typescript: "npm:^5.2.2"
-    vite: "npm:^5.1.0"
-  languageName: unknown
-  linkType: soft
 
 "react-dom@npm:^18.2.0":
   version: 18.2.0

@@ -1,7 +1,7 @@
 import { Flipper } from 'react-flip-toolkit';
 
 import useDropBox from './hooks/useDropBox';
-import { DroppableBoxRenderProps, ItemWithId } from './utils/types';
+import { DroppableBoxRenderProps, ItemWithId } from './types';
 
 export default function DroppableBox({
   children,

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 
 import { getMouseLocInfo } from '../utils/utils';
-import { DropItem, MouseInfo, ItemWithId } from '../utils/types';
+import { DropItem, MouseInfo, ItemWithId } from '../types';
 
 export default function useDropBox({
   items,

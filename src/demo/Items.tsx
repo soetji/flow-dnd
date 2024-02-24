@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import DroppableBox from '../DroppableBox';
+import { ItemWithId } from '../types';
 
 import './items.css';
 import Item from './Item';
@@ -42,7 +43,7 @@ const defaultItems = [
 ];
 
 const Items: FC = () => {
-  const handleDragEnd = (items) => console.log(items);
+  const handleDragEnd = (items: ItemWithId[]) => console.log(items);
   
   return (
     <DroppableBox items={defaultItems} onDragEnd={handleDragEnd}>

@@ -1,6 +1,6 @@
 import { Flipped } from 'react-flip-toolkit';
 import useDrag from './hooks/useDrag';
-import { DraggableRenderProps } from './utils/types';
+import { DraggableRenderProps } from './types';
 
 export default function Draggable({
   children,

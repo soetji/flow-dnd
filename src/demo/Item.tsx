@@ -1,5 +1,4 @@
 import { useRef, forwardRef, useImperativeHandle } from 'react';
-import Chart from './Chart';
 import Draggable from '../Draggable';
 
 import './item.css';
