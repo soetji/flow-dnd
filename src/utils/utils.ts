@@ -1,5 +1,5 @@
 import { XYCoord } from 'react-dnd';
-import { MouseInfo } from './types';
+import { MouseInfo } from '../types';
 
 export function getMouseLocInfo(
   itemRect: DOMRect | null = null,
