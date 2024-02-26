@@ -1,8 +1,14 @@
 {
-  "name": "flow-dnd",
+  "name": "@soetji/flow-dnd",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "url": "https://github.com/soetji/flow-dnd.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
