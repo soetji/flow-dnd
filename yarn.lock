@@ -772,6 +772,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@soetji/flow-dnd@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@soetji/flow-dnd@workspace:."
+  dependencies:
+    "@rollup/plugin-typescript": "npm:^11.1.6"
+    "@types/lodash": "npm:^4.14.202"
+    "@types/react": "npm:^18.2.58"
+    "@types/react-dom": "npm:^18.2.19"
+    "@typescript-eslint/eslint-plugin": "npm:^7.0.2"
+    "@typescript-eslint/parser": "npm:^7.0.2"
+    "@vitejs/plugin-react": "npm:^4.2.1"
+    eslint: "npm:^8.57.0"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
+    eslint-plugin-react-refresh: "npm:^0.4.5"
+    lodash: "npm:^4.17.21"
+    react: "npm:^18.2.0"
+    react-dnd: "npm:^16.0.1"
+    react-dnd-html5-backend: "npm:^16.0.1"
+    react-dom: "npm:^18.2.0"
+    react-flip-toolkit: "npm:^7.1.0"
+    tslib: "npm:^2.6.2"
+    typescript: "npm:^5.3.3"
+    vite: "npm:^5.1.4"
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -1759,32 +1788,6 @@ __metadata:
   checksum: 10c0/133240b4c60cee92de3d95a2739b4704f2691878f1abea3cdb2b71b81b398a5813937e2aad2833a075fa422f2953f5612327438db046a57fb94fc00cbd53cd55
   languageName: node
   linkType: hard
-
-"flow-dnd@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "flow-dnd@workspace:."
-  dependencies:
-    "@rollup/plugin-typescript": "npm:^11.1.6"
-    "@types/lodash": "npm:^4.14.202"
-    "@types/react": "npm:^18.2.58"
-    "@types/react-dom": "npm:^18.2.19"
-    "@typescript-eslint/eslint-plugin": "npm:^7.0.2"
-    "@typescript-eslint/parser": "npm:^7.0.2"
-    "@vitejs/plugin-react": "npm:^4.2.1"
-    eslint: "npm:^8.57.0"
-    eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-react-refresh: "npm:^0.4.5"
-    lodash: "npm:^4.17.21"
-    react: "npm:^18.2.0"
-    react-dnd: "npm:^16.0.1"
-    react-dnd-html5-backend: "npm:^16.0.1"
-    react-dom: "npm:^18.2.0"
-    react-flip-toolkit: "npm:^7.1.0"
-    tslib: "npm:^2.6.2"
-    typescript: "npm:^5.3.3"
-    vite: "npm:^5.1.4"
-  languageName: unknown
-  linkType: soft
 
 "foreground-child@npm:^3.1.0":
   version: 3.1.1
