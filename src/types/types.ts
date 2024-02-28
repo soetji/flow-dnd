@@ -1,27 +1,31 @@
 import { Ref } from 'react';
-import { ConnectDragSource, ConnectDropTarget } from 'react-dnd';
+import { ConnectDropTarget } from 'react-dnd';
 
-export interface DraggableRenderProps {
-  drag: ConnectDragSource,
-  flippedProps: object,
-  isDragging: boolean,
+export interface ItemWithId {
+  id: number | string,
+  [key: string]: unknown,
+}
+
+export interface DraggableHandle {
+  getDOMElement: () => void,
 }
 
 export interface DroppableBoxRenderProps {
-  childRefs: Ref<HTMLElement>[],
+  draggableRefs: Ref<DraggableHandle>[], 
   drop: ConnectDropTarget,
   items: ItemWithId[],
+}
+
+export interface DraggableRenderProps<InnerElementType> {
+  flippedProps: object,
+  innerElementRef: Ref<InnerElementType>,
+  isDragging: boolean,
 }
 
 // TODO: Find this in react-dnd
 export interface DropItem {
   id: number | string,
   index: number,
-}
-
-export interface ItemWithId {
-  id: number | string,
-  [key: string]: unknown,
 }
 
 export interface MouseInfo {

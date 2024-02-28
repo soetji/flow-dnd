@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import DroppableBox from '../DroppableBox';
 import { ItemWithId } from '../types';
 
@@ -47,10 +47,10 @@ const Items: FC = () => {
   
   return (
     <DroppableBox items={defaultItems} onDragEnd={handleDragEnd}>
-      {({ childRefs, drop, items }) => (
+      {({ draggableRefs, drop, items }) => (
         <div className='items' ref={drop}>
           {items.map((item, idx) => (
-            <Item ref={childRefs[idx]} key={item.id} id={item.id} idx={idx} />
+            <Item draggableRef={draggableRefs[idx]} key={item.id} id={item.id} idx={idx} />
           ))}
         </div>
       )}

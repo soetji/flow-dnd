@@ -1,43 +1,34 @@
-import { useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { Ref } from 'react';
 import Draggable from '../Draggable';
+import { DraggableHandle } from '../types';
 
 import './item.css';
 
 interface Props {
+  draggableRef: Ref<DraggableHandle>,
   id: string | number;
   idx: number;
 }
 
-type Ref = object;
-
-export default forwardRef<Ref, Props>(function Item({
+export default function Item({
+  draggableRef,
   id,
   idx,
-}, objRef) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useImperativeHandle(objRef, () => ({
-    getEl: () => ref.current,
-    getId: () => id,
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), []);
-
+}: Props) {
   return (
-    <Draggable id={id} index={idx}>
-      {({drag, isDragging, flippedProps}) => {
-        drag(ref);
+    <Draggable<HTMLDivElement> id={id} index={idx} draggableRef={draggableRef}>
+      {({flippedProps, innerElementRef, isDragging}) => {
         return (
           <div
             className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''}`}
-            ref={ref}
+            ref={innerElementRef}
             {...flippedProps}
           >
             <div className='bar'></div>
             <div className='content'>{id}</div>
-            {/* <Chart /> */}
           </div>
         )
       }}
     </Draggable>
   );
-});
+}

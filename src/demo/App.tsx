@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import DndProvider from '../DndProvider';
 import Items from './Items';
 import './App.css';

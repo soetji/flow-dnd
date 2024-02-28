@@ -14,11 +14,11 @@ export default function useDropBox({
 ) {
 
   const [_items, setItems] = useState(items);
-  const childRefs = new Array(items.length);
+  const draggableRefs = new Array(items.length);
 
-  for (let i = 0; i < childRefs.length; i++) {
+  for (let i = 0; i < draggableRefs.length; i++) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    childRefs[i] = useRef(null);
+    draggableRefs[i] = useRef(null);
   }
 
   const moveItem = (from: number, to: number) => {
@@ -35,11 +35,11 @@ export default function useDropBox({
       const clientOffset = monitor.getClientOffset();
       let msRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
 
-      if (childRefs.length) {
-        for (let i = 0; i < childRefs.length; i++) {
-          const obj = childRefs[i].current;
+      if (draggableRefs.length) {
+        for (let i = 0; i < draggableRefs.length; i++) {
+          const obj = draggableRefs[i].current;
           const msInfo = getMouseLocInfo(
-            obj?.getEl()?.getBoundingClientRect(),
+            obj?.getDOMElement()?.getBoundingClientRect(),
             clientOffset
           );
 
@@ -67,5 +67,5 @@ export default function useDropBox({
     },
   });
 
-  return { childRefs, drop, items: _items };
+  return { draggableRefs, drop, items: _items };
 }
