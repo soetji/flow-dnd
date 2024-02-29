@@ -1,4 +1,4 @@
-import React, { Ref } from 'react';
+import React, { Ref, useRef } from 'react';
 import Draggable from '../Draggable';
 import { DraggableHandle } from '../types';
 
@@ -15,19 +15,24 @@ export default function Item({
   id,
   idx,
 }: Props) {
+  const itemRef = useRef<HTMLDivElement>(null);
+
   return (
     <Draggable<HTMLDivElement> id={id} index={idx} draggableRef={draggableRef}>
-      {({flippedProps, innerElementRef, isDragging}) => {
+      {({ flippedProps, innerElementRef, isDragging }) => {
         return (
           <div
             className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''}`}
-            ref={innerElementRef}
+            ref={el => {
+              innerElementRef && (innerElementRef.current = el);
+              itemRef.current = el;
+            }}
             {...flippedProps}
           >
             <div className='bar'></div>
             <div className='content'>{id}</div>
           </div>
-        )
+        );
       }}
     </Draggable>
   );
