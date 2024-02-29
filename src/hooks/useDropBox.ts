@@ -5,9 +5,11 @@ import { getMouseLocInfo } from '../utils/utils';
 import { DropItem, MouseInfo, ItemWithId } from '../types';
 
 export default function useDropBox({
+  accept,
   items,
   onDragEnd,
 }: {
+  accept: string,
   items: ItemWithId[];
   onDragEnd?: (items: ItemWithId[]) => void,
 }
@@ -27,7 +29,7 @@ export default function useDropBox({
   };
 
   const [, drop] = useDrop({
-    accept: 'chart',
+    accept,
 
     drop: () => onDragEnd && onDragEnd(_items),
 

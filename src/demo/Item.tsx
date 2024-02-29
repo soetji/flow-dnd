@@ -18,7 +18,7 @@ export default function Item({
   const itemRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Draggable<HTMLDivElement> id={id} index={idx} draggableRef={draggableRef}>
+    <Draggable<HTMLDivElement> id={id} index={idx} draggableRef={draggableRef} type='myItem'>
       {({ flippedProps, innerElementRef, isDragging }) => {
         return (
           <div

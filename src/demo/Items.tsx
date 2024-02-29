@@ -46,7 +46,7 @@ const Items: FC = () => {
   const handleDragEnd = (items: ItemWithId[]) => console.log(items);
   
   return (
-    <DroppableBox items={defaultItems} onDragEnd={handleDragEnd}>
+    <DroppableBox accept='myItem' items={defaultItems} onDragEnd={handleDragEnd}>
       {({ draggableRefs, drop, items }) => (
         <div className='items' ref={drop}>
           {items.map((item, idx) => (

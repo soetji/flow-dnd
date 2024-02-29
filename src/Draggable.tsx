@@ -8,6 +8,7 @@ interface Props<InnerElementType> {
   draggableRef: Ref<DraggableHandle>,
   id: number | string,
   index: number,
+  type: string,
 }
 
 export default function Draggable<InnerElementType>({
@@ -15,6 +16,7 @@ export default function Draggable<InnerElementType>({
   draggableRef,
   id,
   index,
+  type,
 }: Props<InnerElementType>) {
   const innerElementRef = useRef<InnerElementType>(null);
 
@@ -26,6 +28,7 @@ export default function Draggable<InnerElementType>({
   const { drag, isDragging } = useDrag({
     id,
     index,
+    type,
   });
 
   drag(innerElementRef);
