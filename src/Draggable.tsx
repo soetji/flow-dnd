@@ -4,6 +4,7 @@ import useDrag from './hooks/useDrag';
 import { DraggableHandle, DraggableRenderProps } from './types';
 
 interface Props<InnerElementType> {
+  canDrag?: boolean,
   children: (props: DraggableRenderProps<InnerElementType>) => JSX.Element,
   draggableRef: Ref<DraggableHandle>,
   id: number | string,
@@ -12,6 +13,7 @@ interface Props<InnerElementType> {
 }
 
 export default function Draggable<InnerElementType>({
+  canDrag = true,
   children,
   draggableRef,
   id,
@@ -26,6 +28,7 @@ export default function Draggable<InnerElementType>({
   }), []);
 
   const { drag, isDragging } = useDrag({
+    canDrag,
     id,
     index,
     type,
