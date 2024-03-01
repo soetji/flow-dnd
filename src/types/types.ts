@@ -7,11 +7,11 @@ export interface ItemWithId {
 }
 
 export interface DraggableHandle {
-  getDOMElement: () => void,
+  getDOMElement: () => HTMLElement,
 }
 
 export interface DroppableBoxRenderProps {
-  draggableRefs: Ref<DraggableHandle>[], 
+  draggablesRef: Ref<DraggableHandle[]>, 
   drop: ConnectDropTarget,
   items: ItemWithId[],
 }
@@ -24,7 +24,7 @@ export interface DraggableRenderProps<InnerElementType> {
 }
 
 // TODO: Find this in react-dnd
-export interface DropItem {
+export interface DragItem {
   id: number | string,
   index: number,
 }

@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 
 import { getMouseLocInfo } from '../utils/utils';
-import { DropItem, MouseInfo, ItemWithId } from '../types';
+import { DraggableHandle, DragItem, MouseInfo, ItemWithId } from '../types';
 
 export default function useDropBox({
   accept,
@@ -14,14 +14,17 @@ export default function useDropBox({
   onDragEnd?: (items: ItemWithId[]) => void,
 }
 ) {
-
   const [_items, setItems] = useState(items);
-  const draggableRefs = new Array(items.length);
+  const draggablesRef = useRef<DraggableHandle[]>([]);
 
-  for (let i = 0; i < draggableRefs.length; i++) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    draggableRefs[i] = useRef(null);
-  }
+  useEffect(() => {
+    setItems(items);
+    // setTimeout() to execute after draggablesRef is updated
+    setTimeout(() =>
+      // Clean up draggablesRef
+      draggablesRef.current = draggablesRef.current.filter(dr => dr !== null)
+    );
+  }, [JSON.stringify(items)]);
 
   const moveItem = (from: number, to: number) => {
     const itemFrom = _items[from];
@@ -33,15 +36,15 @@ export default function useDropBox({
 
     drop: () => onDragEnd && onDragEnd(_items),
 
-    hover: (item: DropItem, monitor) => {
+    hover: (item: DragItem, monitor) => {
       const clientOffset = monitor.getClientOffset();
+      const draggables = draggablesRef.current;
       let msRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
 
-      if (draggableRefs.length) {
-        for (let i = 0; i < draggableRefs.length; i++) {
-          const obj = draggableRefs[i].current;
+      if (draggables.length) {
+        for (let i = 0; i < draggables.length; i++) {
           const msInfo = getMouseLocInfo(
-            obj?.getDOMElement()?.getBoundingClientRect(),
+            draggables[i].getDOMElement()?.getBoundingClientRect(),
             clientOffset
           );
 
@@ -69,5 +72,5 @@ export default function useDropBox({
     },
   });
 
-  return { draggableRefs, drop, items: _items };
+  return { draggablesRef, drop, items: _items };
 }

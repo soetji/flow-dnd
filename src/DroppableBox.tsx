@@ -15,7 +15,7 @@ export default function DroppableBox({
   onDragEnd?: (items: ItemWithId[]) => void,
 
 }) {
-  const { draggableRefs, drop, items: _items } = useDropBox({
+  const { draggablesRef, drop, items: _items } = useDropBox({
     accept,
     items,
     onDragEnd,
@@ -23,7 +23,7 @@ export default function DroppableBox({
 
   return (
     <Flipper flipKey={JSON.stringify(_items)}>
-      {children({ draggableRefs, drop, items: _items })}
+      {children({ draggablesRef, drop, items: _items })}
     </Flipper>
   );
 }

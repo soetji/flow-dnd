@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import DroppableBox from '../DroppableBox';
 import { ItemWithId } from '../types';
 
@@ -43,19 +43,32 @@ const defaultItems = [
 ];
 
 const Items: FC = () => {
-  const handleDragEnd = (items: ItemWithId[]) => console.log(items);
+  const [ items, setItems ] = useState(defaultItems);
+
+  const handleAdd = () => setItems([...items, { id: Date.now().toString()}]);
+  const handleDelete = () => setItems(items.toSpliced(items.length - 1, 1));
+  const handleDragEnd = (newItems: ItemWithId[]) => {
+    console.log(newItems);
+    setItems(newItems);
+  }
   
   return (
-    <DroppableBox accept='myItem' items={defaultItems} onDragEnd={handleDragEnd}>
-      {({ draggableRefs, drop, items }) => (
-        <div className='items' ref={drop}>
-          {items.map((item, idx) => (
-            <Item key={item.id} id={item.id} idx={idx}
-              draggableRef={draggableRefs[idx]} />
-          ))}
-        </div>
-      )}
-    </DroppableBox>
+    <>
+      <DroppableBox accept='myItem' items={items} onDragEnd={handleDragEnd}>
+        {({ draggablesRef, drop, items }) => (
+          <div className='items' ref={drop}>
+            {items.map((item, idx) => (
+              <Item key={item.id} id={item.id} idx={idx}
+                draggableRef={(el) => (draggablesRef.current[idx] = el)} />
+            ))}
+          </div>
+        )}
+      </DroppableBox>
+      <p>
+        <button onClick={handleDelete}>Delete</button>
+        <button onClick={handleAdd}>Add</button>
+      </p>
+    </>
   );
 };
 
