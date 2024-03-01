@@ -1,7 +1,7 @@
 import { Flipper } from 'react-flip-toolkit';
 
 import useDropBox from './hooks/useDropBox';
-import { DroppableBoxRenderProps, ItemWithId } from './types';
+import { DraggableHandle, DroppableBoxRenderProps, ItemWithId } from './types';
 
 export default function DroppableBox({
   accept,
@@ -21,9 +21,12 @@ export default function DroppableBox({
     onDragEnd,
   });
 
+  const draggableRefByIndex = (idx: number) =>
+    (el: DraggableHandle) => (draggablesRef.current[idx] = el);
+
   return (
     <Flipper flipKey={JSON.stringify(_items)}>
-      {children({ draggablesRef, drop, items: _items })}
+      {children({ draggableRefByIndex, drop, items: _items })}
     </Flipper>
   );
 }

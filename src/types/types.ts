@@ -11,7 +11,7 @@ export interface DraggableHandle {
 }
 
 export interface DroppableBoxRenderProps {
-  draggablesRef: Ref<DraggableHandle[]>, 
+  draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
   drop: ConnectDropTarget,
   items: ItemWithId[],
 }

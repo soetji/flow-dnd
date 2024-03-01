@@ -43,7 +43,7 @@ const defaultItems = [
 ];
 
 const Items: FC = () => {
-  const [ items, setItems ] = useState(defaultItems);
+  const [ items, setItems ] = useState<ItemWithId[]>(defaultItems);
 
   const handleAdd = () => setItems([...items, { id: Date.now().toString()}]);
   const handleDelete = () => setItems(items.toSpliced(items.length - 1, 1));
@@ -55,11 +55,11 @@ const Items: FC = () => {
   return (
     <>
       <DroppableBox accept='myItem' items={items} onDragEnd={handleDragEnd}>
-        {({ draggablesRef, drop, items }) => (
+        {({ draggableRefByIndex, drop, items }) => (
           <div className='items' ref={drop}>
             {items.map((item, idx) => (
               <Item key={item.id} id={item.id} idx={idx}
-                draggableRef={(el) => (draggablesRef.current[idx] = el)} />
+                draggableRef={draggableRefByIndex(idx)} />
             ))}
           </div>
         )}

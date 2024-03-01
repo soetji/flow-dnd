@@ -23,7 +23,7 @@ export default function Item({
         return (
           <div
             className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''} ${canDrag ? 'can-drag' : ''}`}
-            ref={el => {
+            ref={(el) => {
               innerElementRef && (innerElementRef.current = el);
               itemRef.current = el;
             }}
