@@ -24,6 +24,7 @@ export default function useDropBox({
       // Clean up draggablesRef
       draggablesRef.current = draggablesRef.current.filter(dr => dr !== null)
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(items)]);
 
   const moveItem = (from: number, to: number) => {

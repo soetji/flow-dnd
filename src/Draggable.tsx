@@ -23,7 +23,7 @@ export default function Draggable<InnerElementType>({
   const innerElementRef = useRef<InnerElementType>(null);
 
   useImperativeHandle(draggableRef, () => ({
-    getDOMElement: () => innerElementRef.current,
+    getDOMElement: () => innerElementRef.current as HTMLElement,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);
 
