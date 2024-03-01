@@ -38,7 +38,7 @@ export default function Draggable<InnerElementType>({
 
   return (
     <Flipped key={id} flipId={id}>
-      {flippedProps => children({flippedProps, innerElementRef, isDragging})}
+      {flippedProps => children({canDrag, flippedProps, innerElementRef, isDragging})}
     </Flipped>
   );
 }

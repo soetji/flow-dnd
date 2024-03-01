@@ -19,8 +19,12 @@
 }
 
 .item .bar {
-  background-color: gray;
+  background-color: #eee;
   height: 25px;
+}
+
+.item.can-drag .bar {
+  background-color: gray;
   cursor: grab;
 }
 

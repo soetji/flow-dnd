@@ -18,11 +18,11 @@ export default function Item({
   const itemRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Draggable<HTMLDivElement> id={id} index={idx} canDrag={idx === 10} draggableRef={draggableRef} type='myItem'>
-      {({ flippedProps, innerElementRef, isDragging }) => {
+    <Draggable<HTMLDivElement> id={id} index={idx} canDrag={id !== '10'} draggableRef={draggableRef} type='myItem'>
+      {({ canDrag, flippedProps, innerElementRef, isDragging }) => {
         return (
           <div
-            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''}`}
+            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''} ${canDrag ? 'can-drag' : ''}`}
             ref={el => {
               innerElementRef && (innerElementRef.current = el);
               itemRef.current = el;

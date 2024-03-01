@@ -17,6 +17,7 @@ export interface DroppableBoxRenderProps {
 }
 
 export interface DraggableRenderProps<InnerElementType> {
+  canDrag: boolean,
   flippedProps: object,
   innerElementRef: Ref<InnerElementType>,
   isDragging: boolean,

@@ -50,7 +50,8 @@ const Items: FC = () => {
       {({ draggableRefs, drop, items }) => (
         <div className='items' ref={drop}>
           {items.map((item, idx) => (
-            <Item draggableRef={draggableRefs[idx]} key={item.id} id={item.id} idx={idx} />
+            <Item key={item.id} id={item.id} idx={idx}
+              draggableRef={draggableRefs[idx]} />
           ))}
         </div>
       )}
