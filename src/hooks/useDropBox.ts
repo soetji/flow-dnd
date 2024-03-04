@@ -7,10 +7,12 @@ import { DraggableHandle, DragItem, MouseInfo, ItemWithId } from '../types';
 export default function useDropBox({
   accept,
   items,
+  moving,
   onDragEnd,
 }: {
   accept: string,
   items: ItemWithId[];
+  moving: boolean,
   onDragEnd?: (items: ItemWithId[]) => void,
 }
 ) {
@@ -38,36 +40,38 @@ export default function useDropBox({
     drop: () => onDragEnd && onDragEnd(_items),
 
     hover: (item: DragItem, monitor) => {
-      const clientOffset = monitor.getClientOffset();
-      const draggables = draggablesRef.current;
-      let msRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
-
-      if (draggables.length) {
-        for (let i = 0; i < draggables.length; i++) {
-          const msInfo = getMouseLocInfo(
-            draggables[i].getDOMElement()?.getBoundingClientRect(),
-            clientOffset
-          );
-
-          if (msInfo.isInside) {
-            msRes = { ...msInfo, hoverIdx: i };
-            break;
-          }
-
-          if (msInfo.dist && msRes.dist && msInfo.dist < msRes.dist) {
-            msRes = { ...msInfo, hoverIdx: i };
+      if (!moving) {
+        const clientOffset = monitor.getClientOffset();
+        const draggables = draggablesRef.current;
+        let msRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
+  
+        if (draggables.length) {
+          for (let i = 0; i < draggables.length; i++) {
+            const msInfo = getMouseLocInfo(
+              draggables[i].getDOMElement()?.getBoundingClientRect(),
+              clientOffset
+            );
+  
+            if (msInfo.isInside) {
+              msRes = { ...msInfo, hoverIdx: i };
+              break;
+            }
+  
+            if (msInfo.dist && msRes.dist && msInfo.dist < msRes.dist) {
+              msRes = { ...msInfo, hoverIdx: i };
+            }
           }
         }
-      }
-
-      if (msRes.hoverIdx !== undefined && item.index !== msRes.hoverIdx) {
-        const toIdx = item.index < msRes.hoverIdx ?
-          (msRes.side === 'right' ? msRes.hoverIdx : msRes.hoverIdx - 1) :
-          (msRes.side === 'right' ? msRes.hoverIdx + 1 : msRes.hoverIdx);
-
-        if (item.index !== toIdx) {
-          moveItem(item.index, toIdx);
-          item.index = toIdx;
+  
+        if (msRes.hoverIdx !== undefined && item.index !== msRes.hoverIdx) {
+          const toIdx = item.index < msRes.hoverIdx ?
+            (msRes.side === 'right' ? msRes.hoverIdx : msRes.hoverIdx - 1) :
+            (msRes.side === 'right' ? msRes.hoverIdx + 1 : msRes.hoverIdx);
+  
+          if (item.index !== toIdx) {
+            moveItem(item.index, toIdx);
+            item.index = toIdx;
+          }
         }
       }
     },
