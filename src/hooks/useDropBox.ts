@@ -2,20 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 
 import { getMouseLocInfo } from '../utils/utils';
-import { DraggableHandle, DragItem, MouseInfo, ItemWithId } from '../types';
+import { DraggableHandle, DragItem, MouseInfo, UseDropBoxProps } from '../types';
 
 export default function useDropBox({
   accept,
   items,
   moving,
   onDrop,
-}: {
-  accept: string,
-  items: ItemWithId[];
-  moving: boolean,
-  onDrop?: (items: ItemWithId[]) => void,
-}
-) {
+}: UseDropBoxProps) {
   const [_items, setItems] = useState(items);
   const draggablesRef = useRef<DraggableHandle[]>([]);
 

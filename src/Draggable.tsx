@@ -1,16 +1,7 @@
-import { useImperativeHandle, Ref, useRef } from 'react';
+import { useImperativeHandle, useRef } from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import useDrag from './hooks/useDrag';
-import { DraggableHandle, DraggableRenderProps } from './types';
-
-interface Props<InnerElementType> {
-  canDrag?: boolean,
-  children: (props: DraggableRenderProps<InnerElementType>) => JSX.Element,
-  draggableRef: Ref<DraggableHandle>,
-  id: number | string,
-  index: number,
-  type: string,
-}
+import { DraggableProps } from './types';
 
 export default function Draggable<InnerElementType>({
   canDrag = true,
@@ -19,7 +10,7 @@ export default function Draggable<InnerElementType>({
   id,
   index,
   type,
-}: Props<InnerElementType>) {
+}: DraggableProps<InnerElementType>) {
   const innerElementRef = useRef<InnerElementType>(null);
 
   useImperativeHandle(draggableRef, () => ({

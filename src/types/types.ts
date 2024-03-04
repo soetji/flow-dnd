@@ -1,9 +1,23 @@
 import { Ref } from 'react';
 import { ConnectDropTarget } from 'react-dnd';
 
+export interface UseDragProps {
+  canDrag?: boolean,
+  id: number | string,
+  index: number,
+  type: string,
+}
+
 export interface ItemWithId {
   id: number | string,
   [key: string]: unknown,
+}
+
+export interface UseDropBoxProps {
+  accept: string,
+  items: ItemWithId[];
+  moving: boolean,
+  onDrop?: (items: ItemWithId[]) => void,
 }
 
 export interface DraggableHandle {
@@ -34,6 +48,15 @@ export interface DraggableRenderProps<InnerElementType> {
   flippedProps: object,
   innerElementRef: Ref<InnerElementType>,
   isDragging: boolean,
+}
+
+export interface DraggableProps<InnerElementType> {
+  canDrag?: boolean,
+  children: (props: DraggableRenderProps<InnerElementType>) => JSX.Element,
+  draggableRef: Ref<DraggableHandle>,
+  id: number | string,
+  index: number,
+  type: string,
 }
 
 // TODO: Find this in react-dnd

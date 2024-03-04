@@ -1,16 +1,12 @@
 import { useDrag } from 'react-dnd';
+import { UseDragProps } from '../types';
 
 export default function _useDrag({
   canDrag = true,
   id,
   index,
   type,
-}: {
-  canDrag?: boolean,
-  id: number | string,
-  index: number,
-  type: string,
-}) {
+}: UseDragProps) {
   const [{ isDragging }, drag] = useDrag({
     type,
     item: () => {
