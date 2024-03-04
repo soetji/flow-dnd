@@ -15,6 +15,7 @@ export default function Draggable<InnerElementType>({
 
   useImperativeHandle(draggableRef, () => ({
     getDOMElement: () => innerElementRef.current as HTMLElement,
+    getId: () => id,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);
 

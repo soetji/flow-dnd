@@ -1,27 +1,39 @@
 import { Ref } from 'react';
 import { ConnectDropTarget } from 'react-dnd';
 
+type ItemId = number | string;
+
+export interface DraggableRenderProps<InnerElementType> {
+  canDrag: boolean,
+  flippedProps: object,
+  innerElementRef: Ref<InnerElementType>,
+  isDragging: boolean,
+}
+
+export interface DraggableProps<InnerElementType> {
+  canDrag?: boolean,
+  children: (props: DraggableRenderProps<InnerElementType>) => JSX.Element,
+  draggableRef: Ref<DraggableHandle>,
+  id: ItemId,
+  index: number,
+  type: string,
+}
+
 export interface UseDragProps {
   canDrag?: boolean,
-  id: number | string,
+  id: ItemId,
   index: number,
   type: string,
 }
 
 export interface ItemWithId {
-  id: number | string,
+  id: ItemId,
   [key: string]: unknown,
-}
-
-export interface UseDropBoxProps {
-  accept: string,
-  items: ItemWithId[];
-  moving: boolean,
-  onDrop?: (items: ItemWithId[]) => void,
 }
 
 export interface DraggableHandle {
   getDOMElement: () => HTMLElement,
+  getId: () => ItemId,
 }
 
 export interface HTMLDroppableProps {
@@ -36,32 +48,24 @@ export interface DroppableBoxRenderProps {
   items: ItemWithId[],
 }
 
-export interface DroppableBoxProps extends HTMLDroppableProps {
+interface DroppableProps {
   accept: string,
-  children: (props: DroppableBoxRenderProps) => JSX.Element,
+  // fixedItemIds: ItemId[], // TODO
   items: ItemWithId[],
   onDrop?: (items: ItemWithId[]) => void,
 }
 
-export interface DraggableRenderProps<InnerElementType> {
-  canDrag: boolean,
-  flippedProps: object,
-  innerElementRef: Ref<InnerElementType>,
-  isDragging: boolean,
+export interface DroppableBoxProps extends DroppableProps, HTMLDroppableProps {
+  children: (props: DroppableBoxRenderProps) => JSX.Element,
 }
 
-export interface DraggableProps<InnerElementType> {
-  canDrag?: boolean,
-  children: (props: DraggableRenderProps<InnerElementType>) => JSX.Element,
-  draggableRef: Ref<DraggableHandle>,
-  id: number | string,
-  index: number,
-  type: string,
+export interface UseDropBoxProps extends DroppableProps {
+  moving: boolean,
 }
 
 // TODO: Find this in react-dnd
 export interface DragItem {
-  id: number | string,
+  id: ItemId,
   index: number,
 }
 

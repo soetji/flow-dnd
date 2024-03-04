@@ -6,6 +6,7 @@ import { DraggableHandle, DragItem, MouseInfo, UseDropBoxProps } from '../types'
 
 export default function useDropBox({
   accept,
+  // fixedItemIds,
   items,
   moving,
   onDrop,

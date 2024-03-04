@@ -7,6 +7,7 @@ import { DraggableHandle, DroppableBoxProps } from './types';
 export default function DroppableBox({
   accept,
   children,
+  // fixedItemIds, // TODO
   items,
   onDragEnd,
   onDragStart,
@@ -16,6 +17,7 @@ export default function DroppableBox({
 
   const { draggablesRef, drop, items: _items } = useDropBox({
     accept,
+    // fixedItemIds,
     moving,
     items,
     onDrop,

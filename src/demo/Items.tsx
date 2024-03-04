@@ -58,6 +58,7 @@ const Items: FC = () => {
     <>
       <DroppableBox
         accept='myItem'
+        // fixedItemIds={['1', '3']} // TODO
         items={items}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
