@@ -47,16 +47,24 @@ const Items: FC = () => {
 
   const handleAdd = () => setItems([...items, { id: Date.now().toString()}]);
   const handleDelete = () => setItems(items.toSpliced(items.length - 1, 1));
-  const handleDragEnd = (newItems: ItemWithId[]) => {
+  const handleDrop = (newItems: ItemWithId[]) => {
     console.log(newItems);
     setItems(newItems);
   }
+  const handleDragEnd= () => console.log('end');
+  const handleDragStart = () => console.log('start');
   
   return (
     <>
-      <DroppableBox accept='myItem' items={items} onDragEnd={handleDragEnd}>
-        {({ draggableRefByIndex, drop, items }) => (
-          <div className='items' ref={drop}>
+      <DroppableBox
+        accept='myItem'
+        items={items}
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+        onDrop={handleDrop}
+      >
+        {({ draggableRefByIndex, drop, droppableProps, items }) => (
+          <div className='items' ref={drop} {...droppableProps}>
             {items.map((item, idx) => (
               <Item key={item.id} id={item.id} idx={idx}
                 draggableRef={draggableRefByIndex(idx)} />

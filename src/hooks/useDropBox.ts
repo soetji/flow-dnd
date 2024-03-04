@@ -8,12 +8,12 @@ export default function useDropBox({
   accept,
   items,
   moving,
-  onDragEnd,
+  onDrop,
 }: {
   accept: string,
   items: ItemWithId[];
   moving: boolean,
-  onDragEnd?: (items: ItemWithId[]) => void,
+  onDrop?: (items: ItemWithId[]) => void,
 }
 ) {
   const [_items, setItems] = useState(items);
@@ -37,7 +37,7 @@ export default function useDropBox({
   const [, drop] = useDrop({
     accept,
 
-    drop: () => onDragEnd && onDragEnd(_items),
+    drop: () => onDrop && onDrop(_items),
 
     hover: (item: DragItem, monitor) => {
       if (!moving) {

@@ -10,10 +10,23 @@ export interface DraggableHandle {
   getDOMElement: () => HTMLElement,
 }
 
+export interface HTMLDroppableProps {
+  onDragEnd?: () => void,
+  onDragStart?: () => void,
+}
+
 export interface DroppableBoxRenderProps {
   draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
+  droppableProps: HTMLDroppableProps,
   drop: ConnectDropTarget,
   items: ItemWithId[],
+}
+
+export interface DroppableBoxProps extends HTMLDroppableProps {
+  accept: string,
+  children: (props: DroppableBoxRenderProps) => JSX.Element,
+  items: ItemWithId[],
+  onDrop?: (items: ItemWithId[]) => void,
 }
 
 export interface DraggableRenderProps<InnerElementType> {
