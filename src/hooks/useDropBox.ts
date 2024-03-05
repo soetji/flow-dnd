@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, MutableRefObject } from 'react';
 import { useDrop } from 'react-dnd';
 
 import { getMouseLocInfo } from '../utils/utils';
-import { DraggableHandle, DragItem, MouseInfo, UseDropBoxProps } from '../types';
+import { DraggableHandle, DragItem, ItemId, MouseInfo, UseDropBoxProps } from '../types';
 
 export default function useDropBox({
   accept,
@@ -13,6 +13,7 @@ export default function useDropBox({
 }: UseDropBoxProps) {
   const [_items, setItems] = useState(items);
   const draggablesRef = useRef<DraggableHandle[]>([]);
+  const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
 
   useEffect(() => {
     setItems(items);
@@ -32,7 +33,16 @@ export default function useDropBox({
   const [, drop] = useDrop({
     accept,
 
-    drop: () => onDrop && onDrop(_items),
+    drop: (item: DragItem) => {
+      if (onDrop) {
+        onDrop({
+          fromId: item.id,
+          fromItems: items,
+          toId: toIdRef.current,
+          toItems: _items,
+        });
+      }
+    },
 
     hover: (item: DragItem, monitor) => {
       if (!moving) {
@@ -64,6 +74,7 @@ export default function useDropBox({
             (msRes.side === 'right' ? msRes.hoverIdx + 1 : msRes.hoverIdx);
   
           if (item.index !== toIdx) {
+            toIdRef.current = draggables[toIdx].getId();
             moveItem(item.index, toIdx);
             item.index = toIdx;
           }

@@ -1,4 +1,4 @@
-import React, { Ref, useRef } from 'react';
+import React, { Ref, useRef, MutableRefObject } from 'react';
 import Draggable from '../Draggable';
 import { DraggableHandle } from '../types';
 
@@ -15,7 +15,7 @@ export default function Item({
   id,
   idx,
 }: Props) {
-  const itemRef = useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null) as MutableRefObject<HTMLDivElement | null>;
 
   return (
     <Draggable<HTMLDivElement>

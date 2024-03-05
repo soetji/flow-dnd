@@ -1,7 +1,7 @@
 import { Ref } from 'react';
 import { ConnectDropTarget } from 'react-dnd';
 
-type ItemId = number | string;
+export type ItemId = number | string;
 
 export interface DraggableRenderProps<InnerElementType> {
   canDrag: boolean,
@@ -48,11 +48,18 @@ export interface DroppableBoxRenderProps {
   items: ItemWithId[],
 }
 
+interface OnDropInfo {
+  fromId: ItemId,
+  fromItems: ItemWithId[],
+  toId: ItemId,
+  toItems: ItemWithId[],
+}
+
 interface DroppableProps {
   accept: string,
   // fixedItemIds: ItemId[], // TODO
   items: ItemWithId[],
-  onDrop?: (items: ItemWithId[]) => void,
+  onDrop?: (info: OnDropInfo) => void,
 }
 
 export interface DroppableBoxProps extends DroppableProps, HTMLDroppableProps {
