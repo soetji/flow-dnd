@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, MutableRefObject } from 'react';
 import { useDrop } from 'react-dnd';
+import { isEqual } from 'lodash';
 
 import { getMouseLocInfo } from '../utils/utils';
 import { DraggableHandle, DragItem, ItemId, MouseInfo, UseDropBoxProps } from '../types';
@@ -34,7 +35,9 @@ export default function useDropBox({
     accept,
 
     drop: (item: DragItem) => {
-      if (onDrop) {
+      if (onDrop && toIdRef.current !== null &&
+        !isEqual(items, _items)
+      ) {
         onDrop({
           fromId: item.id,
           fromItems: items,
