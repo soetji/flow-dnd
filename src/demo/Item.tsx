@@ -25,18 +25,19 @@ export default function Item({
       draggableRef={draggableRef}
       type='myItem'
     >
-      {({ canDrag, flippedProps, innerElementRef, isDragging }) => {
+      {({ canDrag, dragClassName, dragProps, innerElementRef, isDragging }) => {
         return (
           <div
-            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${isDragging ? 'dragging' : ''} ${canDrag ? 'can-drag' : ''}`}
+            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${canDrag ? 'can-drag' : ''} ${dragClassName} ${isDragging ? 'dragging' : '' }`}
             ref={(el) => {
               innerElementRef && (innerElementRef.current = el);
               itemRef.current = el;
             }}
-            {...flippedProps}
+            {...dragProps}
           >
             <div className='bar'></div>
             <div className='content'>{id}</div>
+            <div className='test-out'>TEST</div>
           </div>
         );
       }}

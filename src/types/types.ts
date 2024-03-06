@@ -5,7 +5,8 @@ export type ItemId = number | string;
 
 export interface DraggableRenderProps<InnerElementType> {
   canDrag: boolean,
-  flippedProps: object,
+  dragClassName: string,
+  dragProps: object,
   innerElementRef: Ref<InnerElementType>,
   isDragging: boolean,
 }

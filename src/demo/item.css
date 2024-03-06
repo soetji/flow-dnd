@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+  /* opacity: 0.9; */
 }
 
 .item.dragging {
@@ -35,6 +37,13 @@
   font-size: 30px;
   justify-content: center;
   pointer-events: none;
+}
+
+.item .test-out {
+  position: absolute;
+  bottom: -50px;
+  background-color: red;
+  height: 50px;
 }
 
 .chart {
