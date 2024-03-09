@@ -4,46 +4,20 @@ import { ItemWithId } from '../types';
 
 import './items.css';
 import Item from './Item';
-import Items2 from './Items2';
 
 const defaultItems = [
   {
-    id: '1',
+    id: '12',
   },
   {
-    id: '2',
+    id: '13',
   },
   {
-    id: '3',
-  },
-  {
-    id: '4',
-  },
-  {
-    id: '5',
-  },
-  {
-    id: '6',
-  },
-  {
-    id: '7',
-  },
-  {
-    id: '8',
-  },
-  {
-    id: '9',
-  },
-  {
-    id: '10',
-  },
-  {
-    id: '11',
-    type: 'sss'
+    id: '14',
   },
 ];
 
-const Items: FC = () => {
+const Items2: FC = () => {
   const [ items, setItems ] = useState<ItemWithId[]>(defaultItems);
 
   const handleAdd = () => setItems([...items, { id: Date.now().toString()}]);
@@ -54,22 +28,26 @@ const Items: FC = () => {
   }
   const handleDragEnd= () => console.log('end');
   const handleDragStart = () => console.log('start');
-  
+
   return (
     <>
       <DroppableBox
+        id='g2'
         accept='myItem'
-        // fixedItemIds={['1', '3']} // TODO
+        canDropInOut={true}
         items={items}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
         onDrop={handleDrop}
       >
-        {({ draggableRefByIndex, drop, droppableProps, items }) => (
-          <div className='items' ref={drop} {...droppableProps}>
+        {({ draggableRefByIndex, drop, droppableBoxId, droppableProps, items }) => (
+          <div className='items' ref={drop} {...droppableProps} >
             {items.map((item, idx) => (
               <Item key={item.id} id={item.id} idx={idx}
-                draggableRef={draggableRefByIndex(idx)} />
+                droppableBoxId={droppableBoxId}
+                draggableRef={draggableRefByIndex(idx)}
+                itemToDropIn={item}
+              />
             ))}
           </div>
         )}
@@ -78,9 +56,8 @@ const Items: FC = () => {
         <button onClick={handleDelete}>Delete</button>
         <button onClick={handleAdd}>Add</button>
       </p>
-      <Items2 />
     </>
   );
 };
 
-export default Items;
+export default Items2;

@@ -6,10 +6,14 @@ import style from './use-drag.module.css';
 
 export default function _useDrag({
   canDrag = true,
+  droppableBoxId,
   id,
   index,
+  itemToDropIn,
   type,
 }: UseDragProps) {
+  // Use this isDragging instead of what is provided by useDrag().
+  // This isDragging from collect() is one react cycle late.
   const [isDragging, setIsDragging] = useState(false);
 
   const dragProps = {
@@ -22,9 +26,12 @@ export default function _useDrag({
   const [, drag] = useDrag({
     type,
     item: () => {
-      return { id, index };
+      return { droppableBoxId, id, index, itemToDropIn };
     },
     canDrag,
+    // collect: (monitor) => ({
+    //   isDragging: monitor.isDragging(),
+    // }),
   });
 
   return { drag, dragClassName, dragProps, isDragging };

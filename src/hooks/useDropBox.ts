@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState, MutableRefObject } from 'react';
-import { useDrop } from 'react-dnd';
-import { isEqual } from 'lodash';
+import { useDragDropManager, useDrop } from 'react-dnd';
+import { isEqual, noop } from 'lodash';
 
 import { getMouseLocInfo } from '../utils/utils';
 import { DraggableHandle, DragItem, ItemId, MouseInfo, UseDropBoxProps } from '../types';
 
 export default function useDropBox({
+  id,
   accept,
+  canDropInOut = false,
   // fixedItemIds,
   items,
   moving,
@@ -15,6 +17,7 @@ export default function useDropBox({
   const [_items, setItems] = useState(items);
   const draggablesRef = useRef<DraggableHandle[]>([]);
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
+  const dragDropManager = useDragDropManager();
 
   useEffect(() => {
     setItems(items);
@@ -25,6 +28,15 @@ export default function useDropBox({
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(items)]);
+
+  useEffect(() => {
+    // setTimeout() to execute after draggablesRef is updated
+    setTimeout(() =>
+      // Clean up draggablesRef
+      draggablesRef.current = draggablesRef.current.filter(dr => dr !== null)
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(_items)]);
 
   const moveItem = (from: number, to: number) => {
     const itemFrom = _items[from];
@@ -86,5 +98,25 @@ export default function useDropBox({
     },
   });
 
-  return { draggablesRef, drop, items: _items };
+  const onDragEnter= canDropInOut ? (ev) => {
+    const dragItem = dragDropManager.getMonitor().getItem();
+      if (dragItem.droppableBoxId === id && ev.target === ev.currentTarget &&
+        !ev.currentTarget.contains(ev.relatedTarget)
+      ) {
+      console.log('onDragEnter', _items);
+      const newItems = [..._items, dragItem.itemToDropIn ];
+      setItems(newItems);
+      dragItem.index = newItems.length - 1;
+    }
+  } : noop;
+
+  const onDragLeave = canDropInOut ? (ev) => {
+    const dragItem = dragDropManager.getMonitor().getItem();
+    if (dragItem.droppableBoxId === id && ev.target === ev.currentTarget) {
+      console.log('onDragLeave', _items);
+      setItems(_items.toSpliced(dragItem.index, 1));
+    }
+  } : noop;
+
+  return { draggablesRef, drop, items: _items, onDragEnter, onDragLeave };
 }

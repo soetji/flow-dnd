@@ -7,8 +7,10 @@ export default function Draggable<InnerElementType>({
   canDrag = true,
   children,
   draggableRef,
+  droppableBoxId,
   id,
   index,
+  itemToDropIn,
   type,
 }: DraggableProps<InnerElementType>) {
   const innerElementRef = useRef<InnerElementType>(null);
@@ -21,15 +23,17 @@ export default function Draggable<InnerElementType>({
 
   const { drag, dragClassName, dragProps, isDragging } = useDrag({
     canDrag,
+    droppableBoxId,
     id,
     index,
+    itemToDropIn,
     type,
   });
 
   drag(innerElementRef);
 
   return (
-    <Flipped key={id} flipId={id} opacity={false}>
+    <Flipped key={id} flipId={id}>
       {flippedProps => children({
         canDrag,
         dragClassName,

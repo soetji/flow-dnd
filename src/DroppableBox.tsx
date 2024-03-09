@@ -5,7 +5,9 @@ import useDropBox from './hooks/useDropBox';
 import { DraggableHandle, DroppableBoxProps } from './types';
 
 export default function DroppableBox({
+  id,
   accept,
+  canDropInOut = false,
   children,
   // fixedItemIds, // TODO
   items,
@@ -15,8 +17,16 @@ export default function DroppableBox({
 } : DroppableBoxProps) {
   const [moving, setMoving] = useState(false);
 
-  const { draggablesRef, drop, items: _items } = useDropBox({
+  const {
+    draggablesRef,
+    drop,
+    items: _items,
+    onDragEnter,
+    onDragLeave,
+  } = useDropBox({
+    id,
     accept,
+    canDropInOut,
     // fixedItemIds,
     moving,
     items,
@@ -25,7 +35,7 @@ export default function DroppableBox({
 
   const draggableRefByIndex = (idx: number) =>
     (el: DraggableHandle) => (draggablesRef.current[idx] = el);
-  const droppableProps = { onDragEnd, onDragStart };
+  const droppableProps = { onDragEnd, onDragEnter, onDragLeave, onDragStart };
 
   const handleFlipperStart = () => setMoving(true);
   const handleFlipperComplete = () => setMoving(false);
@@ -35,7 +45,8 @@ export default function DroppableBox({
       onStart={handleFlipperStart}
       onComplete={handleFlipperComplete}
     >
-      {children({ draggableRefByIndex, drop, droppableProps, items: _items })}
+      {children({ draggableRefByIndex, drop, droppableBoxId: id,
+        droppableProps, items: _items })}
     </Flipper>
   );
 }
