@@ -43,7 +43,7 @@ export default function Item({
           >
             <div className='bar'></div>
             <div className='content'>{id}</div>
-            <div className='test-out'>TEST</div>
+            <div className='test-drag-overflow'>TEST</div>
           </div>
         );
       }}

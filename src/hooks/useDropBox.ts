@@ -101,6 +101,7 @@ export default function useDropBox({
   const onDragEnter= canDropInOut ? (ev) => {
     const dragItem = dragDropManager.getMonitor().getItem();
       if (dragItem.droppableBoxId === id && ev.target === ev.currentTarget &&
+        // Not to items inside the box
         !ev.currentTarget.contains(ev.relatedTarget)
       ) {
       console.log('onDragEnter', _items);
@@ -112,7 +113,9 @@ export default function useDropBox({
 
   const onDragLeave = canDropInOut ? (ev) => {
     const dragItem = dragDropManager.getMonitor().getItem();
-    if (dragItem.droppableBoxId === id && ev.target === ev.currentTarget) {
+    if (dragItem.droppableBoxId === id && ev.target === ev.currentTarget &&
+      // Not to items inside the box
+      !ev.currentTarget.contains(ev.relatedTarget)) {
       console.log('onDragLeave', _items);
       setItems(_items.toSpliced(dragItem.index, 1));
     }

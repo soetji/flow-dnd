@@ -39,7 +39,7 @@
   pointer-events: none;
 }
 
-.item .test-out {
+.item .test-drag-overflow {
   position: absolute;
   bottom: -50px;
   background-color: red;
