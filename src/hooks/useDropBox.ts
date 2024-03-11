@@ -15,6 +15,7 @@ export default function useDropBox({
   onDrop,
 }: UseDropBoxProps) {
   const [_items, setItems] = useState(items);
+  const droppingInOut = useRef(false);
   const draggablesRef = useRef<DraggableHandle[]>([]);
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
   const dragDropManager = useDragDropManager();
@@ -30,6 +31,7 @@ export default function useDropBox({
   }, [JSON.stringify(items)]);
 
   useEffect(() => {
+    droppingInOut.current = false;
     // setTimeout() to execute after draggablesRef is updated
     setTimeout(() =>
       // Clean up draggablesRef
@@ -60,33 +62,35 @@ export default function useDropBox({
     },
 
     hover: (item: DragItem, monitor) => {
-      if (!moving) {
+      if (!moving && !droppingInOut.current) {
         const clientOffset = monitor.getClientOffset();
         const draggables = draggablesRef.current;
-        let msRes = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
+        let mLoc = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
   
         if (draggables.length) {
           for (let i = 0; i < draggables.length; i++) {
-            const msInfo = getMouseLocInfo(
+            const loc = getMouseLocInfo(
               draggables[i].getDOMElement()?.getBoundingClientRect(),
               clientOffset
             );
   
-            if (msInfo.isInside) {
-              msRes = { ...msInfo, hoverIdx: i };
+            if (loc.isInside) {
+              mLoc = { ...loc, hoverIdx: i };
               break;
             }
   
-            if (msInfo.dist && msRes.dist && msInfo.dist < msRes.dist) {
-              msRes = { ...msInfo, hoverIdx: i };
+            if (loc.dist && mLoc.dist && loc.dist < mLoc.dist) {
+              mLoc = { ...loc, hoverIdx: i };
             }
           }
         }
   
-        if (msRes.hoverIdx !== undefined && item.index !== msRes.hoverIdx) {
-          const toIdx = item.index < msRes.hoverIdx ?
-            (msRes.side === 'right' ? msRes.hoverIdx : msRes.hoverIdx - 1) :
-            (msRes.side === 'right' ? msRes.hoverIdx + 1 : msRes.hoverIdx);
+        if (mLoc.hoverIdx !== undefined && item.index !== mLoc.hoverIdx) {
+          console.log('hover', item.index, mLoc.hoverIdx);
+          
+          const toIdx = item.index < mLoc.hoverIdx ?
+            (mLoc.side === 'right' ? mLoc.hoverIdx : mLoc.hoverIdx - 1) :
+            (mLoc.side === 'right' ? mLoc.hoverIdx + 1 : mLoc.hoverIdx);
   
           if (item.index !== toIdx) {
             toIdRef.current = draggables[toIdx].getId();
@@ -100,7 +104,7 @@ export default function useDropBox({
 
   const onDragEnter= canDropInOut ? (ev) => {
     const dragItem = dragDropManager.getMonitor().getItem();
-      if (dragItem.droppableBoxId === id && ev.target === ev.currentTarget &&
+      if (ev.target === ev.currentTarget &&
         // Not to items inside the box
         !ev.currentTarget.contains(ev.relatedTarget)
       ) {
@@ -108,16 +112,20 @@ export default function useDropBox({
       const newItems = [..._items, dragItem.itemToDropIn ];
       setItems(newItems);
       dragItem.index = newItems.length - 1;
+      console.log(dragItem, newItems);
+      droppingInOut.current = true;
     }
   } : noop;
 
   const onDragLeave = canDropInOut ? (ev) => {
     const dragItem = dragDropManager.getMonitor().getItem();
-    if (dragItem.droppableBoxId === id && ev.target === ev.currentTarget &&
+    if (ev.target === ev.currentTarget &&
       // Not to items inside the box
       !ev.currentTarget.contains(ev.relatedTarget)) {
       console.log('onDragLeave', _items);
       setItems(_items.toSpliced(dragItem.index, 1));
+      // dragItem.index = -1;
+      droppingInOut.current = true;
     }
   } : noop;
 

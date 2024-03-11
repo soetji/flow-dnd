@@ -45,7 +45,7 @@ export default function DroppableBox({
       onStart={handleFlipperStart}
       onComplete={handleFlipperComplete}
     >
-      {children({ draggableRefByIndex, drop, droppableBoxId: id,
+      {children({ draggableRefByIndex, drop,
         droppableProps, items: _items })}
     </Flipper>
   );

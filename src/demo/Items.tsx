@@ -59,6 +59,7 @@ const Items: FC = () => {
     <>
       <DroppableBox
         accept='myItem'
+        canDropInOut={true}
         // fixedItemIds={['1', '3']} // TODO
         items={items}
         onDragEnd={handleDragEnd}
@@ -69,7 +70,9 @@ const Items: FC = () => {
           <div className='items' ref={drop} {...droppableProps}>
             {items.map((item, idx) => (
               <Item key={item.id} id={item.id} idx={idx}
-                draggableRef={draggableRefByIndex(idx)} />
+                draggableRef={draggableRefByIndex(idx)}
+                itemToDropIn={item}
+                />
             ))}
           </div>
         )}

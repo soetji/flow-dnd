@@ -6,7 +6,6 @@ import './item.css';
 
 interface Props {
   id: string | number,
-  droppableBoxId?: string | number,
   draggableRef: Ref<DraggableHandle>,
   idx: number,
   itemToDropIn: ItemWithId,
@@ -14,7 +13,6 @@ interface Props {
 
 export default function Item({
   id,
-  droppableBoxId,
   draggableRef,
   idx,
   itemToDropIn,
@@ -24,7 +22,6 @@ export default function Item({
   return (
     <Draggable<HTMLDivElement>
       id={id}
-      droppableBoxId={droppableBoxId}
       index={idx}
       itemToDropIn={itemToDropIn}
       canDrag={id !== '10'}

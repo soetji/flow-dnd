@@ -6,7 +6,6 @@ import style from './use-drag.module.css';
 
 export default function _useDrag({
   canDrag = true,
-  droppableBoxId,
   id,
   index,
   itemToDropIn,
@@ -26,7 +25,7 @@ export default function _useDrag({
   const [, drag] = useDrag({
     type,
     item: () => {
-      return { droppableBoxId, id, index, itemToDropIn };
+      return { id, index, itemToDropIn };
     },
     canDrag,
     // collect: (monitor) => ({

@@ -14,7 +14,6 @@ export interface DraggableRenderProps<InnerElementType> {
 
 interface _DraggableProps {
   canDrag?: boolean,
-  droppableBoxId?: GroupId,
   id: ItemId,
   index: number,
   itemToDropIn: ItemWithId,
@@ -46,7 +45,6 @@ export interface HTMLDroppableProps {
 
 export interface DroppableBoxRenderProps {
   draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
-  droppableBoxId: GroupId,
   droppableProps: HTMLDroppableProps,
   drop: ConnectDropTarget,
   items: ItemWithId[],
@@ -78,7 +76,6 @@ export interface UseDropBoxProps extends DroppableProps {
 
 // TODO: Find this in react-dnd
 export interface DragItem {
-  droppableBoxId?: GroupId,
   id: ItemId,
   index: number,
 }
