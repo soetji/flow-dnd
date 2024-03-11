@@ -6,7 +6,6 @@ import { getMouseLocInfo } from '../utils/utils';
 import { DraggableHandle, DragItem, ItemId, MouseInfo, UseDropBoxProps } from '../types';
 
 export default function useDropBox({
-  id,
   accept,
   canDropInOut = false,
   // fixedItemIds,
@@ -102,13 +101,16 @@ export default function useDropBox({
     },
   });
 
-  const onDragEnter= canDropInOut ? (ev) => {
+  const onDragEnter= canDropInOut ? (ev: DragEvent) => {
     const dragItem = dragDropManager.getMonitor().getItem();
-      if (ev.target === ev.currentTarget &&
-        // Not to items inside the box
-        !ev.currentTarget.contains(ev.relatedTarget)
-      ) {
-      console.log('onDragEnter', _items);
+    console.log(dragItem);
+    
+    if (dragItem.type === accept &&
+      ev.target === ev.currentTarget &&
+      // Not to items inside the box
+      ev.currentTarget &&
+      !(ev.currentTarget as HTMLElement).contains(ev.relatedTarget as HTMLElement)
+    ) {
       const newItems = [..._items, dragItem.itemToDropIn ];
       setItems(newItems);
       dragItem.index = newItems.length - 1;
@@ -117,14 +119,15 @@ export default function useDropBox({
     }
   } : noop;
 
-  const onDragLeave = canDropInOut ? (ev) => {
+  const onDragLeave = canDropInOut ? (ev: DragEvent) => {
     const dragItem = dragDropManager.getMonitor().getItem();
-    if (ev.target === ev.currentTarget &&
+    if (dragItem.type === accept &&
+      ev.target === ev.currentTarget &&
       // Not to items inside the box
-      !ev.currentTarget.contains(ev.relatedTarget)) {
-      console.log('onDragLeave', _items);
+      ev.currentTarget &&
+      !(ev.currentTarget as HTMLElement).contains(ev.relatedTarget as HTMLElement)
+    ) {
       setItems(_items.toSpliced(dragItem.index, 1));
-      // dragItem.index = -1;
       droppingInOut.current = true;
     }
   } : noop;

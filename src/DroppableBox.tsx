@@ -5,7 +5,6 @@ import useDropBox from './hooks/useDropBox';
 import { DraggableHandle, DroppableBoxProps } from './types';
 
 export default function DroppableBox({
-  id,
   accept,
   canDropInOut = false,
   children,
@@ -24,7 +23,6 @@ export default function DroppableBox({
     onDragEnter,
     onDragLeave,
   } = useDropBox({
-    id,
     accept,
     canDropInOut,
     // fixedItemIds,

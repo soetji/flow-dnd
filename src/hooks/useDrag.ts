@@ -25,7 +25,7 @@ export default function _useDrag({
   const [, drag] = useDrag({
     type,
     item: () => {
-      return { id, index, itemToDropIn };
+      return { id, index, itemToDropIn, type };
     },
     canDrag,
     // collect: (monitor) => ({

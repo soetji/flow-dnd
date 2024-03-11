@@ -58,7 +58,7 @@ const Items: FC = () => {
   return (
     <>
       <DroppableBox
-        accept='myItem'
+        accept='myItems'
         canDropInOut={true}
         // fixedItemIds={['1', '3']} // TODO
         items={items}

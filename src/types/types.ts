@@ -58,7 +58,6 @@ interface OnDropInfo {
 }
 
 interface DroppableProps {
-  id: GroupId,
   accept: string,
   canDropInOut?: boolean,
   // fixedItemIds: ItemId[], // TODO
