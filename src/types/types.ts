@@ -63,6 +63,8 @@ interface DroppableProps {
   // fixedItemIds: ItemId[], // TODO
   items: ItemWithId[],
   onDrop?: (info: OnDropInfo) => void,
+  onDropIn?: (item: ItemWithId, newItems: ItemWithId[]) => void,
+  onDropOut?: (id: ItemId, newItems: ItemWithId[]) => void,
 }
 
 export interface DroppableBoxProps extends DroppableProps, HTMLDroppableProps {
@@ -73,10 +75,11 @@ export interface UseDropBoxProps extends DroppableProps {
   moving: boolean,
 }
 
-// TODO: Find this in react-dnd
 export interface DragItem {
   id: ItemId,
   index: number,
+  itemToDropIn: ItemWithId,
+  type: 'string',
 }
 
 export interface MouseInfo {

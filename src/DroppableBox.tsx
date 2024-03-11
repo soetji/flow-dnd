@@ -13,6 +13,8 @@ export default function DroppableBox({
   onDragEnd,
   onDragStart,
   onDrop,
+  onDropIn,
+  onDropOut,
 } : DroppableBoxProps) {
   const [moving, setMoving] = useState(false);
 
@@ -20,6 +22,7 @@ export default function DroppableBox({
     draggablesRef,
     drop,
     items: _items,
+    // onDragEnd: _onDragEnd,
     onDragEnter,
     onDragLeave,
   } = useDropBox({
@@ -29,11 +32,14 @@ export default function DroppableBox({
     moving,
     items,
     onDrop,
+    onDropIn,
+    onDropOut,
   });
 
   const draggableRefByIndex = (idx: number) =>
     (el: DraggableHandle) => (draggablesRef.current[idx] = el);
   const droppableProps = { onDragEnd, onDragEnter, onDragLeave, onDragStart };
+  // const droppableProps = { onDragEnd };
 
   const handleFlipperStart = () => setMoving(true);
   const handleFlipperComplete = () => setMoving(false);

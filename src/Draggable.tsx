@@ -1,4 +1,5 @@
 import { useImperativeHandle, useRef } from 'react';
+// import { useEffect } from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import useDrag from './hooks/useDrag';
 import { DraggableProps } from './types';
@@ -13,6 +14,10 @@ export default function Draggable<InnerElementType>({
   type,
 }: DraggableProps<InnerElementType>) {
   const innerElementRef = useRef<InnerElementType>(null);
+
+  // useEffect(() => {
+  //   console.log('mount', id);
+  // }, []);
 
   useImperativeHandle(draggableRef, () => ({
     getDOMElement: () => innerElementRef.current as HTMLElement,

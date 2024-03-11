@@ -29,9 +29,12 @@ export default function _useDrag({
     },
     canDrag,
     // collect: (monitor) => ({
-    //   isDragging: monitor.isDragging(),
+    //   toLeave: monitor.getItem()?.toLeave,
+    //   // isDragging: monitor.isDragging(),
     // }),
   });
+
+  // console.log(toLeave);
 
   return { drag, dragClassName, dragProps, isDragging };
 }
