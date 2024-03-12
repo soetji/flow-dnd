@@ -33,7 +33,6 @@ const Items2: FC = () => {
     console.log('handleDropIn', item, newItems);
     setItems(newItems);
   }
-
   const handleDropOut = (itemId, newItems) => {
     console.log('handleDropOut', itemId, newItems);
     setItems(newItems);
@@ -43,13 +42,13 @@ const Items2: FC = () => {
     <>
       <DroppableBox
         accept='myItem'
-        canDropInOut={true}
+        canDragInOut={true}
         items={items}
         onDragEnd={handleDragEnd}
+        onDragIn={handleDropIn}
+        onDragOut={handleDropOut}
         onDragStart={handleDragStart}
         onDrop={handleDrop}
-        onDropIn={handleDropIn}
-        onDropOut={handleDropOut}
       >
         {({ draggableRefByIndex, drop, droppableProps, items }) => (
           <div className='items' ref={drop} {...droppableProps} >
@@ -57,7 +56,6 @@ const Items2: FC = () => {
               items.map((item, idx) => (
               <Item key={item.id} id={item.id} idx={idx}
                 draggableRef={draggableRefByIndex(idx)}
-                itemToDropIn={item}
               />
             )))}
           </div>

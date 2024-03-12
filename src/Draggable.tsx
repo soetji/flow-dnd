@@ -10,7 +10,6 @@ export default function Draggable<InnerElementType>({
   draggableRef,
   id,
   index,
-  itemToDropIn,
   type,
 }: DraggableProps<InnerElementType>) {
   const innerElementRef = useRef<InnerElementType>(null);
@@ -29,7 +28,6 @@ export default function Draggable<InnerElementType>({
     canDrag,
     id,
     index,
-    itemToDropIn,
     type,
   });
 

@@ -8,7 +8,6 @@ export default function _useDrag({
   canDrag = true,
   id,
   index,
-  itemToDropIn,
   type,
 }: UseDragProps) {
   // Use this isDragging instead of what is provided by useDrag().
@@ -25,7 +24,7 @@ export default function _useDrag({
   const [, drag] = useDrag({
     type,
     item: () => {
-      return { id, index, itemToDropIn, type };
+      return { id, index, type };
     },
     canDrag,
     // collect: (monitor) => ({

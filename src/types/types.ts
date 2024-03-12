@@ -16,7 +16,6 @@ interface _DraggableProps {
   canDrag?: boolean,
   id: ItemId,
   index: number,
-  itemToDropIn: ItemWithId,
   type: string,
 }
 
@@ -59,12 +58,14 @@ interface OnDropInfo {
 
 interface DroppableProps {
   accept: string,
-  canDropInOut?: boolean,
+  canDragInOut?: boolean,
   // fixedItemIds: ItemId[], // TODO
   items: ItemWithId[],
+  onDragEnd?: () => void,
+  onDragIn?: (item: ItemWithId, newItems: ItemWithId[]) => void,
+  onDragOut?: (id: ItemId, newItems: ItemWithId[]) => void,
+  onDragStart?: () => void,
   onDrop?: (info: OnDropInfo) => void,
-  onDropIn?: (item: ItemWithId, newItems: ItemWithId[]) => void,
-  onDropOut?: (id: ItemId, newItems: ItemWithId[]) => void,
 }
 
 export interface DroppableBoxProps extends DroppableProps, HTMLDroppableProps {
@@ -75,10 +76,10 @@ export interface UseDropBoxProps extends DroppableProps {
   moving: boolean,
 }
 
-export interface DragItem {
+export interface DndItem {
   id: ItemId,
   index: number,
-  itemToDropIn: ItemWithId,
+  itemToDragIn?: ItemWithId,
   type: 'string',
 }
 

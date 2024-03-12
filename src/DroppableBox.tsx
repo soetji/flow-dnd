@@ -6,15 +6,15 @@ import { DraggableHandle, DroppableBoxProps } from './types';
 
 export default function DroppableBox({
   accept,
-  canDropInOut = false,
+  canDragInOut = false,
   children,
   // fixedItemIds, // TODO
   items,
   onDragEnd,
+  onDragIn,
+  onDragOut,
   onDragStart,
   onDrop,
-  onDropIn,
-  onDropOut,
 } : DroppableBoxProps) {
   const [moving, setMoving] = useState(false);
 
@@ -22,23 +22,22 @@ export default function DroppableBox({
     draggablesRef,
     drop,
     items: _items,
-    // onDragEnd: _onDragEnd,
-    onDragEnter,
-    onDragLeave,
+    droppableProps,
   } = useDropBox({
     accept,
-    canDropInOut,
+    canDragInOut,
     // fixedItemIds,
     moving,
     items,
+    onDragEnd,
+    onDragIn,
+    onDragOut,
+    onDragStart,
     onDrop,
-    onDropIn,
-    onDropOut,
   });
 
   const draggableRefByIndex = (idx: number) =>
     (el: DraggableHandle) => (draggablesRef.current[idx] = el);
-  const droppableProps = { onDragEnd, onDragEnter, onDragLeave, onDragStart };
   // const droppableProps = { onDragEnd };
 
   const handleFlipperStart = () => setMoving(true);

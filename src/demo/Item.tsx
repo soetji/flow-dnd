@@ -8,14 +8,12 @@ interface Props {
   id: string | number,
   draggableRef: Ref<DraggableHandle>,
   idx: number,
-  itemToDropIn: ItemWithId,
 }
 
 export default function Item({
   id,
   draggableRef,
   idx,
-  itemToDropIn,
 }: Props) {
   const itemRef = useRef<HTMLDivElement>(null) as MutableRefObject<HTMLDivElement | null>;
 
@@ -23,7 +21,6 @@ export default function Item({
     <Draggable<HTMLDivElement>
       id={id}
       index={idx}
-      itemToDropIn={itemToDropIn}
       canDrag={id !== '10'}
       draggableRef={draggableRef}
       type='myItem'
