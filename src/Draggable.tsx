@@ -24,7 +24,7 @@ export default function Draggable<InnerElementType>({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);
 
-  const { drag, dragClassName, dragProps, isDragging } = useDrag({
+  const { drag, dragClassName, dragProps, dragging } = useDrag({
     canDrag,
     id,
     index,
@@ -40,7 +40,7 @@ export default function Draggable<InnerElementType>({
         dragClassName,
         dragProps: {...dragProps, ...flippedProps},
         innerElementRef,
-        isDragging
+        dragging
       })}
     </Flipped>
   );

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDrag } from 'react-dnd';
-import { UseDragProps } from '../types';
+import { DndItem, UseDragProps } from '../types';
 
 import style from './use-drag.module.css';
 
@@ -10,30 +10,30 @@ export default function _useDrag({
   index,
   type,
 }: UseDragProps) {
-  // Use this isDragging instead of what is provided by useDrag().
-  // This isDragging from collect() is one react cycle late.
-  const [isDragging, setIsDragging] = useState(false);
+  // Use this dragging instead of what is provided by useDrag().
+  // This dragging from collect() is one react cycle late.
+  const [dragging, setDragging] = useState(false);
 
-  const dragProps = {
-    onDragEnd: () => setIsDragging(false),
-    onDragStart: () => setIsDragging(true),
-  }
-
-  const dragClassName = isDragging ? style['is-dragging'] : '';
-
+  // const [{ dragging: _isDragging }, drag] = useDrag({
   const [, drag] = useDrag({
     type,
     item: () => {
-      return { id, index, type };
+      return { id, index, type } as DndItem;
     },
     canDrag,
     // collect: (monitor) => ({
-    //   toLeave: monitor.getItem()?.toLeave,
-    //   // isDragging: monitor.isDragging(),
+    //   dragging: monitor.dragging()
     // }),
   });
 
-  // console.log(toLeave);
+  const dragProps = {
+    onDragEnd: () => setDragging(false),
+    // onDragEnter: handleDragEnter,
+    // onDragLeave: handleDragLeave,
+    onDragStart: () => setDragging(true),
+  }
 
-  return { drag, dragClassName, dragProps, isDragging };
+  const dragClassName = dragging ? style.dragging : '';
+
+  return { drag, dragClassName, dragProps, dragging };
 }

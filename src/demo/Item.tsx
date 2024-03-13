@@ -1,6 +1,6 @@
 import React, { Ref, useRef, MutableRefObject } from 'react';
 import Draggable from '../Draggable';
-import { DraggableHandle, ItemWithId } from '../types';
+import { DraggableHandle } from '../types';
 
 import './item.css';
 
@@ -25,10 +25,10 @@ export default function Item({
       draggableRef={draggableRef}
       type='myItem'
     >
-      {({ canDrag, dragClassName, dragProps, innerElementRef, isDragging }) => {
+      {({ canDrag, dragClassName, dragProps, innerElementRef }) => {
         return (
           <div
-            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${canDrag ? 'can-drag' : ''} ${dragClassName} ${isDragging ? 'dragging' : '' }`}
+            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${canDrag ? 'can-drag' : ''} ${dragClassName}`}
             ref={(el) => {
               innerElementRef && (innerElementRef.current = el);
               itemRef.current = el;

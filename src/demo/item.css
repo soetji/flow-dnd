@@ -8,10 +8,6 @@
   /* opacity: 0.9; */
 }
 
-.item.dragging {
-  opacity: 0.3;
-}
-
 .item.small {
   width: 75px;
 }

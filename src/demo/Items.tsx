@@ -55,13 +55,13 @@ const Items: FC = () => {
   const handleDragEnd = () => console.log('end');
   const handleDragStart = () => console.log('start');
 
-  const handleDropIn = (item, newItems) => {
-    console.log('handleDropIn', item, newItems);
+  const handleDropEnter = (item, newItems) => {
+    console.log('handleDropEnter', item, newItems);
     setItems(newItems);
   }
 
-  const handleDropOut = (itemId, newItems) => {
-    console.log('handleDropOut', itemId, newItems);
+  const handleDropLeave = (itemId, newItems) => {
+    console.log('handleDropLeave', itemId, newItems);
     setItems(newItems);
   }
   
@@ -73,10 +73,10 @@ const Items: FC = () => {
         // fixedItemIds={['1', '3']} // TODO
         items={items}
         onDragEnd={handleDragEnd}
+        onDragEnter={handleDropEnter}
+        onDragLeave={handleDropLeave}
         onDragStart={handleDragStart}
         onDrop={handleDrop}
-        onDragIn={handleDropIn}
-        onDragOut={handleDropOut}
       >
         {({ draggableRefByIndex, drop, droppableProps, items }) => (
           <div className='items' ref={drop} {...droppableProps}>

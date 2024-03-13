@@ -29,12 +29,12 @@ const Items2: FC = () => {
   const handleDragEnd= () => console.log('end');
   const handleDragStart = () => console.log('start');
 
-  const handleDropIn = (item, newItems) => {
-    console.log('handleDropIn', item, newItems);
+  const handleDropEnter = (item, newItems) => {
+    console.log('handleDropEnter', item, newItems);
     setItems(newItems);
   }
-  const handleDropOut = (itemId, newItems) => {
-    console.log('handleDropOut', itemId, newItems);
+  const handleDropLeave = (itemId, newItems) => {
+    console.log('handleDropLeave', itemId, newItems);
     setItems(newItems);
   }
 
@@ -45,8 +45,8 @@ const Items2: FC = () => {
         canDragInOut={true}
         items={items}
         onDragEnd={handleDragEnd}
-        onDragIn={handleDropIn}
-        onDragOut={handleDropOut}
+        onDragEnter={handleDropEnter}
+        onDragLeave={handleDropLeave}
         onDragStart={handleDragStart}
         onDrop={handleDrop}
       >

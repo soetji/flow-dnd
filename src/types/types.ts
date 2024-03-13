@@ -9,7 +9,7 @@ export interface DraggableRenderProps<InnerElementType> {
   dragClassName: string,
   dragProps: object,
   innerElementRef: Ref<InnerElementType>,
-  isDragging: boolean,
+  dragging: boolean,
 }
 
 interface _DraggableProps {
@@ -62,8 +62,8 @@ interface DroppableProps {
   // fixedItemIds: ItemId[], // TODO
   items: ItemWithId[],
   onDragEnd?: () => void,
-  onDragIn?: (item: ItemWithId, newItems: ItemWithId[]) => void,
-  onDragOut?: (id: ItemId, newItems: ItemWithId[]) => void,
+  onDragEnter?: (item?: ItemWithId, newItems?: ItemWithId[]) => void,
+  onDragLeave?: (id?: ItemId, newItems?: ItemWithId[]) => void,
   onDragStart?: () => void,
   onDrop?: (info: OnDropInfo) => void,
 }
@@ -79,7 +79,7 @@ export interface UseDropBoxProps extends DroppableProps {
 export interface DndItem {
   id: ItemId,
   index: number,
-  itemToDragIn?: ItemWithId,
+  itemToDragEnter?: ItemWithId,
   type: 'string',
 }
 
