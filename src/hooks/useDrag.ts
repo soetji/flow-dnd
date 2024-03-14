@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { DndItem, UseDragProps } from '../types';
 
-import style from './use-drag.module.css';
+import style from './drag.module.css';
 
 export default function _useDrag({
   canDrag = true,

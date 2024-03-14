@@ -20,7 +20,7 @@ export default function DroppableBox({
 
   const {
     draggablesRef,
-    drop,
+    droppableRef,
     items: _items,
     droppableProps,
   } = useDropBox({
@@ -47,7 +47,7 @@ export default function DroppableBox({
       onStart={handleFlipperStart}
       onComplete={handleFlipperComplete}
     >
-      {children({ draggableRefByIndex, drop,
+      {children({ draggableRefByIndex, droppableRef,
         droppableProps, items: _items })}
     </Flipper>
   );

@@ -37,7 +37,8 @@
     "react-dom": "^18.2.0",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3",
-    "vite": "^5.1.4"
+    "vite": "^5.1.4",
+    "vite-plugin-css-injected-by-js": "^3.4.0"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -47,12 +48,10 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/flow-dnd.umd.cjs",
   "module": "./dist/flow-dnd.js",
   "exports": {
     ".": {
-      "import": "./dist/flow-dnd.js",
-      "require": "./dist/flow-dnd.umd.cjs"
+      "import": "./dist/flow-dnd.js"
     }
   }
 }

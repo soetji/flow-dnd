@@ -795,6 +795,7 @@ __metadata:
     tslib: "npm:^2.6.2"
     typescript: "npm:^5.3.3"
     vite: "npm:^5.1.4"
+    vite-plugin-css-injected-by-js: "npm:^3.4.0"
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -3238,6 +3239,15 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.0"
   checksum: 10c0/4ef57b45aa820d7ac6496e9208559986c665e49447cb072744c13b66925a362d96dd5a46c4530a6b8e203e5db5fe849369444440cb22ecfc26c679359e5dfa3c
+  languageName: node
+  linkType: hard
+
+"vite-plugin-css-injected-by-js@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "vite-plugin-css-injected-by-js@npm:3.4.0"
+  peerDependencies:
+    vite: ">2.0.0-0"
+  checksum: 10c0/9e9f0f027d10a876ee3e629d9d3853719bce2d462ee1053d8a164b8282bbf006b34dc14c9ab875ad4ed7772ca61c048aa6b3591ee06cb119dabd02f69d27ab0a
   languageName: node
   linkType: hard
 

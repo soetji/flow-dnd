@@ -2,6 +2,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import typescript from '@rollup/plugin-typescript';
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
       name: 'flow-dnd',
       // the proper extensions will be added
       fileName: 'flow-dnd',
+      formats: ['es'],
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -24,8 +26,13 @@ export default defineConfig({
           react: 'React',
         },
       },
-      plugins: [typescript()]
+      plugins: [
+        typescript()
+      ]
     },
   },
-  plugins: [react()],
+  plugins: [
+    cssInjectedByJsPlugin(),
+    react()
+  ],
 })

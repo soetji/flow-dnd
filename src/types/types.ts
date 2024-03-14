@@ -1,5 +1,5 @@
 import { Ref } from 'react';
-import { ConnectDropTarget } from 'react-dnd';
+// import { ConnectDropTarget } from 'react-dnd';
 
 export type ItemId = number | string;
 export type GroupId = number | string;
@@ -44,8 +44,8 @@ export interface HTMLDroppableProps {
 
 export interface DroppableBoxRenderProps {
   draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
+  droppableRef: Ref<HTMLElement>,
   droppableProps: HTMLDroppableProps,
-  drop: ConnectDropTarget,
   items: ItemWithId[],
 }
 
@@ -78,8 +78,10 @@ export interface UseDropBoxProps extends DroppableProps {
 
 export interface DndItem {
   id: ItemId,
+  currentBoxEl: HTMLElement,
   index: number,
-  itemToDragEnter?: ItemWithId,
+  itemToCopy?: ItemWithId,
+  setStartBoxInfo?: (info: object) => void,
   type: 'string',
 }
 

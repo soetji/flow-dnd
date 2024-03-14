@@ -42,8 +42,3 @@
   background-color: red;
   height: 50px;
 }
-
-.chart {
-  height: calc(100% - 25px);
-  width: 100%;
-}

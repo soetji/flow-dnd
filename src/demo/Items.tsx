@@ -5,6 +5,7 @@ import { ItemWithId } from '../types';
 import './items.css';
 import Item from './Item';
 import Items2 from './Items2';
+import Items3 from './Items3';
 
 const defaultItems = [
   {
@@ -78,8 +79,8 @@ const Items: FC = () => {
         onDragStart={handleDragStart}
         onDrop={handleDrop}
       >
-        {({ draggableRefByIndex, drop, droppableProps, items }) => (
-          <div className='items' ref={drop} {...droppableProps}>
+        {({ draggableRefByIndex, droppableRef, droppableProps, items }) => (
+          <div className='items' ref={droppableRef} {...droppableProps}>
             {items.map((item, idx) => (
               <Item key={item.id} id={item.id} idx={idx}
                 draggableRef={draggableRefByIndex(idx)}
@@ -93,6 +94,7 @@ const Items: FC = () => {
         <button onClick={handleAdd}>Add</button>
       </p>
       <Items2 />
+      {/* <Items3 /> */}
     </>
   );
 };

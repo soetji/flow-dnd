@@ -5,19 +5,9 @@ import { ItemWithId } from '../types';
 import './items.css';
 import Item from './Item';
 
-const defaultItems = [
-  {
-    id: '12',
-  },
-  {
-    id: '13',
-  },
-  {
-    id: '14',
-  },
-];
+const defaultItems = [];
 
-const Items2: FC = () => {
+const Items3: FC = () => {
   const [ items, setItems ] = useState<ItemWithId[]>(defaultItems);
 
   const handleAdd = () => setItems([...items, { id: Date.now().toString()}]);
@@ -58,6 +48,7 @@ const Items2: FC = () => {
                 draggableRef={draggableRefByIndex(idx)}
               />
             )))}
+            <div className='item large'>No Drag Item</div>
           </div>
         )}
       </DroppableBox>
@@ -69,4 +60,4 @@ const Items2: FC = () => {
   );
 };
 
-export default Items2;
+export default Items3;
