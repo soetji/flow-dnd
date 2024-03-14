@@ -38,8 +38,10 @@ export interface DraggableHandle {
 }
 
 export interface HTMLDroppableProps {
-  onDragEnd?: () => void,
-  onDragStart?: () => void,
+  onDragEnd: (ev: DragEvent) => void,
+  onDragEnter: (ev: DragEvent) => void,
+  onDragLeave: (ev: DragEvent) => void,
+  onDragStart: (ev: DragEvent) => void,
 }
 
 export interface DroppableBoxRenderProps {
@@ -68,7 +70,7 @@ interface DroppableProps {
   onDrop?: (info: OnDropInfo) => void,
 }
 
-export interface DroppableBoxProps extends DroppableProps, HTMLDroppableProps {
+export interface DroppableBoxProps extends DroppableProps {
   children: (props: DroppableBoxRenderProps) => JSX.Element,
 }
 
