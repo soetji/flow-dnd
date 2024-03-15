@@ -1,6 +1,5 @@
 import { XYCoord } from 'react-dnd';
-import { DraggableHandle, ItemId,
-  ItemWithId, MouseInfo } from '../types';
+import { DraggableHandle, MouseInfo } from '../types';
 
 function getMouseLocInfo(
   itemRect: DOMRect | null = null,
