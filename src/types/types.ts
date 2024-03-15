@@ -63,7 +63,7 @@ interface DroppableProps {
   canDragInOut?: boolean,
   // fixedItemIds: ItemId[], // TODO
   items: ItemWithId[],
-  onDragEnd?: () => void,
+  onDragEnd?: (removedId?: ItemId | null, items?: ItemWithId[]) => void,
   onDragEnter?: (item?: ItemWithId, newItems?: ItemWithId[]) => void,
   onDragLeave?: (id?: ItemId, newItems?: ItemWithId[]) => void,
   onDragStart?: () => void,

@@ -53,17 +53,20 @@ const Items: FC = () => {
     console.log('handleDrop', info);
     setItems(info.toItems);
   }
-  const handleDragEnd = () => console.log('end');
-  const handleDragStart = () => console.log('start');
+  
+  const handleDragStart = () => console.log('handleDragStart');
 
-  const handleDropEnter = (item, newItems) => {
-    console.log('handleDropEnter', item, newItems);
+  const handleDragEnter = (item, newItems) => {
+    console.log('handleDragEnter', item, newItems);
+    setItems(newItems);
+  }
+  const handleDragLeave = (itemId, newItems) => {
+    console.log('handleDragLeave', itemId, newItems);
     setItems(newItems);
   }
 
-  const handleDropLeave = (itemId, newItems) => {
-    console.log('handleDropLeave', itemId, newItems);
-    setItems(newItems);
+  const handleDragEnd= (removedId, items) => {
+    console.log('handleDragEnd', removedId, items);
   }
   
   return (
@@ -74,8 +77,8 @@ const Items: FC = () => {
         // fixedItemIds={['1', '3']} // TODO
         items={items}
         onDragEnd={handleDragEnd}
-        onDragEnter={handleDropEnter}
-        onDragLeave={handleDropLeave}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
         onDragStart={handleDragStart}
         onDrop={handleDrop}
       >
