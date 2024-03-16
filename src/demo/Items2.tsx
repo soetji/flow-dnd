@@ -54,9 +54,9 @@ const Items2: FC = () => {
         onDragStart={handleDragStart}
         onDrop={handleDrop}
       >
-        {({ draggableRefByIndex, droppableRef, droppableProps, items }) => (
+        {({ draggableRefByIndex, droppableProps, droppableRef, items }) => (
           <div className='items' ref={droppableRef} {...droppableProps} >
-            {(//console.log(items),
+            {(console.log(items),
               items.map((item, idx) => (
               <Item key={item.id} id={item.id} idx={idx}
                 draggableRef={draggableRefByIndex(idx)}

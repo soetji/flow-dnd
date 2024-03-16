@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, MutableRefObject } from 'react';
 import { useDragDropManager, useDrop } from 'react-dnd';
-import { isEqual, noop } from 'lodash';
+import { differenceBy, isEqual, noop } from 'lodash';
 
 import { getMouseInfo, getToIdx } from './utils';
 import {
@@ -35,33 +35,53 @@ export default function useDropBox({
   const draggablesRef = useRef<DraggableHandle[]>([]);
   const draggingInOut = useRef(false);
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
+  const prevItemsRef = useRef<ItemWithId[]>(items);
+
   const dragDropManager = useDragDropManager();
+
+  const setItemsAndPrev = (newItems: ItemWithId[]) => {
+    prevItemsRef.current = items;
+    setItems(newItems);
+  }
+
+  // setTimeout() to execute after draggablesRef is updated
+  const removeNullsFromDraggablesRef = (onAfterRemove = noop) => setTimeout(() => {
+    // Clean up draggablesRef
+    draggablesRef.current = draggablesRef.current.filter(dr => dr !== null);
+    onAfterRemove();
+  });
 
   useEffect(() => {
     if (!isEqual(defaultItems, items)) {
-      setItems(defaultItems);
-      // setTimeout() to execute after draggablesRef is updated
-      setTimeout(() =>
-        // Clean up draggablesRef
-        draggablesRef.current = draggablesRef.current.filter(dr => dr !== null)
-      );
+      console.log('useEffect defaultItems', items);
+      setItemsAndPrev(defaultItems);
+      removeNullsFromDraggablesRef();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(defaultItems)]);
 
   useEffect(() => {
     draggingInOut.current = false;
-    // setTimeout() to execute after draggablesRef is updated
-    setTimeout(() =>
-      // Clean up draggablesRef
-      draggablesRef.current = draggablesRef.current.filter(dr => dr !== null)
-    );
+    console.log('useEffect items', prevItemsRef.current, items);
+
+    removeNullsFromDraggablesRef(() => {
+      if (items.length > prevItemsRef.current.length) {
+        const dndItm = dragDropManager.getMonitor().getItem();
+        const res = differenceBy(items, prevItemsRef.current, 'id');
+        const idx = items.findIndex((it) => isEqual(it, res[0]));
+        console.log('diff', res, idx);
+        dndItm.index = idx;
+        draggablesRef.current[idx]?.getDOMElement()
+          .classList.add(style.dragging);
+      }
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(items)]);
 
   const moveItem = (from: number, to: number) => {
     const itemFrom = items[from];
-    setItems(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
+    setItemsAndPrev(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
   };
 
   const [, drop] = useDrop({
@@ -70,7 +90,8 @@ export default function useDropBox({
     drop: (dndItm: DndItem) => {
       // console.log('drop', items);
 
-      draggablesRef.current[dndItm.index].getDOMElement()
+      const idx = items.findIndex(it => it.id === dndItm.id);
+      draggablesRef.current[idx].getDOMElement()
         .classList.remove(style.dragging);
 
       if (onDrop && toIdRef.current !== null &&
@@ -89,8 +110,8 @@ export default function useDropBox({
       // console.log('hover?', moving, draggingInOut.current, dndItm.currentBoxEl, boxRef.current);
       
       if (!moving && !draggingInOut.current && dndItm.currentBoxEl === boxRef.current) {
-        // console.log('hover');
         const draggables = draggablesRef.current;
+        // console.log('hover', draggables);
         const mInfo = getMouseInfo(draggables, monitor.getClientOffset());
 
         if (mInfo.hoverIdx !== undefined && dndItm.index !== mInfo.hoverIdx) {
@@ -152,6 +173,7 @@ export default function useDropBox({
       ) {
         // console.log('_onDragEnter', items, ev.currentTarget, ev.target, ev.relatedTarget);
         dndItm.setStartBoxInfo({ dropBoxEl: ev.currentTarget });
+        dndItm.currentBoxEl = ev.currentTarget;
   
         if (boxInfoRef.current.dragEl) {
           boxInfoRef.current.dragEl.classList.remove(style.hidden);
@@ -162,16 +184,8 @@ export default function useDropBox({
           const newItems = [...items, newItem];
           // addToEndInfo(dndItm.id, newItems, endInfoRef.current);
           draggingInOut.current = true;
-          setItems(newItems);
-          dndItm.index = newItems.length - 1;
-          dndItm.currentBoxEl = ev.currentTarget;
+          setItemsAndPrev(newItems);
           onDragEnter(newItem, newItems);
-          
-          // Wait for the next render cycle after the new item is mounted
-          setTimeout(() => {
-            draggablesRef.current[dndItm.index]?.getDOMElement()
-              .classList.add(style.dragging);
-          });
         }
       }
     } else {
@@ -201,7 +215,7 @@ export default function useDropBox({
           const newItems = items.toSpliced(dndItm.index, 1);
           draggingInOut.current = true;
           // removeFromEndInfo(dndItm.id, newItems, endInfoRef.current);
-          setItems(newItems);
+          setItemsAndPrev(newItems);
           onDragLeave(dndItm.id, newItems);
         }
       }
@@ -222,7 +236,7 @@ export default function useDropBox({
     } else {
       const newItems = items.toSpliced(boxInfoRef.current.itemLeaveIndex as number, 1);
       // removeFromEndInfo(boxInfoRef.current.itemId as ItemId, newItems, endInfoRef.current);
-      setItems(newItems);
+      setItemsAndPrev(newItems);
       onDragEnd(boxInfoRef.current.itemId, newItems);
     }
     boxInfoRef.current = {};
