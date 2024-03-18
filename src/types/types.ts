@@ -51,7 +51,7 @@ export interface DroppableBoxRenderProps {
   items: ItemWithId[],
 }
 
-interface OnDropInfo {
+export interface OnDropInfo {
   fromId: ItemId,
   fromItems: ItemWithId[],
   toId: ItemId,
