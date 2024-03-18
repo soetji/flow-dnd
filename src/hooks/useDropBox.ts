@@ -2,20 +2,13 @@ import { useEffect, useRef, useState, MutableRefObject } from 'react';
 import { useDragDropManager, useDrop } from 'react-dnd';
 import { differenceBy, isEqual, noop } from 'lodash';
 
+import { BoxInfo, useDropHandlers } from './useDropHandlers';
 import { getMouseInfo, getToIdx } from './utils';
 import {
   DraggableHandle, DndItem, ItemId,
   ItemWithId, UseDropBoxProps
 } from '../types';
 import style from './drag.module.css';
-
-interface BoxInfo {
-  boxEl?: HTMLElement,
-  dragEl?: HTMLElement,
-  dropBoxEl?: HTMLElement,
-  itemId?: ItemId,
-  itemLeaveIndex?: number,
-}
 
 export default function useDropBox({
   accept,
@@ -33,7 +26,7 @@ export default function useDropBox({
   const boxInfoRef = useRef({}) as MutableRefObject<BoxInfo>;
   const boxRef = useRef<HTMLElement>(null);
   const draggablesRef = useRef<DraggableHandle[]>([]);
-  const draggingInOut = useRef(false);
+  const draggingInOutRef = useRef(false);
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
   const prevItemsRef = useRef<ItemWithId[]>(items);
 
@@ -53,7 +46,7 @@ export default function useDropBox({
 
   useEffect(() => {
     if (!isEqual(defaultItems, items)) {
-      console.log('useEffect defaultItems', items);
+      // console.log('useEffect defaultItems', items);
       setItemsAndPrev(defaultItems);
       removeNullsFromDraggablesRef();
     }
@@ -61,8 +54,8 @@ export default function useDropBox({
   }, [JSON.stringify(defaultItems)]);
 
   useEffect(() => {
-    draggingInOut.current = false;
-    console.log('useEffect items', prevItemsRef.current, items);
+    draggingInOutRef.current = false;
+    // console.log('useEffect items', prevItemsRef.current, items);
 
     removeNullsFromDraggablesRef(() => {
       if (items.length > prevItemsRef.current.length) {
@@ -107,9 +100,9 @@ export default function useDropBox({
     },
 
     hover: (dndItm: DndItem, monitor) => {
-      // console.log('hover?', moving, draggingInOut.current, dndItm.currentBoxEl, boxRef.current);
+      // console.log('hover?', moving, draggingInOutRef.current, dndItm.currentBoxEl, boxRef.current);
       
-      if (!moving && !draggingInOut.current && dndItm.currentBoxEl === boxRef.current) {
+      if (!moving && !draggingInOutRef.current && dndItm.currentBoxEl === boxRef.current) {
         const draggables = draggablesRef.current;
         // console.log('hover', draggables);
         const mInfo = getMouseInfo(draggables, monitor.getClientOffset());
@@ -129,118 +122,23 @@ export default function useDropBox({
     },
   });
 
-  // Drag event handlers
-
-  const setStartBoxInfo = (info: object) =>
-    boxInfoRef.current = { ...boxInfoRef.current, ...info };
-
-  const _onDragStart = (ev: DragEvent) => {
-    const boxEl = ev.currentTarget;
-    boxInfoRef.current = {
-      boxEl,
-      dragEl: ev.target,
-      dropBoxEl: boxEl,
-    } as BoxInfo;
-    onDragStart();
-    
-    setTimeout(() => {
-      const dndItm = dragDropManager.getMonitor().getItem();
-      dndItm.currentBoxEl = boxEl;
-      dndItm.itemToCopy = items[dndItm.index];
-      dndItm.setStartBoxInfo = setStartBoxInfo;
-      dndItm.startBoxEl = boxEl;
-
-      boxInfoRef.current = {
-        ...boxInfoRef.current,
-        itemId: dndItm.id,
-        itemLeaveIndex: dndItm.index,
-      } as BoxInfo;
-    });
-  };
-
-  const _onDragEnter = (ev: DragEvent) => {
-    if (canDragInOut) {
-      ev.preventDefault();
-      const dndItm = dragDropManager.getMonitor().getItem();
-      // console.log('_onDragEnter?', items, ev.currentTarget, ev.target, ev.relatedTarget);
-  
-      if (dndItm.type === accept &&
-        (ev.currentTarget as HTMLElement).contains(ev.target as HTMLElement) &&
-        ev.relatedTarget !== null && // Why is it null in the beginning of drag?
-        // Cannot enter from anything element inside the box
-        ev.currentTarget !== ev.relatedTarget &&
-        !(ev.currentTarget as HTMLElement).contains(ev.relatedTarget as HTMLElement)
-      ) {
-        // console.log('_onDragEnter', items, ev.currentTarget, ev.target, ev.relatedTarget);
-        dndItm.setStartBoxInfo({ dropBoxEl: ev.currentTarget });
-        dndItm.currentBoxEl = ev.currentTarget;
-  
-        if (boxInfoRef.current.dragEl) {
-          boxInfoRef.current.dragEl.classList.remove(style.hidden);
-          dndItm.index = boxInfoRef.current.itemLeaveIndex;
-          // addToEndInfo(dndItm.id, items, endInfoRef.current);
-        } else {
-          const newItem = dndItm.itemToCopy as ItemWithId;
-          const newItems = [...items, newItem];
-          // addToEndInfo(dndItm.id, newItems, endInfoRef.current);
-          draggingInOut.current = true;
-          setItemsAndPrev(newItems);
-          onDragEnter(newItem, newItems);
-        }
-      }
-    } else {
-      onDragEnter();
-    }
-  }
-
-  const _onDragLeave = (ev: DragEvent) => {
-    if (canDragInOut) {
-      const dndItm = dragDropManager.getMonitor().getItem();
-      // console.log('_onDragLeave?', items, ev.currentTarget, ev.target, ev.relatedTarget);
-      
-      if (dndItm.type === accept &&
-        (ev.currentTarget as HTMLElement).contains(ev.target as HTMLElement) &&
-        // Cannot leave to anything element inside the box
-        ev.currentTarget !== ev.relatedTarget &&
-        !(ev.currentTarget as HTMLElement).contains(ev.relatedTarget as HTMLElement)
-      ) {
-        // console.log('_onDragLeave', items, ev.currentTarget, ev.target, ev.relatedTarget);
-        dndItm.setStartBoxInfo({ dropBoxEl: dndItm.startBoxEl });
-        
-        if (boxInfoRef.current.dragEl) {
-          boxInfoRef.current.dragEl.classList.add(style.hidden);
-          dndItm.setStartBoxInfo = setStartBoxInfo;
-          boxInfoRef.current.itemLeaveIndex = dndItm.index;
-        } else {
-          const newItems = items.toSpliced(dndItm.index, 1);
-          draggingInOut.current = true;
-          // removeFromEndInfo(dndItm.id, newItems, endInfoRef.current);
-          setItemsAndPrev(newItems);
-          onDragLeave(dndItm.id, newItems);
-        }
-      }
-    } else {
-      onDragLeave();
-    }
-  };
-
-  const _onDragEnd = (ev: DragEvent) => {
-    // dragDropManager returns null here
-    // ev.target is the original drag el
-    // ev.currentTarget is the original box
-    // console.log('_onDragEnd', items, boxInfoRef.current.dropBoxEl, ev.currentTarget);
-    if (boxInfoRef.current.dropBoxEl === ev.currentTarget) {
-      // No need for this. Why?
-      // boxInfoRef.current.dragEl?.classList.remove(style.hidden);
-      onDragEnd(null, items);
-    } else {
-      const newItems = items.toSpliced(boxInfoRef.current.itemLeaveIndex as number, 1);
-      // removeFromEndInfo(boxInfoRef.current.itemId as ItemId, newItems, endInfoRef.current);
-      setItemsAndPrev(newItems);
-      onDragEnd(boxInfoRef.current.itemId, newItems);
-    }
-    boxInfoRef.current = {};
-  };
+  const {
+    _onDragStart,
+    _onDragEnter,
+    _onDragLeave,
+    _onDragEnd,
+  } = useDropHandlers({
+    accept,
+    boxInfoRef,
+    canDragInOut,
+    draggingInOutRef,
+    items,
+    setItemsAndPrev,
+    onDragEnd,
+    onDragEnter,
+    onDragLeave,
+    onDragStart,
+  });
 
   drop(boxRef);
 

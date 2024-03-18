@@ -58,7 +58,7 @@ interface OnDropInfo {
   toItems: ItemWithId[],
 }
 
-interface DroppableProps {
+export interface DroppableProps {
   accept: string,
   canDragInOut?: boolean,
   // fixedItemIds: ItemId[], // TODO
