@@ -1,4 +1,4 @@
-import { useImperativeHandle, useRef } from 'react';
+import { MutableRefObject, useImperativeHandle, useRef } from 'react';
 // import { useEffect } from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import useDrag from './hooks/useDrag';
@@ -12,7 +12,7 @@ export default function Draggable<InnerElementType>({
   index,
   type,
 }: DraggableProps<InnerElementType>) {
-  const innerElementRef = useRef<InnerElementType>(null);
+  const innerElementRef = useRef<InnerElementType>(null) as MutableRefObject<InnerElementType>;
 
   // useEffect(() => {
   //   console.log('mount', id);

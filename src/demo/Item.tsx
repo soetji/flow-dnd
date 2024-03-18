@@ -1,4 +1,4 @@
-import React, { Ref, useRef, MutableRefObject } from 'react';
+import React, { RefObject, useRef, MutableRefObject } from 'react';
 import Draggable from '../Draggable';
 import { DraggableHandle } from '../types';
 
@@ -6,7 +6,7 @@ import './item.css';
 
 interface Props {
   id: string | number,
-  draggableRef: Ref<DraggableHandle>,
+  draggableRef: RefObject<DraggableHandle>,
   idx: number,
 }
 

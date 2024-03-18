@@ -1,4 +1,5 @@
-import { MutableRefObject, Ref } from 'react';
+import { MutableRefObject, RefObject } from 'react';
+import { DropTargetMonitor } from 'react-dnd';
 import { isEqual } from 'lodash';
 
 import {
@@ -44,11 +45,11 @@ export function onDrop({
 }
 
 interface OnHoverProps {
-  boxRef: Ref<HTMLElement>,
+  boxRef: RefObject<HTMLElement>,
   dndItm: DndItem,
-  draggablesRef: Ref<DraggableHandle[]>,
+  draggablesRef: RefObject<DraggableHandle[]>,
   draggingInOutRef: MutableRefObject<boolean>,
-  monitor: unknown,
+  monitor: DropTargetMonitor,
   moveItem: (from: number, to: number) => void,
   moving: boolean,
   toIdRef: MutableRefObject<ItemId>,
@@ -68,7 +69,7 @@ export function onHover({
   // console.log('hover?', moving, draggingInOutRef.current, dndItm.currentBoxEl, boxRef.current);
   
   if (!moving && !draggingInOutRef.current && dndItm.currentBoxEl === boxRef?.current) {
-    const draggables = draggablesRef?.current;
+    const draggables = draggablesRef?.current as DraggableHandle[];
     // console.log('hover', draggables);
     const mInfo = getMouseInfo(draggables, monitor.getClientOffset());
 

@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { MutableRefObject, Ref, RefObject } from 'react';
 // import { ConnectDropTarget } from 'react-dnd';
 
 export type ItemId = number | string;
@@ -8,7 +8,7 @@ export interface DraggableRenderProps<InnerElementType> {
   canDrag: boolean,
   dragClassName: string,
   dragProps: object,
-  innerElementRef: Ref<InnerElementType>,
+  innerElementRef: MutableRefObject<InnerElementType>,
   dragging: boolean,
 }
 
@@ -46,7 +46,7 @@ export interface HTMLDroppableProps {
 
 export interface DroppableBoxRenderProps {
   draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
-  droppableRef: Ref<HTMLElement>,
+  droppableRef: RefObject<HTMLElement>,
   droppableProps: HTMLDroppableProps,
   items: ItemWithId[],
 }
