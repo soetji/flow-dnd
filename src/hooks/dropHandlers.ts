@@ -9,6 +9,7 @@ import {
 import { getMouseInfo, getToIdx } from './utils';
 
 import style from './drag.module.css';
+// const getIds = (items: ItemWithId[]) => items.map(it => it.id);
 
 interface OnDropProps {
   defaultItems: ItemWithId[],
@@ -27,10 +28,13 @@ export function onDrop({
   toIdRef,
   onDrop
 }: OnDropProps) {
-  // console.log('onDrop', items);
-  const idx = items.findIndex(it => it.id === dndItm.id);
-  draggablesRef.current[idx].getDOMElement()
-    .classList.remove(style.dragging);
+  // Delay until draggablesRef fill up
+  setTimeout(() => {
+    const idx = items.findIndex(it => it.id === dndItm.id);
+    // console.log('onDrop', getIds(items), idx, draggablesRef.current);
+    draggablesRef.current[idx] && draggablesRef.current[idx].getDOMElement()
+      .classList.remove(style.dragging);
+  }, 500);
 
   if (onDrop && toIdRef.current !== null &&
     !isEqual(items, defaultItems)
@@ -79,7 +83,7 @@ export function onHover({
 
       if (dndItm.index !== toIdx) {
         toIdRef.current = draggables[toIdx].getId();
-        // console.log('moveItem', items, dndItm.index, toIdx);
+        // console.log('moveItem', dndItm.index, toIdx);
         moveItem(dndItm.index, toIdx);
         dndItm.index = toIdx;
       }

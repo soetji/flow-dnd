@@ -39,6 +39,7 @@ export default function DroppableBox({
   const draggableRefByIndex = (idx: number) =>
     (el: DraggableHandle) => (draggablesRef.current[idx] = el);
 
+  // Only on items change
   const handleFlipperStart = () => setMoving(true);
   const handleFlipperComplete = () => setMoving(false);
 

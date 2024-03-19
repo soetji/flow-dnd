@@ -26,6 +26,7 @@ const Items2: FC = () => {
     console.log('handleDrop', info);
     setItems(info.toItems);
   }
+  
 
   const handleDragStart = () => console.log('handleDragStart');
 
@@ -38,7 +39,7 @@ const Items2: FC = () => {
     setItems(newItems);
   }
 
-  const handleDragEnd= (removedId, items) => {
+  const handleDragEnd = (removedId, items) => {
     console.log('handleDragEnd', removedId, items);
   }
 
