@@ -8,7 +8,7 @@ export function useDropHandlers({
   accept,
   boxInfoRef,
   canDragInOut,
-  draggingInOutRef,
+  canHover,
   items,
   setItemsAndPrev,
   setShowOrigDragEl,
@@ -69,7 +69,7 @@ export function useDropHandlers({
         // console.log('_onDragEnter', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
         dndItm.setStartBoxInfo({ dropBoxEl: ev.currentTarget });
         dndItm.currentBoxEl = ev.currentTarget;
-        draggingInOutRef.current = true;
+        canHover.current = false;
 
         // Drag el is from box
         if (boxInfoRef.current.dragEl) {
@@ -104,7 +104,7 @@ export function useDropHandlers({
       ) {
         // console.log('_onDragLeave', items, ev.currentTarget, ev.target, ev.relatedTarget);
         dndItm.setStartBoxInfo({ dropBoxEl: dndItm.startBoxEl });
-        draggingInOutRef.current = true;
+        canHover.current = false;
         
         // Drag el is from box
         if (boxInfoRef.current.dragEl) {

@@ -88,7 +88,7 @@ export interface BoxInfo {
 
 export interface UseDropHandlersProps extends DroppableProps {
   boxInfoRef: MutableRefObject<BoxInfo>,
-  draggingInOutRef: MutableRefObject<boolean>,
+  canHover: MutableRefObject<boolean>,
   setItemsAndPrev: (items: ItemWithId[]) => void,
   setShowOrigDragEl: (show: boolean) => void,
 }

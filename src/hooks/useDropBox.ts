@@ -29,8 +29,8 @@ export default function useDropBox({
   const [showOrigDragEl, setShowOrigDragEl] = useState(true);
   const boxInfoRef = useRef({}) as MutableRefObject<BoxInfo>;
   const boxRef = useRef<HTMLElement>(null);
+  const canHover = useRef(false); // True to prevent hover triggers
   const draggablesRef = useRef<DraggableHandle[]>([]);
-  const draggingInOutRef = useRef(false);
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
   const prevItemsRef = useRef<ItemWithId[]>(items);
 
@@ -53,7 +53,7 @@ export default function useDropBox({
     accept,
     boxInfoRef,
     canDragInOut,
-    draggingInOutRef,
+    canHover,
     items,
     setItemsAndPrev,
     setShowOrigDragEl,
@@ -87,7 +87,7 @@ export default function useDropBox({
         boxRef,
         dndItm,
         draggablesRef,
-        draggingInOutRef,
+        canHover,
         monitor,
         moveItem,
         moving,
@@ -122,13 +122,15 @@ export default function useDropBox({
   useEffect(() => {
     // console.log('useEffect items', getIds(prevItemsRef.current), getIds(items));
     initNewDragItem();
-    draggingInOutRef.current = false;
+    // Restore hover after enter and leave events outside the orig drag box
+    canHover.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(items)]);
 
   useEffect(() => {
     boxInfoRef.current.dragEl?.classList[showOrigDragEl ? 'remove' : 'add'](style.hidden);
-    draggingInOutRef.current = false;
+    // Restore hover after enter and leave events in the orig drag box
+    canHover.current = true;
   }, [showOrigDragEl]);
 
   return {
