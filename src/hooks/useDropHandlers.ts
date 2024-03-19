@@ -1,24 +1,8 @@
-import { MutableRefObject } from 'react';
 import { useDragDropManager } from 'react-dnd';
 import { noop } from 'lodash';
-import { ItemId, ItemWithId, DroppableProps } from '../types';
+import { BoxInfo, ItemWithId, UseDropHandlersProps } from '../types';
 
-import style from './drag.module.css';
 // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
-
-export interface BoxInfo {
-  boxEl?: HTMLElement,
-  dragEl?: HTMLElement,
-  dropBoxEl?: HTMLElement,
-  itemId?: ItemId,
-  itemLeaveIndex?: number,
-}
-
-export interface UseDropHandlersProps extends DroppableProps {
-  boxInfoRef: MutableRefObject<BoxInfo>,
-  draggingInOutRef: MutableRefObject<boolean>,
-  setItemsAndPrev: (items: ItemWithId[]) => void,
-}
 
 export function useDropHandlers({
   accept,
@@ -27,6 +11,7 @@ export function useDropHandlers({
   draggingInOutRef,
   items,
   setItemsAndPrev,
+  setShowOrigDragEl,
   onDragEnd = noop,
   onDragEnter = noop,
   onDragLeave = noop,
@@ -44,6 +29,7 @@ export function useDropHandlers({
       dragEl: ev.target,
       dropBoxEl: boxEl,
     } as BoxInfo;
+    setShowOrigDragEl(true);
     onDragStart();
     
     setTimeout(() => {
@@ -87,7 +73,7 @@ export function useDropHandlers({
 
         // Drag el is from box
         if (boxInfoRef.current.dragEl) {
-          boxInfoRef.current.dragEl.classList.remove(style.hidden);
+          setShowOrigDragEl(true);
           dndItm.index = boxInfoRef.current.itemLeaveIndex;
           // addToEndInfo(dndItm.id, items, endInfoRef.current);
         } else {
@@ -122,7 +108,7 @@ export function useDropHandlers({
         
         // Drag el is from box
         if (boxInfoRef.current.dragEl) {
-          boxInfoRef.current.dragEl.classList.add(style.hidden);
+          setShowOrigDragEl(false);
           dndItm.setStartBoxInfo = setStartBoxInfo;
           boxInfoRef.current.itemLeaveIndex = dndItm.index;
           // console.log('_onDragLeave', boxInfoRef.current.itemLeaveIndex);
@@ -145,8 +131,6 @@ export function useDropHandlers({
     // ev.currentTarget is the original box
     // console.log('_onDragEnd', items, boxInfoRef.current.dropBoxEl, ev.currentTarget);
     if (boxInfoRef.current.dropBoxEl === ev.currentTarget) {
-      // No need for below. Why?
-      // boxInfoRef.current.dragEl?.classList.remove(style.hidden);
       onDragEnd(null, items);
     } else {
       const newItems = items.toSpliced(boxInfoRef.current.itemLeaveIndex as number, 1);

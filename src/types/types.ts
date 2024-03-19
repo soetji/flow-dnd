@@ -78,6 +78,21 @@ export interface UseDropBoxProps extends DroppableProps {
   moving: boolean,
 }
 
+export interface BoxInfo {
+  boxEl?: HTMLElement,
+  dragEl?: HTMLElement,
+  dropBoxEl?: HTMLElement,
+  itemId?: ItemId,
+  itemLeaveIndex?: number,
+}
+
+export interface UseDropHandlersProps extends DroppableProps {
+  boxInfoRef: MutableRefObject<BoxInfo>,
+  draggingInOutRef: MutableRefObject<boolean>,
+  setItemsAndPrev: (items: ItemWithId[]) => void,
+  setShowOrigDragEl: (show: boolean) => void,
+}
+
 export interface DndItem {
   id: ItemId,
   currentBoxEl: HTMLElement,

@@ -4,9 +4,9 @@ import { isEqual, noop } from 'lodash';
 
 import * as handlers from './dropHandlers';
 
-import { BoxInfo, useDropHandlers } from './useDropHandlers';
+import { useDropHandlers } from './useDropHandlers';
 import {
-  DraggableHandle, DndItem, ItemId,
+  BoxInfo, DraggableHandle, DndItem, ItemId,
   ItemWithId, UseDropBoxProps
 } from '../types';
 import style from './drag.module.css';
@@ -26,6 +26,7 @@ export default function useDropBox({
   onDrop = noop,
 }: UseDropBoxProps) {
   const [items, setItems] = useState<ItemWithId[]>(structuredClone(defaultItems));
+  const [showOrigDragEl, setShowOrigDragEl] = useState(true);
   const boxInfoRef = useRef({}) as MutableRefObject<BoxInfo>;
   const boxRef = useRef<HTMLElement>(null);
   const draggablesRef = useRef<DraggableHandle[]>([]);
@@ -55,6 +56,7 @@ export default function useDropBox({
     draggingInOutRef,
     items,
     setItemsAndPrev,
+    setShowOrigDragEl,
     onDragEnd,
     onDragEnter,
     onDragLeave,
@@ -120,12 +122,14 @@ export default function useDropBox({
   useEffect(() => {
     // console.log('useEffect items', getIds(prevItemsRef.current), getIds(items));
     initNewDragItem();
+    draggingInOutRef.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(items)]);
 
   useEffect(() => {
+    boxInfoRef.current.dragEl?.classList[showOrigDragEl ? 'remove' : 'add'](style.hidden);
     draggingInOutRef.current = false;
-  });
+  }, [showOrigDragEl]);
 
   return {
     draggablesRef,
