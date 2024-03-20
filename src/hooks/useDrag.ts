@@ -28,8 +28,6 @@ export default function _useDrag({
 
   const dragProps = {
     onDragEnd: () => setDragging(false),
-    // onDragEnter: handleDragEnter,
-    // onDragLeave: handleDragLeave,
     onDragStart: () => setDragging(true),
   }
 

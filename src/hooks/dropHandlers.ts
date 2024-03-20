@@ -74,7 +74,7 @@ export function onHover({
   
   if (!moving && canHover.current && dndItm.currentBoxEl === boxRef?.current) {
     const draggables = draggablesRef?.current as DraggableHandle[];
-    // console.log('hover', draggables);
+    // console.log('hover', moving, canHover.current, dndItm.currentBoxEl, boxRef.current, draggables);
     const mInfo = getMouseInfo(draggables, monitor.getClientOffset());
 
     if (mInfo.hoverIdx !== undefined && dndItm.index !== mInfo.hoverIdx) {
@@ -83,7 +83,6 @@ export function onHover({
 
       if (dndItm.index !== toIdx) {
         toIdRef.current = draggables[toIdx].getId();
-        // console.log('moveItem', dndItm.index, toIdx);
         moveItem(dndItm.index, toIdx);
         dndItm.index = toIdx;
       }

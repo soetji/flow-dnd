@@ -75,17 +75,14 @@ export function useDropHandlers({
         if (boxInfoRef.current.dragEl) {
           setShowOrigDragEl(true);
           dndItm.index = boxInfoRef.current.itemLeaveIndex;
-          // addToEndInfo(dndItm.id, items, endInfoRef.current);
+          // console.log('_onDragEnter index', dndItm.index)
         } else {
           const newItem = dndItm.itemToCopy as ItemWithId;
           const newItems = [...items, newItem];
-          // addToEndInfo(dndItm.id, newItems, endInfoRef.current);
           setItemsAndPrev(newItems);
           onDragEnter(newItem, newItems);
         }
       }
-    } else {
-      onDragEnter();
     }
   }
 
@@ -111,17 +108,14 @@ export function useDropHandlers({
           setShowOrigDragEl(false);
           dndItm.setStartBoxInfo = setStartBoxInfo;
           boxInfoRef.current.itemLeaveIndex = dndItm.index;
-          // console.log('_onDragLeave', boxInfoRef.current.itemLeaveIndex);
+          // console.log('_onDragLeave in box', boxInfoRef.current.itemLeaveIndex);
         } else {
           const newItems = items.toSpliced(dndItm.index, 1);
-          // removeFromEndInfo(dndItm.id, newItems, endInfoRef.current);
           setItemsAndPrev(newItems);
-          // console.log('onDragLeave', dndItm.id, newItems);
+          // console.log('_onDragLeave out box', dndItm.id, newItems);
           onDragLeave(dndItm.id, newItems);
         }
       }
-    } else {
-      onDragLeave();
     }
   };
 

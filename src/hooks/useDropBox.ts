@@ -64,6 +64,7 @@ export default function useDropBox({
   });
 
   const moveItem = (from: number, to: number) => {
+    // console.log('moveItem', from, to, items);
     const itemFrom = items[from];
     setItemsAndPrev(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
   };
@@ -104,10 +105,13 @@ export default function useDropBox({
     const dndItm = dragDropManager.getMonitor().getItem();
     if (dndItm !== null) {
       const idx = items.findIndex((it) => it.id === dndItm.id);
-      // console.log('initNewDragItem', idx, getIds(items));
-      dndItm.index = idx;
-      draggablesRef.current[idx]?.getDOMElement()
-        .classList.add(style.dragging);
+      // console.log('initNewDragItem', idx, dndItm.id, getIds(items));
+      // If drag item not removed
+      if (idx !== -1) {
+        dndItm.index = idx;
+        draggablesRef.current[idx]?.getDOMElement()
+          .classList.add(style.dragging);
+      }
     }
   }
 
