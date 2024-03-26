@@ -47,7 +47,7 @@ export interface HTMLDroppableProps {
 export interface DroppableBoxRenderProps {
   draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
   droppableRef: RefObject<HTMLElement>,
-  droppableProps: HTMLDroppableProps,
+  droppableProps: HTMLDroppableProps | {},
   items: ItemWithId[],
 }
 
@@ -71,10 +71,12 @@ export interface DroppableProps {
 }
 
 export interface DroppableBoxProps extends DroppableProps {
+  canDrop: boolean,
   children: (props: DroppableBoxRenderProps) => JSX.Element,
 }
 
 export interface UseDropBoxProps extends DroppableProps {
+  canDrop: boolean,
   moving: boolean,
 }
 

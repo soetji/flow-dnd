@@ -20,16 +20,16 @@ export default function _useDrag({
     item: () => {
       return { id, index, type } as DndItem;
     },
-    canDrag,
+    canDrag: () => canDrag,
     // collect: (monitor) => ({
     //   dragging: monitor.dragging()
     // }),
-  });
+  }, [canDrag]);
 
-  const dragProps = {
+  const dragProps = canDrag ? {
     onDragEnd: () => setDragging(false),
     onDragStart: () => setDragging(true),
-  }
+  } : {}
 
   const dragClassName = dragging ? style.dragging : '';
 

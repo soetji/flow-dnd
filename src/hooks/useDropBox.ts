@@ -16,6 +16,7 @@ import style from './drag.module.css';
 export default function useDropBox({
   accept,
   canDragInOut = false,
+  canDrop = true,
   // fixedItemIds,
   items: defaultItems,
   moving,
@@ -71,6 +72,7 @@ export default function useDropBox({
 
   const [, drop] = useDrop({
     accept,
+    canDrop: () => canDrop,
 
     drop: (dndItm: DndItem) => {
       handlers.onDrop({
@@ -95,7 +97,7 @@ export default function useDropBox({
         toIdRef,
       })
     },
-  });
+  }, [canDrop]);
 
   drop(boxRef);
 
@@ -141,11 +143,11 @@ export default function useDropBox({
     draggablesRef,
     droppableRef: boxRef,
     items,
-    droppableProps: {
+    droppableProps: canDrop ? {
       onDragEnd: _onDragEnd,
       onDragEnter: _onDragEnter,
       onDragLeave: _onDragLeave,
       onDragStart: _onDragStart,
-    }
+    } : {}
   };
 }
