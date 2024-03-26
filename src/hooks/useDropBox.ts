@@ -97,7 +97,7 @@ export default function useDropBox({
         toIdRef,
       })
     },
-  }, [canDrop]);
+  });
 
   drop(boxRef);
 

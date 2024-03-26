@@ -24,7 +24,7 @@ export default function _useDrag({
     // collect: (monitor) => ({
     //   dragging: monitor.dragging()
     // }),
-  }, [canDrag]);
+  });
 
   const dragProps = canDrag ? {
     onDragEnd: () => setDragging(false),
@@ -32,6 +32,8 @@ export default function _useDrag({
   } : {}
 
   const dragClassName = dragging ? style.dragging : '';
+  // console.log({dragClassName});
+  
 
   return { drag, dragClassName, dragProps, dragging };
 }

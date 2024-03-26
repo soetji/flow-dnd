@@ -5,7 +5,7 @@ export type ItemId = number | string;
 export type GroupId = number | string;
 
 export interface DraggableRenderProps<InnerElementType> {
-  canDrag: boolean,
+  canDrag?: boolean,
   dragClassName: string,
   dragProps: object,
   innerElementRef: MutableRefObject<InnerElementType>,
@@ -47,7 +47,7 @@ export interface HTMLDroppableProps {
 export interface DroppableBoxRenderProps {
   draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
   droppableRef: RefObject<HTMLElement>,
-  droppableProps: HTMLDroppableProps | {},
+  droppableProps: HTMLDroppableProps | object,
   items: ItemWithId[],
 }
 
@@ -71,12 +71,12 @@ export interface DroppableProps {
 }
 
 export interface DroppableBoxProps extends DroppableProps {
-  canDrop: boolean,
+  canDrop?: boolean,
   children: (props: DroppableBoxRenderProps) => JSX.Element,
 }
 
 export interface UseDropBoxProps extends DroppableProps {
-  canDrop: boolean,
+  canDrop?: boolean,
   moving: boolean,
 }
 
