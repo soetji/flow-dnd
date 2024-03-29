@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Flipper } from 'react-flip-toolkit';
+// import { ItemWithId } from './types';
 
 import useDropBox from './hooks/useDropBox';
 import { DraggableHandle, DroppableBoxProps } from './types';
@@ -44,6 +45,12 @@ export default function DroppableBox({
   // Only on items change
   const handleFlipperStart = () => setMoving(true);
   const handleFlipperComplete = () => setMoving(false);
+
+  // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
+  // console.log('DroppableBox', getIds(_items));
+  
+  // return children({ draggableRefByIndex, droppableRef,
+  //   droppableProps, items: _items });
 
   return (
     <Flipper flipKey={JSON.stringify(_items)}

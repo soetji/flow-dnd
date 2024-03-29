@@ -78,6 +78,7 @@ export function useDropHandlers({
           // console.log('_onDragEnter index', dndItm.index)
         } else {
           const newItem = dndItm.itemToCopy as ItemWithId;
+          // console.log('_onDragEnter newItem', newItem)
           const newItems = [...items, newItem];
           setItemsAndPrev(newItems);
           onDragEnter(newItem, newItems);
@@ -89,7 +90,7 @@ export function useDropHandlers({
   const _onDragLeave = (ev: DragEvent) => {
     if (canDragInOut) {
       const dndItm = dragDropManager.getMonitor().getItem();
-      // console.log('_onDragLeave?', items, ev.currentTarget, ev.target, ev.relatedTarget);
+      // console.log('_onDragLeave?', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
       
       if (dndItm.type === accept &&
         // Left to an existing element
@@ -99,7 +100,7 @@ export function useDropHandlers({
         ev.currentTarget !== ev.relatedTarget &&
         !(ev.currentTarget as HTMLElement).contains(ev.relatedTarget as HTMLElement)
       ) {
-        // console.log('_onDragLeave', items, ev.currentTarget, ev.target, ev.relatedTarget);
+        // console.log('_onDragLeave', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
         dndItm.setStartBoxInfo({ dropBoxEl: dndItm.startBoxEl });
         canHover.current = false;
         

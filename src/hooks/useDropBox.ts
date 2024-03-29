@@ -41,6 +41,7 @@ export default function useDropBox({
   draggablesRef.current = [];
 
   const setItemsAndPrev = (newItems: ItemWithId[]) => {
+    // console.log('setItemsAndPrev', getIds(newItems));
     prevItemsRef.current = items;
     setItems(newItems);
   }
@@ -65,7 +66,7 @@ export default function useDropBox({
   });
 
   const moveItem = (from: number, to: number) => {
-    // console.log('moveItem', from, to, items);
+    // console.log('moveItem', from, to, getIds(items));
     const itemFrom = items[from];
     setItemsAndPrev(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
   };
