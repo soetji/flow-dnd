@@ -1,15 +1,17 @@
 import { MutableRefObject, Ref, RefObject } from 'react';
-// import { ConnectDropTarget } from 'react-dnd';
+// import { ConnectDropTarget, ConnectDragSource } from 'react-dnd';
+import { ConnectDragPreview  } from 'react-dnd';
 
 export type ItemId = number | string;
 export type GroupId = number | string;
 
-export interface DraggableRenderProps<InnerElementType> {
+export interface DraggableRenderProps<dragElementType> {
   canDrag?: boolean,
   dragClassName: string,
+  dragElementRef: MutableRefObject<dragElementType>,
   dragProps: object,
-  innerElementRef: MutableRefObject<InnerElementType>,
   dragging: boolean,
+  previewConnect: ConnectDragPreview,
 }
 
 interface _DraggableProps {
@@ -19,8 +21,8 @@ interface _DraggableProps {
   type: string,
 }
 
-export interface DraggableProps<InnerElementType> extends _DraggableProps {
-  children: (props: DraggableRenderProps<InnerElementType>) => JSX.Element,
+export interface DraggableProps<dragElementType> extends _DraggableProps {
+  children: (props: DraggableRenderProps<dragElementType>) => JSX.Element,
   draggableRef: Ref<DraggableHandle>,
 }
 

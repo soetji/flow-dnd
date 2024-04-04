@@ -15,7 +15,7 @@ export default function _useDrag({
   const [dragging, setDragging] = useState(false);
 
   // const [{ dragging: _isDragging }, drag] = useDrag({
-  const [, drag] = useDrag({
+  const [, drag, preview] = useDrag({
     type,
     item: () => {
       return { id, index, type } as DndItem;
@@ -35,5 +35,5 @@ export default function _useDrag({
   // console.log({dragClassName});
   
 
-  return { drag, dragClassName, dragProps, dragging };
+  return { drag, dragClassName, dragProps, dragging, previewConnect: preview };
 }
