@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState, MutableRefObject } from 'react';
-import { useDragDropManager, useDrop } from 'react-dnd';
+import { useDragDropManager } from 'react-dnd';
 import { isEqual, noop } from 'lodash';
 
-import * as handlers from './dropHandlers';
-
-import { useDropHandlers } from './useDropHandlers';
 import {
-  BoxInfo, DraggableHandle, DndItem, ItemId,
+  BoxInfo, DraggableHandle, ItemId,
   ItemWithId, UseDropBoxProps
 } from '../types';
+
+import useDrop from './useDrop';
+import useDropBoxHandlers from './useDropBoxHandlers';
 import styles from './styles.module.css';
 
 // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
@@ -51,7 +51,7 @@ export default function useDropBox({
     _onDragEnter,
     _onDragLeave,
     _onDragEnd,
-  } = useDropHandlers({
+  } = useDropBoxHandlers({
     accept,
     boxInfoRef,
     canDragInOut,
@@ -65,42 +65,20 @@ export default function useDropBox({
     onDragStart,
   });
 
-  const moveItem = (from: number, to: number) => {
-    // console.log('moveItem', from, to, getIds(items));
-    const itemFrom = items[from];
-    setItemsAndPrev(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
-  };
-
-  const [, drop] = useDrop({
+  useDrop({
     accept,
-    canDrop: () => canDrop,
-
-    drop: (dndItm: DndItem) => {
-      handlers.onDrop({
-        defaultItems,
-        dndItm,
-        draggablesRef,
-        items,
-        toIdRef,
-        onDrop,
-      })
-    },
-
-    hover: (dndItm: DndItem, monitor) => {
-      handlers.onHover({
-        boxRef,
-        dndItm,
-        draggablesRef,
-        canHover,
-        monitor,
-        moveItem,
-        moving,
-        toIdRef,
-      })
-    },
-  });
-
-  drop(boxRef);
+    boxRef,
+    canDrop,
+    canHover,
+    defaultItems,
+    draggablesRef,
+    // fixedItemIds,
+    items,
+    moving,
+    setItemsAndPrev,
+    toIdRef,
+    onDrop,
+  })
 
   // console.log('current', getIds(items), getIds(defaultItems));
 
