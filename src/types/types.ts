@@ -82,6 +82,21 @@ export interface UseDropBoxProps extends DroppableProps {
   moving: boolean,
 }
 
+export interface UseDropProps {
+  accept: string,
+  boxRef: MutableRefObject<HTMLElement>,
+  canDrop: boolean,
+  canHoverRef: MutableRefObject<boolean>,
+  defaultItems: ItemWithId[],
+  draggablesRef: MutableRefObject<DraggableHandle[]>,
+  // fixedItemIds,
+  items: ItemWithId[],
+  moving: boolean,
+  setItemsAndPrev: (items: ItemWithId[]) => void,
+  toIdRef: MutableRefObject<ItemId>,
+  onDrop?: (info: OnDropInfo) => void,
+}
+
 export interface BoxInfo {
   boxEl: HTMLElement,
   dragPreviewSrcEl: HTMLElement,
@@ -92,7 +107,7 @@ export interface BoxInfo {
 
 export interface UseDropHandlersProps extends DroppableProps {
   boxInfoRef: MutableRefObject<Partial<BoxInfo>>,
-  canHover: MutableRefObject<boolean>,
+  canHoverRef: MutableRefObject<boolean>,
   setItemsAndPrev: (items: ItemWithId[]) => void,
   setShowDragPreviewSrcEl: (show: boolean) => void,
 }

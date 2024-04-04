@@ -1,14 +1,15 @@
+
 import { useDrop } from 'react-dnd';
 import { noop } from 'lodash';
 
-import { DndItem } from '../types';
+import { DndItem, UseDropProps } from '../types';
 import * as handlers from './useDropHandlers';
 
 export default function _useDrop({
   accept,
   boxRef,
   canDrop = true,
-  canHover,
+  canHoverRef,
   defaultItems,
   draggablesRef,
   // fixedItemIds,
@@ -17,7 +18,7 @@ export default function _useDrop({
   setItemsAndPrev,
   toIdRef,
   onDrop = noop,
-}) {
+}: UseDropProps) {
   const moveItem = (from: number, to: number) => {
     // console.log('moveItem', from, to, getIds(items));
     const itemFrom = items[from];
@@ -44,7 +45,7 @@ export default function _useDrop({
         boxRef,
         dndItm,
         draggablesRef,
-        canHover,
+        canHoverRef,
         monitor,
         moveItem,
         moving,

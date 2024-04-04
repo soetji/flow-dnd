@@ -52,7 +52,7 @@ interface OnHoverProps {
   boxRef: RefObject<HTMLElement>,
   dndItm: DndItem,
   draggablesRef: RefObject<DraggableHandle[]>,
-  canHover: MutableRefObject<boolean>,
+  canHoverRef: MutableRefObject<boolean>,
   monitor: DropTargetMonitor,
   moveItem: (from: number, to: number) => void,
   moving: boolean,
@@ -63,19 +63,19 @@ export function onHover({
   boxRef,
   dndItm,
   draggablesRef,
-  canHover,
+  canHoverRef,
   monitor,
   moveItem,
   moving,
   toIdRef,
 }: OnHoverProps) {
 
-  // console.log('hover?', moving, canHover.current, dndItm.currentBoxEl, boxRef.current);
+  // console.log('hover?', moving, canHoverRef.current, dndItm.currentBoxEl, boxRef.current);
   
-  if (!moving && canHover.current && dndItm.currentBoxEl === boxRef?.current) {
+  if (!moving && canHoverRef.current && dndItm.currentBoxEl === boxRef?.current) {
     const draggables = draggablesRef?.current as DraggableHandle[];
     const mInfo = getMouseInfo(draggables, monitor.getClientOffset());
-    // console.log('hover', moving, canHover.current, dndItm.currentBoxEl, boxRef.current, draggables, dndItm.index, mInfo);
+    // console.log('hover', moving, canHoverRef.current, dndItm.currentBoxEl, boxRef.current, draggables, dndItm.index, mInfo);
 
     if (mInfo.hoverIdx !== undefined && dndItm.index !== mInfo.hoverIdx) {
       const toIdx = getToIdx(dndItm.index, mInfo.hoverIdx, mInfo.side as string);

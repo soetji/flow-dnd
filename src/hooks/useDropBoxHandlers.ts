@@ -9,7 +9,7 @@ export default function useDropHandlers({
   accept,
   boxInfoRef,
   canDragInOut,
-  canHover,
+  canHoverRef,
   items,
   setItemsAndPrev,
   setShowDragPreviewSrcEl,
@@ -71,7 +71,7 @@ export default function useDropHandlers({
         // console.log('_onDragEnter', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
         dndItm.setStartBoxInfo({ dropBoxEl: ev.currentTarget });
         dndItm.currentBoxEl = ev.currentTarget;
-        canHover.current = false;
+        canHoverRef.current = false;
 
         // Drag el is from box
         if (boxInfoRef.current.dragPreviewSrcEl) {
@@ -104,7 +104,7 @@ export default function useDropHandlers({
       ) {
         // console.log('_onDragLeave', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
         dndItm.setStartBoxInfo({ dropBoxEl: dndItm.startBoxEl });
-        canHover.current = false;
+        canHoverRef.current = false;
         
         // Drag el is from box
         if (boxInfoRef.current.dragPreviewSrcEl) {
