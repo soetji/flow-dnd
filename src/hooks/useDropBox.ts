@@ -9,7 +9,7 @@ import {
   BoxInfo, DraggableHandle, DndItem, ItemId,
   ItemWithId, UseDropBoxProps
 } from '../types';
-import style from './drag.module.css';
+import styles from './styles.module.css';
 
 // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
 
@@ -27,7 +27,7 @@ export default function useDropBox({
   onDrop = noop,
 }: UseDropBoxProps) {
   const [items, setItems] = useState<ItemWithId[]>(structuredClone(defaultItems));
-  const [showOrigDragEl, setShowOrigDragEl] = useState(true);
+  const [showDragPreviewSrcEl, setShowDragPreviewSrcEl] = useState(true);
   const boxInfoRef = useRef({}) as MutableRefObject<BoxInfo>;
   const boxRef = useRef<HTMLElement>(null);
   const canHover = useRef(false); // True to prevent hover triggers
@@ -58,7 +58,7 @@ export default function useDropBox({
     canHover,
     items,
     setItemsAndPrev,
-    setShowOrigDragEl,
+    setShowDragPreviewSrcEl,
     onDragEnd,
     onDragEnter,
     onDragLeave,
@@ -106,6 +106,8 @@ export default function useDropBox({
 
   const initNewDragItem = () => {
     const dndItm = dragDropManager.getMonitor().getItem();
+    // console.log('initNewDragItem', dndItm);
+    
     if (dndItm !== null) {
       const idx = items.findIndex((it) => it.id === dndItm.id);
       // console.log('initNewDragItem', idx, dndItm.id, getIds(items));
@@ -113,7 +115,7 @@ export default function useDropBox({
       if (idx !== -1) {
         dndItm.index = idx;
         draggablesRef.current[idx]?.getDOMElement()
-          .classList.add(style.dragging);
+          .classList.add(styles.dragging);
       }
     }
   }
@@ -135,10 +137,10 @@ export default function useDropBox({
   }, [JSON.stringify(items)]);
 
   useEffect(() => {
-    boxInfoRef.current.dragEl?.classList[showOrigDragEl ? 'remove' : 'add'](style.hidden);
+    boxInfoRef.current.dragPreviewSrcEl?.classList[showDragPreviewSrcEl ? 'remove' : 'add'](styles.hidden);
     // Restore hover after enter and leave events in the orig drag box
     canHover.current = true;
-  }, [showOrigDragEl]);
+  }, [showDragPreviewSrcEl]);
 
   return {
     draggablesRef,

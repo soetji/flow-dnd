@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { DndItem, UseDragProps } from '../types';
 
-import style from './drag.module.css';
+import styles from './styles.module.css';
 
 export default function _useDrag({
   canDrag = true,
@@ -31,7 +31,7 @@ export default function _useDrag({
     onDragStart: () => setDragging(true),
   } : {}
 
-  const dragClassName = dragging ? style.dragging : '';
+  const dragClassName = dragging ? styles.dragging : '';
   // console.log({dragClassName});
   
 

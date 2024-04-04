@@ -8,7 +8,7 @@ import {
 } from '../types';
 import { getMouseInfo, getToIdx } from './utils';
 
-import style from './drag.module.css';
+import styles from './styles.module.css';
 // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
 
 interface OnDropProps {
@@ -33,7 +33,7 @@ export function onDrop({
     const idx = items.findIndex(it => it.id === dndItm.id);
     // console.log('onDrop', getIds(items), idx, draggablesRef.current);
     draggablesRef.current[idx] && draggablesRef.current[idx].getDOMElement()
-      .classList.remove(style.dragging);
+      .classList.remove(styles.dragging);
   }, 500);
 
   if (onDrop && toIdRef.current !== null &&

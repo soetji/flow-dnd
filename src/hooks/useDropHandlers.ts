@@ -3,6 +3,7 @@ import { noop } from 'lodash';
 import { BoxInfo, ItemWithId, UseDropHandlersProps } from '../types';
 
 // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
+import styles from './styles.module.css';
 
 export function useDropHandlers({
   accept,
@@ -11,7 +12,7 @@ export function useDropHandlers({
   canHover,
   items,
   setItemsAndPrev,
-  setShowOrigDragEl,
+  setShowDragPreviewSrcEl,
   onDragEnd = noop,
   onDragEnter = noop,
   onDragLeave = noop,
@@ -23,13 +24,13 @@ export function useDropHandlers({
     boxInfoRef.current = { ...boxInfoRef.current, ...info };
 
   const _onDragStart = (ev: DragEvent) => {
-    const boxEl = ev.currentTarget;
+    const boxEl = ev.currentTarget as HTMLElement;
+    const dragEl = ev.target as HTMLElement;
     boxInfoRef.current = {
       boxEl,
-      dragEl: ev.target,
       dropBoxEl: boxEl,
-    } as BoxInfo;
-    setShowOrigDragEl(true);
+    };
+    setShowDragPreviewSrcEl(true);
     onDragStart();
     
     setTimeout(() => {
@@ -41,6 +42,7 @@ export function useDropHandlers({
 
       boxInfoRef.current = {
         ...boxInfoRef.current,
+        dragPreviewSrcEl: dragEl.closest(`.${styles.dragging}`),
         itemId: dndItm.id,
         itemLeaveIndex: dndItm.index,
       } as BoxInfo;
@@ -72,8 +74,8 @@ export function useDropHandlers({
         canHover.current = false;
 
         // Drag el is from box
-        if (boxInfoRef.current.dragEl) {
-          setShowOrigDragEl(true);
+        if (boxInfoRef.current.dragPreviewSrcEl) {
+          setShowDragPreviewSrcEl(true);
           dndItm.index = boxInfoRef.current.itemLeaveIndex;
           // console.log('_onDragEnter index', dndItm.index)
         } else {
@@ -105,8 +107,8 @@ export function useDropHandlers({
         canHover.current = false;
         
         // Drag el is from box
-        if (boxInfoRef.current.dragEl) {
-          setShowOrigDragEl(false);
+        if (boxInfoRef.current.dragPreviewSrcEl) {
+          setShowDragPreviewSrcEl(false);
           dndItm.setStartBoxInfo = setStartBoxInfo;
           boxInfoRef.current.itemLeaveIndex = dndItm.index;
           // console.log('_onDragLeave in box', boxInfoRef.current.itemLeaveIndex);
