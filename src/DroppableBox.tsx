@@ -3,7 +3,7 @@ import { Flipper } from 'react-flip-toolkit';
 // import { ItemWithId } from './types';
 
 import useDropBox from './hooks/useDropBox';
-import { DraggableHandle, DroppableBoxProps } from './types';
+import { DraggableImpHandle, DroppableBoxProps } from './types';
 
 export default function DroppableBox({
   accept,
@@ -21,7 +21,8 @@ export default function DroppableBox({
   const [moving, setMoving] = useState(false);
 
   const {
-    draggablesRef,
+    draggableImpsRef,
+    draggingTs,
     droppableRef,
     items: _items,
     droppableProps,
@@ -40,7 +41,12 @@ export default function DroppableBox({
   });
 
   const draggableRefByIndex = (idx: number) =>
-    (el: DraggableHandle) => (draggablesRef.current[idx] = el);
+    (handleEl: DraggableImpHandle) => {
+      handleEl && (draggableImpsRef.current[idx] = handleEl);
+      // console.log('draggableRefByIndex', idx, handleEl && handleEl.getId(), draggableImpsRef.current, draggableImpsRef.current.length);
+    }
+
+  // console.log('draggableImpsRef.current', draggableImpsRef.current, JSON.stringify([..._items, draggingTs]));
 
   // Only on items change
   const handleFlipperStart = () => setMoving(true);
@@ -53,7 +59,7 @@ export default function DroppableBox({
   //   droppableProps, items: _items });
 
   return (
-    <Flipper flipKey={JSON.stringify(_items)}
+    <Flipper flipKey={JSON.stringify([..._items, draggingTs])}
       onStart={handleFlipperStart}
       onComplete={handleFlipperComplete}
     >

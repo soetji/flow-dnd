@@ -3,7 +3,7 @@ import { DropTargetMonitor } from 'react-dnd';
 import { isEqual } from 'lodash';
 
 import {
-  DraggableHandle, DndItem, ItemId, ItemWithId,
+  DraggableImpHandle, DndItem, ItemId, ItemWithId,
   OnDropInfo
 } from '../types';
 import { getMouseInfo, getToIdx } from './utils';
@@ -14,7 +14,7 @@ import styles from './styles.module.css';
 interface OnDropProps {
   defaultItems: ItemWithId[],
   dndItm: DndItem,
-  draggablesRef: MutableRefObject<DraggableHandle[]>,
+  draggableImpsRef: MutableRefObject<DraggableImpHandle[]>,
   items: ItemWithId[],
   toIdRef: MutableRefObject<ItemId>,
   onDrop: (info: OnDropInfo) => void,
@@ -23,17 +23,17 @@ interface OnDropProps {
 export function onDrop({
   defaultItems,
   dndItm,
-  draggablesRef,
+  draggableImpsRef,
   items,
   toIdRef,
   onDrop
 }: OnDropProps) {
-  // Delay until draggablesRef fill up
+  // Delay until draggableImpsRef fill up
   setTimeout(() => {
     const idx = items.findIndex(it => it.id === dndItm.id);
-    // console.log('onDrop', getIds(items), idx, draggablesRef.current);
-    draggablesRef.current[idx] && draggablesRef.current[idx].getDOMElement()
-      .classList.remove(styles.dragging);
+    // console.log('onDrop', getIds(items), idx, draggableImpsRef.current);
+    draggableImpsRef.current[idx] && draggableImpsRef.current[idx].getDOMElement()
+      ?.classList.remove(styles.dragging);
   }, 500);
 
   if (onDrop && toIdRef.current !== null &&
@@ -51,7 +51,7 @@ export function onDrop({
 interface OnHoverProps {
   boxRef: RefObject<HTMLElement>,
   dndItm: DndItem,
-  draggablesRef: RefObject<DraggableHandle[]>,
+  draggableImpsRef: RefObject<DraggableImpHandle[]>,
   canHoverRef: MutableRefObject<boolean>,
   monitor: DropTargetMonitor,
   moveItem: (from: number, to: number) => void,
@@ -62,7 +62,7 @@ interface OnHoverProps {
 export function onHover({
   boxRef,
   dndItm,
-  draggablesRef,
+  draggableImpsRef,
   canHoverRef,
   monitor,
   moveItem,
@@ -73,16 +73,18 @@ export function onHover({
   // console.log('hover?', moving, canHoverRef.current, dndItm.currentBoxEl, boxRef.current);
   
   if (!moving && canHoverRef.current && dndItm.currentBoxEl === boxRef?.current) {
-    const draggables = draggablesRef?.current as DraggableHandle[];
-    const mInfo = getMouseInfo(draggables, monitor.getClientOffset());
-    // console.log('hover', moving, canHoverRef.current, dndItm.currentBoxEl, boxRef.current, draggables, dndItm.index, mInfo);
+    const draggableImps = draggableImpsRef?.current as DraggableImpHandle[];
+    // console.log('draggableImps', draggableImps);
+    
+    const mInfo = getMouseInfo(draggableImps, monitor.getClientOffset());
+    // console.log('hover', moving, canHoverRef.current, dndItm.currentBoxEl, boxRef.current, draggableImps, dndItm.index, mInfo);
 
     if (mInfo.hoverIdx !== undefined && dndItm.index !== mInfo.hoverIdx) {
       const toIdx = getToIdx(dndItm.index, mInfo.hoverIdx, mInfo.side as string);
       // console.log('hover from', dndItm.index, 'to', mInfo.hoverIdx, toIdx);
 
       if (dndItm.index !== toIdx) {
-        toIdRef.current = draggables[toIdx].getId();
+        toIdRef.current = draggableImps[toIdx].getId();
         moveItem(dndItm.index, toIdx);
         dndItm.index = toIdx;
       }

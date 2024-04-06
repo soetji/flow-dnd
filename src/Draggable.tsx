@@ -3,6 +3,7 @@ import { MutableRefObject, useImperativeHandle, useRef } from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import useDrag from './hooks/useDrag';
 import { DraggableProps } from './types';
+import { getDragSrcEl } from './hooks/utils';
 
 export default function Draggable<dragElementType>({
   canDrag = true,
@@ -12,14 +13,14 @@ export default function Draggable<dragElementType>({
   index,
   type,
 }: DraggableProps<dragElementType>) {
-  const dragElementRef = useRef<dragElementType>(null) as MutableRefObject<dragElementType>;
+  const dragHandleRef = useRef<dragElementType>(null) as MutableRefObject<dragElementType>;
 
   // useEffect(() => {
   //   console.log('mount', id);
   // }, []);
 
   useImperativeHandle(draggableRef, () => ({
-    getDOMElement: () => dragElementRef.current as HTMLElement,
+    getDOMElement: () => getDragSrcEl(dragHandleRef.current as HTMLElement),
     getId: () => id,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);
@@ -31,14 +32,19 @@ export default function Draggable<dragElementType>({
     type,
   });
 
-  drag(dragElementRef);
+  drag(dragHandleRef);
+
+  // Clear style left by Flipped
+  const onComplete = (el: HTMLElement) =>  el.attributeStyleMap.clear();
 
   return (
-    <Flipped key={id} flipId={id}>
+    <Flipped key={id} flipId={id}
+      onComplete={onComplete}
+    >
       {flippedProps => children({
         canDrag,
         dragClassName,
-        dragElementRef,
+        dragHandleRef,
         dragProps: {...dragProps, ...flippedProps},
         dragging,
         previewConnect,

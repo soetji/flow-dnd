@@ -1,12 +1,12 @@
 import React, { Ref, useRef, MutableRefObject } from 'react';
 import Draggable from '../Draggable';
-import { DraggableHandle } from '../types';
+import { DraggableImpHandle } from '../types';
 
 import './item.css';
 
 interface Props {
   id: string | number,
-  draggableRef: Ref<DraggableHandle>,
+  draggableRef: Ref<DraggableImpHandle>,
   idx: number,
 }
 
@@ -25,7 +25,7 @@ export default function Item({
       draggableRef={draggableRef}
       type='myItem'
     >
-      {({ canDrag, dragClassName, dragElementRef, dragProps, previewConnect }) => {
+      {({ canDrag, dragClassName, dragHandleRef, dragProps, previewConnect }) => {
         return (
           <div
             className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${canDrag ? 'can-drag' : ''} ${dragClassName}`}
@@ -33,13 +33,13 @@ export default function Item({
               if (id === '14') {
                 previewConnect && previewConnect(el);
               } else {
-                dragElementRef && (dragElementRef.current = el);
+                dragHandleRef && (dragHandleRef.current = el);
               }
               itemRef.current = el;
             }}
             {...dragProps}
           >
-            <div className='bar' ref={id === '14' ? dragElementRef : undefined}></div>
+            <div className='bar' ref={id === '14' ? dragHandleRef : undefined}></div>
             <div className='content'>{id}</div>
             <div className='test-drag-overflow'>TEST</div>
           </div>

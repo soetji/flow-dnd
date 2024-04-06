@@ -3,7 +3,7 @@ import { useDrop } from 'react-dnd';
 import { noop } from 'lodash';
 
 import { DndItem, UseDropProps } from '../types';
-import * as handlers from './useDropHandlers';
+import * as handlers from './dropHandlers';
 
 export default function _useDrop({
   accept,
@@ -11,7 +11,7 @@ export default function _useDrop({
   canDrop = true,
   canHoverRef,
   defaultItems,
-  draggablesRef,
+  draggableImpsRef,
   // fixedItemIds,
   items,
   moving,
@@ -33,7 +33,7 @@ export default function _useDrop({
       handlers.onDrop({
         defaultItems,
         dndItm,
-        draggablesRef,
+        draggableImpsRef,
         items,
         toIdRef,
         onDrop,
@@ -44,7 +44,7 @@ export default function _useDrop({
       handlers.onHover({
         boxRef,
         dndItm,
-        draggablesRef,
+        draggableImpsRef,
         canHoverRef,
         monitor,
         moveItem,

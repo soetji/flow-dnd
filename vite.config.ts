@@ -35,4 +35,7 @@ export default defineConfig({
     cssInjectedByJsPlugin(),
     react()
   ],
+  server: {
+    port: 5174
+  }
 })

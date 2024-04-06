@@ -8,7 +8,7 @@ export type GroupId = number | string;
 export interface DraggableRenderProps<dragElementType> {
   canDrag?: boolean,
   dragClassName: string,
-  dragElementRef: MutableRefObject<dragElementType>,
+  dragHandleRef: MutableRefObject<dragElementType>,
   dragProps: object,
   dragging: boolean,
   previewConnect: ConnectDragPreview,
@@ -23,7 +23,7 @@ interface _DraggableProps {
 
 export interface DraggableProps<dragElementType> extends _DraggableProps {
   children: (props: DraggableRenderProps<dragElementType>) => JSX.Element,
-  draggableRef: Ref<DraggableHandle>,
+  draggableRef: Ref<DraggableImpHandle>,
 }
 
 export interface UseDragProps extends _DraggableProps {
@@ -34,8 +34,8 @@ export interface ItemWithId {
   [key: string]: unknown,
 }
 
-export interface DraggableHandle {
-  getDOMElement: () => HTMLElement,
+export interface DraggableImpHandle {
+  getDOMElement: () => HTMLElement | null,
   getId: () => ItemId,
 }
 
@@ -47,7 +47,7 @@ export interface HTMLDroppableProps {
 }
 
 export interface DroppableBoxRenderProps {
-  draggableRefByIndex: (index: number) => Ref<DraggableHandle>, 
+  draggableRefByIndex: (index: number) => Ref<DraggableImpHandle>, 
   droppableRef: RefObject<HTMLElement>,
   droppableProps: HTMLDroppableProps | object,
   items: ItemWithId[],
@@ -84,11 +84,11 @@ export interface UseDropBoxProps extends DroppableProps {
 
 export interface UseDropProps {
   accept: string,
-  boxRef: MutableRefObject<HTMLElement>,
+  boxRef: RefObject<HTMLElement>,
   canDrop: boolean,
   canHoverRef: MutableRefObject<boolean>,
   defaultItems: ItemWithId[],
-  draggablesRef: MutableRefObject<DraggableHandle[]>,
+  draggableImpsRef: MutableRefObject<DraggableImpHandle[]>,
   // fixedItemIds,
   items: ItemWithId[],
   moving: boolean,
@@ -99,7 +99,7 @@ export interface UseDropProps {
 
 export interface BoxInfo {
   boxEl: HTMLElement,
-  dragPreviewSrcEl: HTMLElement,
+  dragSrcEl: HTMLElement,
   dropBoxEl: HTMLElement,
   itemId: ItemId,
   itemLeaveIndex: number,
@@ -109,7 +109,7 @@ export interface UseDropHandlersProps extends DroppableProps {
   boxInfoRef: MutableRefObject<Partial<BoxInfo>>,
   canHoverRef: MutableRefObject<boolean>,
   setItemsAndPrev: (items: ItemWithId[]) => void,
-  setShowDragPreviewSrcEl: (show: boolean) => void,
+  setShowDragSrcEl: (show: boolean) => void,
 }
 
 export interface DndItem {

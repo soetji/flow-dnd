@@ -1,23 +1,24 @@
+import { useState } from 'react';
 import { useDragDropManager } from 'react-dnd';
 import { noop } from 'lodash';
 import { BoxInfo, ItemWithId, UseDropHandlersProps } from '../types';
-
+import { getDragSrcEl } from './utils';
 // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
-import styles from './styles.module.css';
 
-export default function useDropHandlers({
+export default function useDropBoxHandlers({
   accept,
   boxInfoRef,
   canDragInOut,
   canHoverRef,
   items,
   setItemsAndPrev,
-  setShowDragPreviewSrcEl,
+  setShowDragSrcEl,
   onDragEnd = noop,
   onDragEnter = noop,
   onDragLeave = noop,
   onDragStart = noop,
 }: UseDropHandlersProps) {
+  const [draggingTs, setDraggingTs] = useState(0);
   const dragDropManager = useDragDropManager();
 
   const setStartBoxInfo = (info: object) =>
@@ -30,8 +31,9 @@ export default function useDropHandlers({
       boxEl,
       dropBoxEl: boxEl,
     };
-    setShowDragPreviewSrcEl(true);
+    setShowDragSrcEl(true);
     onDragStart();
+    setDraggingTs(Date.now());
     
     setTimeout(() => {
       const dndItm = dragDropManager.getMonitor().getItem();
@@ -42,7 +44,7 @@ export default function useDropHandlers({
 
       boxInfoRef.current = {
         ...boxInfoRef.current,
-        dragPreviewSrcEl: dragEl.closest(`.${styles.dragging}`),
+        dragSrcEl: getDragSrcEl(dragEl),
         itemId: dndItm.id,
         itemLeaveIndex: dndItm.index,
       } as BoxInfo;
@@ -74,8 +76,8 @@ export default function useDropHandlers({
         canHoverRef.current = false;
 
         // Drag el is from box
-        if (boxInfoRef.current.dragPreviewSrcEl) {
-          setShowDragPreviewSrcEl(true);
+        if (boxInfoRef.current.dragSrcEl) {
+          setShowDragSrcEl(true);
           dndItm.index = boxInfoRef.current.itemLeaveIndex;
           // console.log('_onDragEnter index', dndItm.index)
         } else {
@@ -95,6 +97,7 @@ export default function useDropHandlers({
       // console.log('_onDragLeave?', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
       
       if (dndItm.type === accept &&
+        ev.relatedTarget !== null && // Why?
         // Left to an existing element
         (ev.relatedTarget as HTMLElement).isConnected &&
         (ev.currentTarget as HTMLElement).contains(ev.target as HTMLElement) &&
@@ -107,8 +110,8 @@ export default function useDropHandlers({
         canHoverRef.current = false;
         
         // Drag el is from box
-        if (boxInfoRef.current.dragPreviewSrcEl) {
-          setShowDragPreviewSrcEl(false);
+        if (boxInfoRef.current.dragSrcEl) {
+          setShowDragSrcEl(false);
           dndItm.setStartBoxInfo = setStartBoxInfo;
           boxInfoRef.current.itemLeaveIndex = dndItm.index;
           // console.log('_onDragLeave in box', boxInfoRef.current.itemLeaveIndex);
@@ -141,6 +144,7 @@ export default function useDropHandlers({
   };
 
   return {
+    draggingTs,
     _onDragStart,
     _onDragEnter,
     _onDragLeave,

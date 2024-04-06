@@ -1,5 +1,8 @@
 import { XYCoord } from 'react-dnd';
-import { DraggableHandle, MouseInfo } from '../types';
+import { DraggableImpHandle, MouseInfo } from '../types';
+
+export const getDragSrcEl = (el: HTMLElement | null): HTMLElement | null =>
+  el === null ? null : el.closest('.__flow-dnd-drag-item') as HTMLElement;
 
 function getMouseLocInfo(
   itemRect: DOMRect | null = null,
@@ -33,15 +36,15 @@ function getMouseLocInfo(
 }
 
 export function getMouseInfo(
-  draggables: DraggableHandle[],
+  draggableImps: DraggableImpHandle[],
   clientOffset: XYCoord | null
 ) {
   let info = { dist: Number.POSITIVE_INFINITY } as MouseInfo;
 
-  if (draggables.length) {
-    for (let i = 0; i < draggables.length; i++) {
+  if (draggableImps.length) {
+    for (let i = 0; i < draggableImps.length; i++) {
       const loc = getMouseLocInfo(
-        draggables[i].getDOMElement()?.getBoundingClientRect(),
+        draggableImps[i].getDOMElement()?.getBoundingClientRect(),
         clientOffset
       );
 
