@@ -74,6 +74,8 @@ export default function useDropBoxHandlers({
         dndItm.setStartBoxInfo({ dropBoxEl: ev.currentTarget });
         dndItm.currentBoxEl = ev.currentTarget;
         canHoverRef.current = false;
+        const boxRect = (ev.currentTarget as HTMLElement).getBoundingClientRect();
+        const enterFromTop = ev.clientY <= ((boxRect.top + boxRect.bottom) /2 );
 
         // Drag el is from box
         if (boxInfoRef.current.dragSrcEl) {
@@ -83,7 +85,7 @@ export default function useDropBoxHandlers({
         } else {
           const newItem = dndItm.itemToCopy as ItemWithId;
           // console.log('_onDragEnter newItem', newItem)
-          const newItems = [...items, newItem];
+          const newItems = enterFromTop ? [newItem, ...items] : [...items, newItem];
           setItemsAndPrev(newItems);
           onDragEnter(newItem, newItems);
         }
