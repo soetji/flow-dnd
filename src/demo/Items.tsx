@@ -10,37 +10,48 @@ import Items3 from './Items3';
 const defaultItems = [
   {
     id: '1',
+    size: 'small',
   },
   {
     id: '2',
+    size: 'large',
   },
   {
     id: '3',
+    size: 'small',
   },
   {
     id: '4',
+    size: 'large',
   },
   {
     id: '5',
+    size: 'small',
   },
   {
     id: '6',
+    size: 'large',
   },
   {
     id: '7',
+    size: 'small',
   },
   {
     id: '8',
+    size: 'large',
   },
   {
     id: '9',
+    size: 'small',
   },
   {
     id: '10',
+    size: 'large',
   },
   {
     id: '11',
-    type: 'sss'
+    type: 'sss',
+    size: 'small',
   },
 ];
 
@@ -85,7 +96,7 @@ const Items: FC = () => {
         {({ draggableRefByIndex, droppableRef, droppableProps, items }) => (
           <div className='items' ref={droppableRef} {...droppableProps}>
             {items.map((item, idx) => (
-              <Item key={item.id} id={item.id} idx={idx}
+              <Item key={item.id} item={item} idx={idx}
                 draggableRef={draggableRefByIndex(idx)}
               />
             ))}

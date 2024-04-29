@@ -122,8 +122,8 @@ export interface DndItem {
 }
 
 export interface MouseInfo {
-  isInside?: boolean,
   dist?: number;
   hoverIdx?: number;
-  side?: string;
+  isInside?: boolean,
+  sideToGo?: string;
 }

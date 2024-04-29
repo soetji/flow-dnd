@@ -8,6 +8,11 @@
   /* opacity: 0.9; */
 }
 
+.item.full-width {
+  width: 100%;
+  height: 150px;
+}
+
 .item.small {
   width: 75px;
 }

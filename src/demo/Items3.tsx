@@ -48,7 +48,7 @@ const Items3: FC = () => {
           <div className='items' ref={droppableRef} {...droppableProps} >
             {(//console.log(items),
               items.map((item, idx) => (
-              <Item key={item.id} id={item.id} idx={idx}
+              <Item key={item.id} item={item} idx={idx}
                 draggableRef={draggableRefByIndex(idx)}
               />
             )))}

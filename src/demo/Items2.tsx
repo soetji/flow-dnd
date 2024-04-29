@@ -8,12 +8,15 @@ import Item from './Item';
 const defaultItems = [
   {
     id: '12',
+    size: 'fullWidth',
   },
   {
     id: '13',
+    size: 'small',
   },
   {
     id: '14',
+    size: 'large',
   },
 ];
 
@@ -59,7 +62,7 @@ const Items2: FC = () => {
           <div className='items' ref={droppableRef} {...droppableProps} >
             {(//console.log('item2', items),
               items.map((item, idx) => (
-              <Item key={item.id} id={item.id} idx={idx}
+              <Item key={item.id} item={item} idx={idx}
                 draggableRef={draggableRefByIndex(idx)}
               />
             )))}

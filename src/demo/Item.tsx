@@ -1,21 +1,27 @@
 import React, { Ref, useRef, MutableRefObject } from 'react';
 import Draggable from '../Draggable';
-import { DraggableImpHandle } from '../types';
+import { DraggableImpHandle, ItemWithId } from '../types';
 
 import './item.css';
 
 interface Props {
-  id: string | number,
   draggableRef: Ref<DraggableImpHandle>,
   idx: number,
+  item: ItemWithId,
 }
 
+const sizeClassname = (size) =>
+  size === 'small' ? 'small' :
+  size === 'large' ? 'large' :
+  size === 'fullWidth' ? 'full-width' : 'small';
+
 export default function Item({
-  id,
   draggableRef,
   idx,
+  item,
 }: Props) {
   const itemRef = useRef<HTMLDivElement>(null) as MutableRefObject<HTMLDivElement | null>;
+  const id = item.id;
 
   return (
     <Draggable<HTMLDivElement | null>
@@ -28,7 +34,7 @@ export default function Item({
       {({ canDrag, dragClassName, dragHandleRef, dragProps, previewConnect }) => {
         return (
           <div
-            className={`item ${Number(id) % 2 === 1 ? 'small' : 'large'} ${canDrag ? 'can-drag' : ''} ${dragClassName}`}
+            className={`item ${sizeClassname(item.size)} ${canDrag ? 'can-drag' : ''} ${dragClassName}`}
             ref={(el) => {
               if (id === '14') {
                 previewConnect && previewConnect(el);
