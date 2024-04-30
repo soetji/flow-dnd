@@ -87,7 +87,7 @@ export interface UseDropProps {
   accept: string,
   boxRef: RefObject<HTMLElement>,
   canDrop: boolean,
-  canHoverRef: MutableRefObject<boolean>,
+  // canHoverRef: MutableRefObject<boolean>,
   defaultItems: ItemWithId[],
   draggableImpsRef: MutableRefObject<DraggableImpHandle[]>,
   // fixedItemIds,
@@ -108,7 +108,7 @@ export interface StartBoxInfo {
 }
 
 export interface UseDropHandlersProps extends DroppableProps {
-  canHoverRef: MutableRefObject<boolean>,
+  // canHoverRef: MutableRefObject<boolean>,
   setItemsAndPrev: (items: ItemWithId[]) => void,
   startBoxInfoRef: MutableRefObject<Partial<StartBoxInfo | null>>,
 }

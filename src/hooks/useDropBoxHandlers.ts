@@ -10,7 +10,7 @@ import styles from './styles.module.css';
 export default function useDropBoxHandlers({
   accept,
   canDragInOut,
-  canHoverRef,
+  // canHoverRef,
   items,
   setItemsAndPrev,
   startBoxInfoRef,
@@ -26,7 +26,7 @@ export default function useDropBoxHandlers({
   useEffect(() => {
     startBoxInfoRef.current?.dragStartEl?.classList[showStartDragEl ? 'remove' : 'add'](styles.hidden);
     // Restore hover after enter and leave events in the orig drag box
-    canHoverRef.current = true;
+    // canHoverRef.current = true;
     // console.log('showStartDragEl canHoverRef', true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showStartDragEl]);
@@ -37,7 +37,7 @@ export default function useDropBoxHandlers({
   const _onDragStart = (ev: DragEvent) => {
     const boxEl = ev.currentTarget as HTMLElement;
     const dragEl = ev.target as HTMLElement;
-    canHoverRef.current = true;
+    // canHoverRef.current = true;
     // console.log('start canHoverRef', true);
     
     startBoxInfoRef.current = {
@@ -105,14 +105,14 @@ export default function useDropBoxHandlers({
             // console.log('_onDragEnter non-orig box', newItem, getIds(newItems), ev.currentTarget, ev.target, ev.relatedTarget)
             setItemsAndPrev(newItems);
             onDragEnter(newItem, newItems);
-            canHoverRef.current = false;
+            // canHoverRef.current = false;
             // console.log('enter canHoverRef', false);
             go();
           }
         } else {
           if (!showStartDragEl) setShowStartDragEl(true);
           dndItm.index = startBoxInfoRef.current.itemLeaveIndex;
-          console.log('_onDragEnter orig box', dndItm.index, ev.currentTarget, ev.target, ev.relatedTarget)
+          // console.log('_onDragEnter orig box', dndItm.index, ev.currentTarget, ev.target, ev.relatedTarget)
           go();
         }
 
@@ -141,7 +141,7 @@ export default function useDropBoxHandlers({
         if (startBoxInfoRef.current === null) {
           // console.log('_onDragLeave non-orig box', dndItm.id, getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
           dndItm.leave = () => {
-            canHoverRef.current = false;
+            // canHoverRef.current = false;
             // console.log('leave non-orig box canHoverRef', false);
             
             const idxToRemove = items.findIndex(it => it.id === dndItm.id);
@@ -154,7 +154,7 @@ export default function useDropBoxHandlers({
         } else {
           // console.log('_onDragLeave orig box', startBoxInfoRef.current.itemLeaveIndex, getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
           dndItm.leave = () => {
-            canHoverRef.current = false;
+            // canHoverRef.current = false;
             // console.log('leave orig box canHoverRef', false);
             setShowStartDragEl(false);
             startBoxInfoRef.current &&

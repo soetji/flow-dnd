@@ -32,7 +32,7 @@ export function onDrop({
   // Delay until draggableImpsRef fill up
   setTimeout(() => {
     const idx = items.findIndex(it => it.id === dndItm.id);
-    console.log('onDrop', getIds(items), idx, draggableImpsRef.current);
+    // console.log('onDrop', getIds(items), idx, draggableImpsRef.current);
     draggableImpsRef.current[idx] && draggableImpsRef.current[idx].getDOMElement()
       ?.classList.remove(styles.dragging);
   }, 500);
@@ -53,7 +53,7 @@ interface OnHoverProps {
   boxRef: RefObject<HTMLElement>,
   dndItm: DndItem,
   draggableImpsRef: RefObject<DraggableImpHandle[]>,
-  canHoverRef: MutableRefObject<boolean>,
+  // canHoverRef: MutableRefObject<boolean>,
   monitor: DropTargetMonitor,
   moveItem: (from: number, to: number) => void,
   moving: boolean,
@@ -64,7 +64,7 @@ export function onHover({
   boxRef,
   dndItm,
   draggableImpsRef,
-  canHoverRef,
+  // canHoverRef,
   monitor,
   moveItem,
   moving,
@@ -73,8 +73,8 @@ export function onHover({
 
   // console.log('hover?', !moving && canHoverRef.current && dndItm.enteredBoxEl === boxRef?.current, moving, canHoverRef.current, dndItm.enteredBoxEl, boxRef?.current);
   
-  if (!moving && canHoverRef.current && dndItm.enteredBoxEl === boxRef?.current) {
-  // if (!moving && dndItm.enteredBoxEl === boxRef?.current) {
+  // if (!moving && canHoverRef.current && dndItm.enteredBoxEl === boxRef?.current) {
+  if (!moving && dndItm.enteredBoxEl === boxRef?.current) {
     const draggableImps = draggableImpsRef?.current as DraggableImpHandle[];
     // console.log('draggableImps', draggableImps.length);
     

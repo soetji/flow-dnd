@@ -29,7 +29,7 @@ export default function useDropBox({
   const [items, setItems] = useState<ItemWithId[]>(structuredClone(defaultItems));
   const startBoxInfoRef = useRef(null) as MutableRefObject<StartBoxInfo | null>;
   const boxRef = useRef<HTMLElement>(null);
-  const canHoverRef = useRef(false); // True to prevent hover triggers
+  // const canHoverRef = useRef(false); // True to prevent hover triggers
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
   const prevItemsRef = useRef<ItemWithId[]>(items);
 
@@ -50,7 +50,7 @@ export default function useDropBox({
   } = useDropBoxHandlers({
     accept,
     canDragInOut,
-    canHoverRef,
+    // canHoverRef,
     items,
     setItemsAndPrev,
     startBoxInfoRef,
@@ -64,7 +64,7 @@ export default function useDropBox({
     accept,
     boxRef,
     canDrop,
-    canHoverRef,
+    // canHoverRef,
     defaultItems,
     draggableImpsRef,
     // fixedItemIds,
@@ -106,7 +106,7 @@ export default function useDropBox({
     // console.log('useEffect items', getIds(prevItemsRef.current), getIds(items));
     initNewDragItem();
     // Restore hover after enter and leave events outside the orig drag box
-    canHoverRef.current = true;
+    // canHoverRef.current = true;
     // console.log('items canHoverRef', true);
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
