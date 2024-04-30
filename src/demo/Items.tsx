@@ -1,11 +1,13 @@
 import React, { FC, useState } from 'react';
 import DroppableBox from '../DroppableBox';
 import { ItemWithId } from '../types';
+// import useMountTest from '../hooks/useMountTest';
 
+import { getIds } from '../utils';
 import './items.css';
 import Item from './Item';
 import Items2 from './Items2';
-import Items3 from './Items3';
+// import Items3 from './Items3';
 
 const defaultItems = [
   {
@@ -57,7 +59,8 @@ const defaultItems = [
 
 const Items: FC = () => {
   const [ items, setItems ] = useState<ItemWithId[]>(defaultItems);
-
+  // useMountTest('Items');
+  
   const handleAdd = () => setItems([...items, { id: Date.now().toString()}]);
   const handleDelete = () => setItems(items.toSpliced(items.length - 1, 1));
   const handleDrop = (info) => {
@@ -68,16 +71,16 @@ const Items: FC = () => {
   const handleDragStart = () => console.log('handleDragStart');
 
   const handleDragEnter = (item, newItems) => {
-    console.log('handleDragEnter', item, newItems);
+    console.log('handleDragEnter', item, getIds(newItems));
     setItems(newItems);
   }
   const handleDragLeave = (itemId, newItems) => {
-    console.log('handleDragLeave', itemId, newItems);
+    console.log('handleDragLeave', itemId, getIds(newItems));
     setItems(newItems);
   }
 
-  const handleDragEnd= (removedId, items) => {
-    console.log('handleDragEnd', removedId, items);
+  const handleDragEnd= (items, removedId) => {
+    console.log('handleDragEnd', removedId, getIds(items));
   }
   
   return (
@@ -95,11 +98,13 @@ const Items: FC = () => {
       >
         {({ draggableRefByIndex, droppableRef, droppableProps, items }) => (
           <div className='items' ref={droppableRef} {...droppableProps}>
-            {items.map((item, idx) => (
-              <Item key={item.id} item={item} idx={idx}
-                draggableRef={draggableRefByIndex(idx)}
-              />
-            ))}
+            {(//console.log('items', getIds(items)),
+              items.map((item, idx) => (
+                <Item key={item.id} item={item} idx={idx}
+                  draggableRef={draggableRefByIndex(idx)}
+                />
+              ))
+            )}
           </div>
         )}
       </DroppableBox>

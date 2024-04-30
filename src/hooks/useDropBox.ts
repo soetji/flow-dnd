@@ -3,20 +3,20 @@ import { useDragDropManager } from 'react-dnd';
 import { isEqual, noop } from 'lodash';
 
 import {
-  BoxInfo, DraggableImpHandle, ItemId,
+  StartBoxInfo, ItemId,
   ItemWithId, UseDropBoxProps
 } from '../types';
 
 import useDrop from './useDrop';
 import useDropBoxHandlers from './useDropBoxHandlers';
 import styles from './styles.module.css';
-
-// const getIds = (items: ItemWithId[]) => items.map(it => it.id);
+// import { getIds } from '../utils';
 
 export default function useDropBox({
   accept,
   canDragInOut = false,
   canDrop = true,
+  draggableImpsRef,
   // fixedItemIds,
   items: defaultItems,
   moving,
@@ -27,19 +27,13 @@ export default function useDropBox({
   onDrop = noop,
 }: UseDropBoxProps) {
   const [items, setItems] = useState<ItemWithId[]>(structuredClone(defaultItems));
-  const [showDragSrcEl, setShowDragSrcEl] = useState(true);
-  const boxInfoRef = useRef({}) as MutableRefObject<BoxInfo>;
+  const startBoxInfoRef = useRef(null) as MutableRefObject<StartBoxInfo | null>;
   const boxRef = useRef<HTMLElement>(null);
   const canHoverRef = useRef(false); // True to prevent hover triggers
-  const draggableImpsRef = useRef<DraggableImpHandle[]>([]);
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
   const prevItemsRef = useRef<ItemWithId[]>(items);
 
   const dragDropManager = useDragDropManager();
-
-  
-  // Will refilled after render
-  draggableImpsRef.current = [];
 
   const setItemsAndPrev = (newItems: ItemWithId[]) => {
     // console.log('setItemsAndPrev', getIds(newItems));
@@ -48,19 +42,18 @@ export default function useDropBox({
   }
 
   const {
-    draggingTs,
+    dragging,
     _onDragStart,
     _onDragEnter,
     _onDragLeave,
     _onDragEnd,
   } = useDropBoxHandlers({
     accept,
-    boxInfoRef,
     canDragInOut,
     canHoverRef,
     items,
     setItemsAndPrev,
-    setShowDragSrcEl,
+    startBoxInfoRef,
     onDragEnd,
     onDragEnter,
     onDragLeave,
@@ -93,9 +86,10 @@ export default function useDropBox({
       // console.log('initNewDragItem', idx, dndItm.id, getIds(items));
       // If drag item not removed
       if (idx !== -1) {
+        const dragCurrEl = draggableImpsRef.current[idx]?.getDOMElement();
         dndItm.index = idx;
-        draggableImpsRef.current[idx]?.getDOMElement()
-          ?.classList.add(styles.dragging);
+        dndItm.setStartBoxInfo({ dragCurrEl });
+        dragCurrEl?.classList.add(styles.dragging);
       }
     }
   }
@@ -113,18 +107,13 @@ export default function useDropBox({
     initNewDragItem();
     // Restore hover after enter and leave events outside the orig drag box
     canHoverRef.current = true;
+    // console.log('items canHoverRef', true);
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(items)]);
 
-  useEffect(() => {
-    boxInfoRef.current.dragSrcEl?.classList[showDragSrcEl ? 'remove' : 'add'](styles.hidden);
-    // Restore hover after enter and leave events in the orig drag box
-    canHoverRef.current = true;
-  }, [showDragSrcEl]);
-
   return {
-    draggableImpsRef,
-    draggingTs,
+    dragging,
     droppableRef: boxRef,
     items,
     droppableProps: canDrop ? {

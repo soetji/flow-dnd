@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import { useDrag } from 'react-dnd';
+import { useDrag as _useDrag } from 'react-dnd';
 import { DndItem, UseDragProps } from '../types';
 
 import styles from './styles.module.css';
 
-export default function _useDrag({
+export default function useDrag({
   canDrag = true,
   id,
   index,
   type,
 }: UseDragProps) {
-  // Use this dragging instead of what is provided by useDrag().
+  // Use this dragging instead of what is provided by _useDrag().
   // This dragging from collect() is one react cycle late.
   const [dragging, setDragging] = useState(false);
 
-  // const [{ dragging: _isDragging }, drag] = useDrag({
-  const [, drag, preview] = useDrag({
+  // const [{ dragging: _isDragging }, drag] = _useDrag({
+  const [, drag, preview] = _useDrag({
     type,
     item: () => {
       return { id, index, type } as DndItem;

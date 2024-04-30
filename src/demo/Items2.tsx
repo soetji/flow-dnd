@@ -5,6 +5,8 @@ import { ItemWithId } from '../types';
 import './items.css';
 import Item from './Item';
 
+import { getIds } from '../utils';
+
 const defaultItems = [
   {
     id: '12',
@@ -42,7 +44,7 @@ const Items2: FC = () => {
     setItems(newItems);
   }
 
-  const handleDragEnd = (removedId, items) => {
+  const handleDragEnd= (items, removedId) => {
     console.log('handleDragEnd', removedId, items);
   }
 
@@ -60,12 +62,13 @@ const Items2: FC = () => {
       >
         {({ draggableRefByIndex, droppableProps, droppableRef, items }) => (
           <div className='items' ref={droppableRef} {...droppableProps} >
-            {(//console.log('item2', items),
+            {(//console.log('items2', getIds(items)),
               items.map((item, idx) => (
-              <Item key={item.id} item={item} idx={idx}
-                draggableRef={draggableRefByIndex(idx)}
-              />
-            )))}
+                <Item key={item.id} item={item} idx={idx}
+                  draggableRef={draggableRefByIndex(idx)}
+                />
+              ))
+            )}
           </div>
         )}
       </DroppableBox>

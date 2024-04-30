@@ -2,7 +2,7 @@ import { XYCoord } from 'react-dnd';
 import { getWidth } from 'mezr/getWidth';
 import { DraggableImpHandle, MouseInfo } from '../types';
 
-export const getDragSrcEl = (el: HTMLElement | null): HTMLElement | null =>
+export const getDragStartEl = (el: HTMLElement | null): HTMLElement | null =>
   el === null ? null : el.closest('.__flow-dnd-drag-item') as HTMLElement;
 
 function getMouseLocInfo(

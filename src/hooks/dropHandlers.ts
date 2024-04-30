@@ -7,9 +7,9 @@ import {
   OnDropInfo
 } from '../types';
 import { getMouseInfo, getToIdx } from './utils';
+import { getIds } from '../utils';
 
 import styles from './styles.module.css';
-// const getIds = (items: ItemWithId[]) => items.map(it => it.id);
 
 interface OnDropProps {
   defaultItems: ItemWithId[],
@@ -20,6 +20,7 @@ interface OnDropProps {
   onDrop: (info: OnDropInfo) => void,
 }
 
+// No onDrop when item dropped outside droppable
 export function onDrop({
   defaultItems,
   dndItm,
@@ -31,7 +32,7 @@ export function onDrop({
   // Delay until draggableImpsRef fill up
   setTimeout(() => {
     const idx = items.findIndex(it => it.id === dndItm.id);
-    // console.log('onDrop', getIds(items), idx, draggableImpsRef.current);
+    console.log('onDrop', getIds(items), idx, draggableImpsRef.current);
     draggableImpsRef.current[idx] && draggableImpsRef.current[idx].getDOMElement()
       ?.classList.remove(styles.dragging);
   }, 500);
@@ -70,15 +71,16 @@ export function onHover({
   toIdRef,
 }: OnHoverProps) {
 
-  // console.log('hover?', moving, canHoverRef.current, dndItm.currentBoxEl, boxRef.current);
+  // console.log('hover?', !moving && canHoverRef.current && dndItm.enteredBoxEl === boxRef?.current, moving, canHoverRef.current, dndItm.enteredBoxEl, boxRef?.current);
   
-  if (!moving && canHoverRef.current && dndItm.currentBoxEl === boxRef?.current) {
+  if (!moving && canHoverRef.current && dndItm.enteredBoxEl === boxRef?.current) {
+  // if (!moving && dndItm.enteredBoxEl === boxRef?.current) {
     const draggableImps = draggableImpsRef?.current as DraggableImpHandle[];
-    // console.log('draggableImps', draggableImps);
+    // console.log('draggableImps', draggableImps.length);
     
     const mInfo = getMouseInfo(draggableImps, boxRef?.current,
       monitor.getClientOffset());
-    // console.log('hover', moving, canHoverRef.current, dndItm.currentBoxEl, boxRef.current, draggableImps, dndItm.index, mInfo);
+    // console.log('hover', moving, canHoverRef.current, dndItm.enteredBoxEl, boxRef.current, draggableImps, dndItm.index, mInfo);
 
     if (mInfo.hoverIdx !== undefined && dndItm.index !== mInfo.hoverIdx) {
       const toIdx = getToIdx(dndItm.index, mInfo.hoverIdx, mInfo.sideToGo as string);

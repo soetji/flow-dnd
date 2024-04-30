@@ -3,7 +3,7 @@ import { MutableRefObject, useImperativeHandle, useRef } from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import useDrag from './hooks/useDrag';
 import { DraggableProps } from './types';
-import { getDragSrcEl } from './hooks/utils';
+import { getDragStartEl } from './hooks/utils';
 
 export default function Draggable<dragElementType>({
   canDrag = true,
@@ -15,12 +15,8 @@ export default function Draggable<dragElementType>({
 }: DraggableProps<dragElementType>) {
   const dragHandleRef = useRef<dragElementType>(null) as MutableRefObject<dragElementType>;
 
-  // useEffect(() => {
-  //   console.log('mount', id);
-  // }, []);
-
   useImperativeHandle(draggableRef, () => ({
-    getDOMElement: () => getDragSrcEl(dragHandleRef.current as HTMLElement),
+    getDOMElement: () => getDragStartEl(dragHandleRef.current as HTMLElement),
     getId: () => id,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), []);

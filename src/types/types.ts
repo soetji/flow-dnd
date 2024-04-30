@@ -65,7 +65,7 @@ export interface DroppableProps {
   canDragInOut?: boolean,
   // fixedItemIds: ItemId[], // TODO
   items: ItemWithId[],
-  onDragEnd?: (removedId?: ItemId | null, items?: ItemWithId[]) => void,
+  onDragEnd?: (items?: ItemWithId[], removedId?: ItemId | null) => void,
   onDragEnter?: (item?: ItemWithId, newItems?: ItemWithId[]) => void,
   onDragLeave?: (id?: ItemId, newItems?: ItemWithId[]) => void,
   onDragStart?: () => void,
@@ -79,6 +79,7 @@ export interface DroppableBoxProps extends DroppableProps {
 
 export interface UseDropBoxProps extends DroppableProps {
   canDrop?: boolean,
+  draggableImpsRef: MutableRefObject<DraggableImpHandle[]>,
   moving: boolean,
 }
 
@@ -97,24 +98,24 @@ export interface UseDropProps {
   onDrop?: (info: OnDropInfo) => void,
 }
 
-export interface BoxInfo {
+export interface StartBoxInfo {
   boxEl: HTMLElement,
-  dragSrcEl: HTMLElement,
-  dropBoxEl: HTMLElement,
+  dragCurrEl: HTMLElement,
+  dragStartEl: HTMLElement,
+  enteredBoxEl: HTMLElement,
   itemId: ItemId,
   itemLeaveIndex: number,
 }
 
 export interface UseDropHandlersProps extends DroppableProps {
-  boxInfoRef: MutableRefObject<Partial<BoxInfo>>,
   canHoverRef: MutableRefObject<boolean>,
   setItemsAndPrev: (items: ItemWithId[]) => void,
-  setShowDragSrcEl: (show: boolean) => void,
+  startBoxInfoRef: MutableRefObject<Partial<StartBoxInfo | null>>,
 }
 
 export interface DndItem {
   id: ItemId,
-  currentBoxEl: HTMLElement,
+  enteredBoxEl: HTMLElement,
   index: number,
   itemToCopy?: ItemWithId,
   setStartBoxInfo?: (info: object) => void,

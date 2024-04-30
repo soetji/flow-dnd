@@ -1,11 +1,11 @@
 
-import { useDrop } from 'react-dnd';
+import { useDrop as _useDrop } from 'react-dnd';
 import { noop } from 'lodash';
 
 import { DndItem, UseDropProps } from '../types';
 import * as handlers from './dropHandlers';
 
-export default function _useDrop({
+export default function useDrop({
   accept,
   boxRef,
   canDrop = true,
@@ -25,7 +25,7 @@ export default function _useDrop({
     setItemsAndPrev(items.toSpliced(from, 1).toSpliced(to, 0, itemFrom));
   };
 
-  const [, drop] = useDrop({
+  const [, drop] = _useDrop({
     accept,
     canDrop: () => canDrop,
 

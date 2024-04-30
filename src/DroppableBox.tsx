@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Flipper } from 'react-flip-toolkit';
 // import { ItemWithId } from './types';
 
 import useDropBox from './hooks/useDropBox';
 import { DraggableImpHandle, DroppableBoxProps } from './types';
+// import useMountTest from './hooks/useMountTest';
 
 export default function DroppableBox({
   accept,
@@ -19,10 +20,15 @@ export default function DroppableBox({
   onDrop,
 } : DroppableBoxProps) {
   const [moving, setMoving] = useState(false);
+  const draggableImpsRef = useRef<DraggableImpHandle[]>([]);
+
+  // Will refilled after render
+  draggableImpsRef.current = [];
+
+  // useMountTest('DroppableBox');
 
   const {
-    draggableImpsRef,
-    draggingTs,
+    dragging,
     droppableRef,
     items: _items,
     droppableProps,
@@ -30,6 +36,7 @@ export default function DroppableBox({
     accept,
     canDragInOut,
     canDrop,
+    draggableImpsRef,
     // fixedItemIds,
     moving,
     items,
@@ -46,20 +53,19 @@ export default function DroppableBox({
       // console.log('draggableRefByIndex', idx, handleEl && handleEl.getId(), draggableImpsRef.current, draggableImpsRef.current.length);
     }
 
-  // console.log('draggableImpsRef.current', draggableImpsRef.current, JSON.stringify([..._items, draggingTs]));
+  // console.log('draggableImpsRef.current', draggableImpsRef.current, JSON.stringify([..._items, dragging]));
 
   // Only on items change
   const handleFlipperStart = () => setMoving(true);
   const handleFlipperComplete = () => setMoving(false);
 
-  // const getIds = (items: ItemWithId[]) => items.map(it => it.id);
   // console.log('DroppableBox', getIds(_items));
   
   // return children({ draggableRefByIndex, droppableRef,
   //   droppableProps, items: _items });
 
   return (
-    <Flipper flipKey={JSON.stringify([..._items, draggingTs])}
+    <Flipper flipKey={JSON.stringify([..._items, dragging])}
       onStart={handleFlipperStart}
       onComplete={handleFlipperComplete}
     >
