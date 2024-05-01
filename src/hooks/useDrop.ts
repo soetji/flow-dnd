@@ -4,6 +4,7 @@ import { noop } from 'lodash';
 
 import { DndItem, UseDropProps } from '../types';
 import * as handlers from './dropHandlers';
+// import { getIds } from '../utils';
 
 export default function useDrop({
   accept,

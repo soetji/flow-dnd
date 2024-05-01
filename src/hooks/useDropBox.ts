@@ -87,7 +87,6 @@ export default function useDropBox({
       // If drag item not removed
       if (idx !== -1) {
         const dragCurrEl = draggableImpsRef.current[idx]?.getDOMElement();
-        dndItm.index = idx;
         dndItm.setStartBoxInfo({ dragCurrEl });
         dragCurrEl?.classList.add(styles.dragging);
       }

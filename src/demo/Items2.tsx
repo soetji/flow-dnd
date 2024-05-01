@@ -28,24 +28,25 @@ const Items2: FC = () => {
   const handleAdd = () => setItems([...items, { id: Date.now().toString()}]);
   const handleDelete = () => setItems(items.toSpliced(items.length - 1, 1));
   const handleDrop = (info) => {
-    console.log('handleDrop', info);
+    // console.log('handleDrop', info);
     setItems(info.toItems);
   }
   
-
-  const handleDragStart = () => console.log('handleDragStart');
+  const handleDragStart = () => {
+    // console.log('handleDragStart');
+  }
 
   const handleDragEnter = (item, newItems) => {
-    console.log('handleDragEnter', item, newItems);
+    // console.log('handleDragEnter', item, newItems);
     setItems(newItems);
   }
   const handleDragLeave = (itemId, newItems) => {
-    console.log('handleDragLeave', itemId, newItems);
+    // console.log('handleDragLeave', itemId, newItems);
     setItems(newItems);
   }
 
   const handleDragEnd= (items, removedId) => {
-    console.log('handleDragEnd', removedId, items);
+    // console.log('handleDragEnd', removedId, items);
   }
 
   return (

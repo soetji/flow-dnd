@@ -25,7 +25,7 @@ export default function useDropBoxHandlers({
 
   useEffect(() => {
     startBoxInfoRef.current?.dragStartEl?.classList[showStartDragEl ? 'remove' : 'add'](styles.hidden);
-    // Restore hover after enter and leave events in the orig drag box
+    // Restore hover after enter and leave events in the start drag box
     // canHoverRef.current = true;
     // console.log('showStartDragEl canHoverRef', true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +61,6 @@ export default function useDropBoxHandlers({
       startBoxInfoRef.current = {
         ...startBoxInfoRef.current,
         itemId: dndItm.id,
-        itemLeaveIndex: dndItm.index,
       } as StartBoxInfo;
     });
   };
@@ -86,36 +85,47 @@ export default function useDropBoxHandlers({
       ) {
         // console.log('_onDragEnter', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
 
-        const go = () => {
-          if (dndItm.enteredBoxEl !== ev.currentTarget) dndItm.leave();
-          dndItm.setStartBoxInfo({ enteredBoxEl: ev.currentTarget });
-          dndItm.enteredBoxEl = ev.currentTarget;
-        }
+        const boxRect = (ev.currentTarget as HTMLElement).getBoundingClientRect();
+        const enterFromTop = ev.clientY <= ((boxRect.top + boxRect.bottom) /2 );
 
         if (startBoxInfoRef.current === null) {
           if (!getIds(items).includes(dndItm.itemToCopy.id)) {
-            const boxRect = (ev.currentTarget as HTMLElement).getBoundingClientRect();
-            const enterFromTop = ev.clientY <= ((boxRect.top + boxRect.bottom) /2 );
             const newItem = dndItm.itemToCopy as ItemWithId;
-            const newItems = enterFromTop ?
-              [newItem, ...items] : [...items, newItem];
-            // const [newIdx, newItems] = enterFromTop ?
-            //   [0, [newItem, ...items]] : [items.length, [...items, newItem]];
-            // dndItm.index = newIdx;
-            // console.log('_onDragEnter non-orig box', newItem, getIds(newItems), ev.currentTarget, ev.target, ev.relatedTarget)
+            // const newItems = enterFromTop ?
+            //   [newItem, ...items] : [...items, newItem];
+            const [newIdx, newItems] = enterFromTop ?
+              [0, [newItem, ...items]] : [items.length, [...items, newItem]];
+            dndItm.index = newIdx;
+            // console.log('_onDragEnter non-start box', newItem, getIds(newItems), ev.currentTarget, ev.target, ev.relatedTarget)
             setItemsAndPrev(newItems);
-            onDragEnter(newItem, newItems);
             // canHoverRef.current = false;
             // console.log('enter canHoverRef', false);
-            go();
+            onDragEnter(newItem, newItems);
           }
         } else {
           if (!showStartDragEl) setShowStartDragEl(true);
-          dndItm.index = startBoxInfoRef.current.itemLeaveIndex;
-          // console.log('_onDragEnter orig box', dndItm.index, ev.currentTarget, ev.target, ev.relatedTarget)
-          go();
+          const dndItmIdx = items.findIndex(it => it.id === dndItm.id);
+          const restItems = items.toSpliced(dndItmIdx, 1);
+          // const newItems = enterFromTop ?
+          //     [items[dndItmIdx], ...restItems] : [...restItems, items[dndItmIdx]];
+
+          const [newIdx, newItems] = enterFromTop ?
+            [0, [items[dndItmIdx], ...restItems]] : [restItems.length, [...restItems, items[dndItmIdx]]];
+          dndItm.index = newIdx;
+          // console.log('_onDragEnter start box enterFromTop', enterFromTop, dndItm.id, dndItmIdx, getIds(items), getIds(newItems))
+              
+          setItemsAndPrev(newItems);
+          // console.log('_onDragEnter start box', dndItm.index, ev.currentTarget, ev.target, ev.relatedTarget)
         }
 
+        // Need to run the following even item exists in entered non-start box
+        if (dndItm.enteredBoxEl !== ev.currentTarget) {
+          dndItm.leave();
+          // Force leave() to run only once
+          dndItm.leave = () => console.log('dndItm.leave() called more than once!')
+        }
+        dndItm.setStartBoxInfo({ enteredBoxEl: ev.currentTarget });
+        dndItm.enteredBoxEl = ev.currentTarget;
       }
     }
   }
@@ -139,10 +149,10 @@ export default function useDropBoxHandlers({
         // dndItm.setStartBoxInfo({ enteredBoxEl: dndItm.startBoxEl });
         
         if (startBoxInfoRef.current === null) {
-          // console.log('_onDragLeave non-orig box', dndItm.id, getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
+          // console.log('_onDragLeave non-start box', dndItm.id, getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
           dndItm.leave = () => {
             // canHoverRef.current = false;
-            // console.log('leave non-orig box canHoverRef', false);
+            // console.log('leave non-start box canHoverRef', false);
             
             const idxToRemove = items.findIndex(it => it.id === dndItm.id);
             if (idxToRemove !== -1) {
@@ -152,13 +162,11 @@ export default function useDropBoxHandlers({
             }
           }
         } else {
-          // console.log('_onDragLeave orig box', startBoxInfoRef.current.itemLeaveIndex, getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
+          // console.log('_onDragLeave start box', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
           dndItm.leave = () => {
             // canHoverRef.current = false;
-            // console.log('leave orig box canHoverRef', false);
+            // console.log('leave start box canHoverRef', false);
             setShowStartDragEl(false);
-            startBoxInfoRef.current &&
-              (startBoxInfoRef.current.itemLeaveIndex = dndItm.index);
           }
         }
       }
@@ -172,11 +180,13 @@ export default function useDropBoxHandlers({
       // ev.currentTarget is the original box
       // console.log('_onDragEnd', getIds(items), startBoxInfoRef.current.enteredBoxEl, ev.currentTarget)
   
+      // Ends in the start box
       if (startBoxInfoRef.current.enteredBoxEl === ev.currentTarget) {
         onDragEnd(items);
       } else {
-        const newItems = items.toSpliced(startBoxInfoRef.current.itemLeaveIndex as number, 1);
-        // console.log('_onDragEnd', startBoxInfoRef.current.itemLeaveIndex, getIds(items), getIds(newItems));
+        const leaveItemIdx = items.findIndex(it => it.id === startBoxInfoRef.current?.itemId)
+        const newItems = items.toSpliced(leaveItemIdx, 1);
+        // console.log('_onDragEnd', leaveItemIdx, getIds(items), getIds(newItems));
   
         // removeFromEndInfo(startBoxInfoRef.current.itemId as ItemId, newItems, endInfoRef.current);
         startBoxInfoRef.current.dragCurrEl?.classList.remove(styles.dragging);

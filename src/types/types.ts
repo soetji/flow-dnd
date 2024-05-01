@@ -104,7 +104,6 @@ export interface StartBoxInfo {
   dragStartEl: HTMLElement,
   enteredBoxEl: HTMLElement,
   itemId: ItemId,
-  itemLeaveIndex: number,
 }
 
 export interface UseDropHandlersProps extends DroppableProps {
