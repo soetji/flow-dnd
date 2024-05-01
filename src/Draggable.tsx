@@ -31,7 +31,7 @@ export default function Draggable<dragElementType>({
   drag(dragHandleRef);
 
   // Clear style left by Flipped
-  const onComplete = (el: HTMLElement) =>  el.attributeStyleMap.clear();
+  const onComplete = (el: HTMLElement) => el.style.cssText = '';
 
   return (
     <Flipped key={id} flipId={id}

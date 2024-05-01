@@ -7,7 +7,7 @@ import {
   OnDropInfo
 } from '../types';
 import { getMouseInfo, getToIdx } from './utils';
-import { getIds } from '../utils';
+// import { getIds } from '../utils';
 
 import styles from './styles.module.css';
 
