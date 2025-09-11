@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState, MutableRefObject } from 'react';
-import { useDragDropManager } from 'react-dnd';
-import { isEqual, noop } from 'lodash';
-
 import {
-  StartBoxInfo, ItemId,
-  ItemWithId, UseDropBoxProps
+  ItemId,
+  ItemWithId,
+  StartBoxInfo,
+  UseDropBoxProps
 } from '../types';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { isEqual, isNil, noop } from 'lodash';
 
+import styles from './styles.module.css';
+import { useDragDropManager } from 'react-dnd';
 import useDrop from './useDrop';
 import useDropBoxHandlers from './useDropBoxHandlers';
-import styles from './styles.module.css';
+
 // import { getIds } from '../utils';
 
 export default function useDropBox({
@@ -36,10 +38,10 @@ export default function useDropBox({
   const dragDropManager = useDragDropManager();
 
   const setItemsAndPrev = (newItems: ItemWithId[]) => {
-    // console.log('setItemsAndPrev', getIds(newItems));
     prevItemsRef.current = items;
-    setItems(newItems);
+    setItems(newItems.filter(Boolean));
   }
+
 
   const {
     dragging,
@@ -80,8 +82,8 @@ export default function useDropBox({
   const initNewDragItem = () => {
     const dndItm = dragDropManager.getMonitor().getItem();
     // console.log('initNewDragItem', dndItm);
-    
-    if (dndItm !== null) {
+
+    if (!isNil(dndItm)) {
       const idx = items.findIndex((it) => it.id === dndItm.id);
       // console.log('initNewDragItem', idx, dndItm.id, getIds(items));
       // If drag item not removed

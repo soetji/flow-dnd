@@ -1,11 +1,11 @@
+import { ItemWithId, StartBoxInfo, UseDropHandlersProps } from '../types';
 import { useEffect, useState } from 'react';
-import { useDragDropManager } from 'react-dnd';
-import { noop } from 'lodash';
 
-import { StartBoxInfo, ItemWithId, UseDropHandlersProps } from '../types';
 import { getDragStartEl } from './utils';
 import { getIds } from '../utils';
+import { noop } from 'lodash';
 import styles from './styles.module.css';
+import { useDragDropManager } from 'react-dnd';
 
 export default function useDropBoxHandlers({
   accept,
@@ -54,9 +54,10 @@ export default function useDropBoxHandlers({
     setTimeout(() => {
       const dndItm = dragDropManager.getMonitor().getItem();
       dndItm.enteredBoxEl = boxEl;
-      dndItm.itemToCopy = items[dndItm.index];
+      dndItm.itemToCopy = items.find(it => it?.id === dndItm.id) ?? null;
       dndItm.setStartBoxInfo = setStartBoxInfo;
       dndItm.startBoxEl = boxEl;
+      dndItm.leave = noop; 
 
       startBoxInfoRef.current = {
         ...startBoxInfoRef.current,
@@ -90,7 +91,12 @@ export default function useDropBoxHandlers({
 
         if (startBoxInfoRef.current === null) {
           if (!getIds(items).includes(dndItm.itemToCopy.id)) {
-            const newItem = dndItm.itemToCopy as ItemWithId;
+            const newItem = dndItm.itemToCopy as ItemWithId ??
+              items.find(it => it?.id === dndItm.id) as ItemWithId ??
+              null;
+
+              if (!newItem) return;
+
             // const newItems = enterFromTop ?
             //   [newItem, ...items] : [...items, newItem];
             const [newIdx, newItems] = enterFromTop ?
@@ -105,6 +111,7 @@ export default function useDropBoxHandlers({
         } else {
           if (!showStartDragEl) setShowStartDragEl(true);
           const dndItmIdx = items.findIndex(it => it.id === dndItm.id);
+          if (dndItmIdx < 0) return;
           const restItems = items.toSpliced(dndItmIdx, 1);
           // const newItems = enterFromTop ?
           //     [items[dndItmIdx], ...restItems] : [...restItems, items[dndItmIdx]];
@@ -153,7 +160,7 @@ export default function useDropBoxHandlers({
           dndItm.leave = () => {
             // canHoverRef.current = false;
             // console.log('leave non-start box canHoverRef', false);
-            
+
             const idxToRemove = items.findIndex(it => it.id === dndItm.id);
             if (idxToRemove !== -1) {
               const newItems = items.toSpliced(idxToRemove, 1);
