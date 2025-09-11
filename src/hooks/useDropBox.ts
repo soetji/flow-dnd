@@ -1,9 +1,4 @@
-import {
-  ItemId,
-  ItemWithId,
-  StartBoxInfo,
-  UseDropBoxProps
-} from '../types';
+import { ItemId, ItemWithId, StartBoxInfo, UseDropBoxProps } from '../types';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { isEqual, isNil, noop } from 'lodash';
 
@@ -11,8 +6,6 @@ import styles from './styles.module.css';
 import { useDragDropManager } from 'react-dnd';
 import useDrop from './useDrop';
 import useDropBoxHandlers from './useDropBoxHandlers';
-
-// import { getIds } from '../utils';
 
 export default function useDropBox({
   accept,
