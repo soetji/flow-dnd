@@ -31,7 +31,7 @@ export default function useDrag({
     onDragStart: () => setDragging(true),
   } : {}
 
-  const dragClassName = `__flow-dnd-drag-item ${dragging ? styles.dragging : ''}`;
+  const dragClassName = `__flow-dnd-drag-item ${dragging ? styles.itemDragging : ''}`;
   // console.log({dragClassName});
   
 

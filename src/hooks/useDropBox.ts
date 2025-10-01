@@ -33,15 +33,18 @@ export default function useDropBox({
   const toIdRef = useRef<ItemId>(null) as MutableRefObject<ItemId>;
   const prevItemsRef = useRef<ItemWithId[]>(items);
 
+  // console.log('useDropBox', getIds(items));
+
   const dragDropManager = useDragDropManager();
 
   const setItemsAndPrev = (newItems: ItemWithId[]) => {
-    // console.log('setItemsAndPrev', getIds(newItems));
+    // console.log('setItemsAndPrev', getIds(items), getIds(newItems));
     prevItemsRef.current = items;
     setItems(newItems);
   }
 
   const {
+    boxClassName,
     dragging,
     _onDragStart,
     _onDragEnter,
@@ -88,7 +91,7 @@ export default function useDropBox({
       if (idx !== -1) {
         const dragCurrEl = draggableImpsRef.current[idx]?.getDOMElement();
         dndItm.setStartBoxInfo({ dragCurrEl });
-        dragCurrEl?.classList.add(styles.dragging);
+        dragCurrEl?.classList.add(styles.itemDragging);
       }
     }
   }
@@ -112,6 +115,7 @@ export default function useDropBox({
   }, [JSON.stringify(items)]);
 
   return {
+    boxClassName,
     dragging,
     droppableRef: boxRef,
     items,

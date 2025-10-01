@@ -51,7 +51,14 @@ export function getMouseInfo(
   const boxWidth = getWidth(boxEl, 'content');
 
   if (draggableImps.length) {
+    // console.log('draggableImps', draggableImps.length)
     for (let i = 0; i < draggableImps.length; i++) {
+      if (!draggableImps[i].getDOMElement()?.checkVisibility({
+        visibilityProperty: true,
+      })) {
+        continue;
+      }
+
       const loc = getMouseLocInfo(
         draggableImps[i].getDOMElement(),
         boxWidth,
@@ -59,6 +66,7 @@ export function getMouseInfo(
       );
 
       if (loc.isInside) {
+        // console.log('isInside', i);
         info = { ...loc, hoverIdx: i };
         break;
       }

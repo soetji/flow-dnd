@@ -34,7 +34,7 @@ export function onDrop({
     const idx = items.findIndex(it => it.id === dndItm.id);
     // console.log('onDrop', getIds(items), idx, draggableImpsRef.current);
     draggableImpsRef.current[idx] && draggableImpsRef.current[idx].getDOMElement()
-      ?.classList.remove(styles.dragging);
+      ?.classList.remove(styles.itemDragging);
   }, 500);
 
   if (onDrop && toIdRef.current !== null &&
@@ -71,7 +71,7 @@ export function onHover({
   toIdRef,
 }: OnHoverProps) {
 
-  // console.log('hover?', !moving && canHoverRef.current && dndItm.enteredBoxEl === boxRef?.current, moving, canHoverRef.current, dndItm.enteredBoxEl, boxRef?.current);
+  // console.log('hover?', !moving && dndItm.enteredBoxEl === boxRef?.current, moving, dndItm.enteredBoxEl, boxRef?.current);
   
   // if (!moving && canHoverRef.current && dndItm.enteredBoxEl === boxRef?.current) {
   if (!moving && dndItm.enteredBoxEl === boxRef?.current) {
@@ -80,11 +80,13 @@ export function onHover({
     
     const mInfo = getMouseInfo(draggableImps, boxRef?.current,
       monitor.getClientOffset());
-    // console.log('hover', moving, canHoverRef.current, dndItm.enteredBoxEl, boxRef.current, draggableImps, dndItm.index, mInfo);
+    // console.log('hover', moving, dndItm.enteredBoxEl, boxRef.current, draggableImps, dndItm.index, mInfo);
+
+    // console.log('onHover', mInfo.hoverIdx !== undefined && dndItm.index !== mInfo.hoverIdx, mInfo.hoverIdx, dndItm.index);
 
     if (mInfo.hoverIdx !== undefined && dndItm.index !== mInfo.hoverIdx) {
       const toIdx = getToIdx(dndItm.index, mInfo.hoverIdx, mInfo.sideToGo as string);
-      // console.log('hover from', dndItm.index, 'to', mInfo.hoverIdx, toIdx);
+      // console.log('hover from', dndItm.id, dndItm.index, 'on', mInfo.hoverIdx, 'to', toIdx);
 
       if (dndItm.index !== toIdx) {
         toIdRef.current = draggableImps[toIdx].getId();

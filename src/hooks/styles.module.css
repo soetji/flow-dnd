@@ -1,7 +1,19 @@
-.dragging {
+/* .boxDragging {
+  background-color: orange;
+}
+
+.boxDragging * {
+  pointer-events: none;
+}
+
+.boxDragging [draggable] {
+  pointer-events: initial;
+} */
+
+.itemDragging {
   opacity: 0.3;
 }
 
-.hidden {
+.itemHidden {
   display: none !important;
 }

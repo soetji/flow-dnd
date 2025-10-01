@@ -24,7 +24,7 @@ export default function useDropBoxHandlers({
   const dragDropManager = useDragDropManager();
 
   useEffect(() => {
-    startBoxInfoRef.current?.dragStartEl?.classList[showStartDragEl ? 'remove' : 'add'](styles.hidden);
+    startBoxInfoRef.current?.dragStartEl?.classList[showStartDragEl ? 'remove' : 'add'](styles.itemHidden);
     // Restore hover after enter and leave events in the start drag box
     // canHoverRef.current = true;
     // console.log('showStartDragEl canHoverRef', true);
@@ -69,10 +69,11 @@ export default function useDropBoxHandlers({
     if (canDragInOut) {
       ev.preventDefault();
       const dndItm = dragDropManager.getMonitor().getItem();
-      // console.log('_onDragEnter?', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
+      // console.log('_onDragEnter?', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget, dndItm);
   
+      // !dndItm.leave && console.error('dndItm.leave() not set');
       // ev.currentTarget is entered box
-      if (dndItm.type === accept &&
+      if (dndItm.leave && dndItm.type === accept &&
         ev.relatedTarget !== null && // Why is it null in the beginning of drag?
         // Entered from an existing element. The from element can
         // drop off dom; e.g., loading or skeletons
@@ -83,7 +84,7 @@ export default function useDropBoxHandlers({
         ev.currentTarget !== ev.relatedTarget &&
         !(ev.currentTarget as HTMLElement).contains(ev.relatedTarget as HTMLElement)
       ) {
-        // console.log('_onDragEnter', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
+        // console.log('_onDragEnter', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget, dndItm);
 
         const boxRect = (ev.currentTarget as HTMLElement).getBoundingClientRect();
         const enterFromTop = ev.clientY <= ((boxRect.top + boxRect.bottom) /2 );
@@ -100,6 +101,7 @@ export default function useDropBoxHandlers({
             setItemsAndPrev(newItems);
             // canHoverRef.current = false;
             // console.log('enter canHoverRef', false);
+            // console.log('_onDragEnter', newItem, enterFromTop, newIdx, newItems)
             onDragEnter(newItem, newItems);
           }
         } else {
@@ -118,11 +120,11 @@ export default function useDropBoxHandlers({
           // console.log('_onDragEnter start box', dndItm.index, ev.currentTarget, ev.target, ev.relatedTarget)
         }
 
-        // Need to run the following even item exists in entered non-start box
+        // Need to run the following even item exists in entered non-start box.
         if (dndItm.enteredBoxEl !== ev.currentTarget) {
           dndItm.leave();
           // Force leave() to run only once
-          dndItm.leave = () => console.log('dndItm.leave() called more than once!')
+          dndItm.leave = () => console.log('dndItm.leave() called more than once!');
         }
         dndItm.setStartBoxInfo({ enteredBoxEl: ev.currentTarget });
         dndItm.enteredBoxEl = ev.currentTarget;
@@ -133,7 +135,7 @@ export default function useDropBoxHandlers({
   const _onDragLeave = (ev: DragEvent) => {
     if (canDragInOut) {
       const dndItm = dragDropManager.getMonitor().getItem();
-      // console.log('_onDragLeave?', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget);
+      // console.log('_onDragLeave?', getIds(items), ev.currentTarget, ev.target, ev.relatedTarget, dndItm);
       
       // ev.currentTarget is box left
       if (dndItm.type === accept &&
@@ -141,7 +143,7 @@ export default function useDropBoxHandlers({
         // Left to an existing element
         (ev.relatedTarget as HTMLElement).isConnected &&
         (ev.currentTarget as HTMLElement).contains(ev.target as HTMLElement) &&
-        // Left to an element outside the box
+        // Left to an element outside the current box
         ev.currentTarget !== ev.relatedTarget &&
         !(ev.currentTarget as HTMLElement).contains(ev.relatedTarget as HTMLElement)
       ) {
@@ -158,6 +160,7 @@ export default function useDropBoxHandlers({
             if (idxToRemove !== -1) {
               const newItems = items.toSpliced(idxToRemove, 1);
               setItemsAndPrev(newItems);
+              // console.log('_onDragLeave', dndItm.id, items, idxToRemove, newItems);
               onDragLeave(dndItm.id, newItems);
             }
           }
@@ -189,7 +192,7 @@ export default function useDropBoxHandlers({
         // console.log('_onDragEnd', leaveItemIdx, getIds(items), getIds(newItems));
   
         // removeFromEndInfo(startBoxInfoRef.current.itemId as ItemId, newItems, endInfoRef.current);
-        startBoxInfoRef.current.dragCurrEl?.classList.remove(styles.dragging);
+        startBoxInfoRef.current.dragCurrEl?.classList.remove(styles.itemDragging);
         setItemsAndPrev(newItems);
         onDragEnd(newItems, startBoxInfoRef.current.itemId);
       }
@@ -200,6 +203,7 @@ export default function useDropBoxHandlers({
   };
 
   return {
+    boxClassName: dragging ? styles.boxDragging : '', // For testing
     dragging,
     _onDragStart,
     _onDragEnter,

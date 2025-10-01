@@ -28,6 +28,7 @@ export default function DroppableBox({
   // useMountTest('DroppableBox');
 
   const {
+    boxClassName,
     dragging,
     droppableRef,
     items: _items,
@@ -64,13 +65,20 @@ export default function DroppableBox({
   // return children({ draggableRefByIndex, droppableRef,
   //   droppableProps, items: _items });
 
+  const childrenProps = {
+    boxClassName,
+    draggableRefByIndex,
+    droppableRef,
+    droppableProps,
+    items: _items,
+  };
+
   return (
     <Flipper flipKey={JSON.stringify([..._items, dragging])}
       onStart={handleFlipperStart}
       onComplete={handleFlipperComplete}
     >
-      {children({ draggableRefByIndex, droppableRef,
-        droppableProps, items: _items })}
+      {children(childrenProps)}
     </Flipper>
   );
 }

@@ -10,15 +10,15 @@ import { getIds } from '../utils';
 const defaultItems = [
   {
     id: '12',
-    size: 'fullWidth',
-  },
-  {
-    id: '13',
     size: 'small',
   },
   {
-    id: '14',
+    id: '13',
     size: 'large',
+  },
+  {
+    id: '14',
+    size: 'fullWidth',
   },
 ];
 
@@ -61,8 +61,8 @@ const Items2: FC = () => {
         onDragStart={handleDragStart}
         onDrop={handleDrop}
       >
-        {({ draggableRefByIndex, droppableProps, droppableRef, items }) => (
-          <div className='items' ref={droppableRef} {...droppableProps} >
+        {({ boxClassName, draggableRefByIndex, dragging, droppableRef, droppableProps, items }) => (
+          <div className={`items ${boxClassName}`} ref={droppableRef} {...droppableProps}>
             {(//console.log('items2', getIds(items)),
               items.map((item, idx) => (
                 <Item key={item.id} item={item} idx={idx}

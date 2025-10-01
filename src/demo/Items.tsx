@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import DroppableBox from '../DroppableBox';
 import { ItemWithId } from '../types';
 // import useMountTest from '../hooks/useMountTest';
@@ -98,8 +98,8 @@ const Items: FC = () => {
         onDragStart={handleDragStart}
         onDrop={handleDrop}
       >
-        {({ draggableRefByIndex, droppableRef, droppableProps, items }) => (
-          <div className='items' ref={droppableRef} {...droppableProps}>
+        {({ boxClassName, draggableRefByIndex, droppableRef, droppableProps, items }) => (
+          <div className={`items ${boxClassName}`} ref={droppableRef} {...droppableProps}>
             {(//console.log('items', getIds(items)),
               items.map((item, idx) => (
                 <Item key={item.id} item={item} idx={idx}
@@ -114,6 +114,7 @@ const Items: FC = () => {
         <button onClick={handleDelete}>Delete</button>
         <button onClick={handleAdd}>Add</button>
       </p>
+      <div style={{ backgroundColor: 'lightgray', height: 50, margin: '20px 0' }}></div>
       <Items2 />
       {/* <Items3 /> */}
     </>
